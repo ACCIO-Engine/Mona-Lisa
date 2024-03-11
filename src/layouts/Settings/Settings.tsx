@@ -21,7 +21,7 @@ export default function VariableWidthGrid() {
         </Grid>
         <Grid item xs={7}>
           <CustomSelect
-            label="Select model"
+            label="Select text model"
             choices={["Model1", "Model2", "Model3"]}
           ></CustomSelect>
         </Grid>
@@ -30,7 +30,7 @@ export default function VariableWidthGrid() {
         </Grid>
         <Grid item xs={7}>
           <CustomSelect
-            label="Select model"
+            label="Select image model"
             choices={["Model1", "Model2", "Model3"]}
           ></CustomSelect>
         </Grid>
@@ -39,7 +39,7 @@ export default function VariableWidthGrid() {
         </Grid>
         <Grid item xs={7}>
           <CustomSelect
-            label="Select model"
+            label="Select video model"
             choices={["Model1", "Model2", "Model3"]}
           ></CustomSelect>
         </Grid>

@@ -23,6 +23,7 @@ import {
 import { Fab } from "@mui/material";
 import MaterialUISwitch from "../../components/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
+import showImagePath from "../../utils/showImagePath";
 
 interface AccioNavbarProps {
   open: boolean;
@@ -178,6 +179,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              id="search-input"
             />
           </Search>
           <label htmlFor="upload-photo">
@@ -186,6 +188,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               id="upload-photo"
               name="upload-photo"
               type="file"
+              onChange={(e) => {
+                if (e.target.files === null) console.error("No file selected");
+                else showImagePath("search-input", e.target.files[0].name);
+              }}
             />
             <Fab color="primary" size="small" component="span" aria-label="add">
               <AddIcon />

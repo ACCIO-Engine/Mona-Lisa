@@ -76,9 +76,9 @@ const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
 
         <DialogContent sx={{ minWidth: "700px" }}>
           <Settings></Settings>
-          {options.message && (
+          {/* {options.message && (
             <DialogContentText>{options.message}</DialogContentText>
-          )}
+          )} */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
