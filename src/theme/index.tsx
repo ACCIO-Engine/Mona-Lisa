@@ -6,7 +6,7 @@ import {
 
 // Define your custom theme
 
-const theme: Theme = responsiveFontSizes(
+export const lightTheme: Theme = responsiveFontSizes(
   createTheme({
     typography: {},
     palette: {
@@ -21,4 +21,17 @@ const theme: Theme = responsiveFontSizes(
   })
 );
 
-export default theme;
+export const darkTheme: Theme = responsiveFontSizes(
+  createTheme({
+    typography: {},
+    palette: {
+      mode: "dark",
+      primary: {
+        main: "#0769AE",
+        light: "#2EBEE3",
+        dark: "#031F34",
+        contrastText: "#fff",
+      },
+    },
+  })
+);

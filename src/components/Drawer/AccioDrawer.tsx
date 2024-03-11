@@ -14,21 +14,27 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SearchIcon from "@mui/icons-material/Search";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Logo from "../../assets/ACCIO.svg";
+import LightLogo from "../../assets/LightACCIO.svg";
+import DarkLogo from "../../assets/DarkACCIO.svg";
 
 interface AccioDrawerProps {
   open: boolean;
   handleDrawerClose: () => void;
+  isLightMode: boolean;
 }
 
 const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
-  const { open, handleDrawerClose } = props;
+  const { open, handleDrawerClose, isLightMode } = props;
   const theme = useTheme();
 
   return (
     <CustomDrawer variant="permanent" open={open}>
       <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
-        <img alt="" src={Logo} width={100} height={50} />
+        {isLightMode ? (
+          <img alt="" src={LightLogo} width={100} height={50} />
+        ) : (
+          <img alt="" src={DarkLogo} width={100} height={50} />
+        )}
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "rtl" ? (
             <ChevronRightIcon />

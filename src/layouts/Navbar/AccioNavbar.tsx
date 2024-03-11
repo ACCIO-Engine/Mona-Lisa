@@ -24,17 +24,17 @@ import { Fab } from "@mui/material";
 import MaterialUISwitch from "../../components/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
-import NestedList from "../../components/NestedList";
+import NestedList from "../../components/NestedList/NestedList";
 
 interface AccioNavbarProps {
   open: boolean;
   handleDrawerOpen: () => void;
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  isLightMode: boolean;
+  toggleLightMode: () => void;
 }
 
 export default function AccioNavbar(props: AccioNavbarProps) {
-  const { open, handleDrawerOpen, isDarkMode, toggleDarkMode } = props;
+  const { open, handleDrawerOpen, isLightMode, toggleLightMode } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -203,9 +203,8 @@ export default function AccioNavbar(props: AccioNavbarProps) {
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <MaterialUISwitch
               sx={{ m: 1 }}
-              defaultChecked
-              onChange={toggleDarkMode}
-              checked={isDarkMode}
+              onChange={toggleLightMode}
+              checked={!isLightMode}
             />
             <IconButton size="large" color="inherit" onClick={handleShowDialog}>
               <SettingsIcon />

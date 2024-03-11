@@ -1,10 +1,12 @@
 import * as React from "react";
 import { NestedMenuItem } from "mui-nested-menu";
-import { MenuItem, Menu, Button, Box } from "@mui/material";
+import { MenuItem, Menu, Button, Box, Typography } from "@mui/material";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import SnippetFolderIcon from "@mui/icons-material/SnippetFolder";
 import BackupTableIcon from "@mui/icons-material/BackupTable";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import { StyledMenuItem } from "./MenuItem.styled";
+import FolderCopyIcon from "@mui/icons-material/FolderCopy";
 
 const NestedList = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -17,13 +19,19 @@ const NestedList = () => {
   };
 
   return (
-    <Box>
+    <Box marginLeft={2}>
       <Button onClick={handleClick} variant="contained">
         Search Options
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>All subfolders</MenuItem>
-        <MenuItem onClick={handleClose}>Current folder</MenuItem>
+        <StyledMenuItem onClick={handleClose}>
+          <FolderCopyIcon />
+          <Typography>All subfolders</Typography>
+        </StyledMenuItem>
+        <StyledMenuItem onClick={handleClose}>
+          <FolderOpenIcon />
+          <Typography>Current folder</Typography>
+        </StyledMenuItem>
         <NestedMenuItem
           leftIcon={<DateRangeIcon />}
           label="Date modified"
@@ -68,7 +76,7 @@ const NestedList = () => {
           parentMenuOpen={open}
           leftIcon={<BackupTableIcon />}
         >
-          {["Image", "Document", "Video"].map((value) => (
+          {["Image", "Document", "Video", "All"].map((value) => (
             <MenuItem key={value} onClick={handleClose}>
               {value}
             </MenuItem>

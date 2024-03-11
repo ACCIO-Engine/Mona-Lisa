@@ -1,4 +1,4 @@
-import theme from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import { Box, CssBaseline } from "@mui/material";
 import Navbar from "./layouts/Navbar/AccioNavbar";
@@ -19,29 +19,28 @@ function App() {
     setOpen(false);
   };
 
-  const [isDarkMode, setDarkMode] = React.useState(false);
-  const toggleDarkMode = () => {
-    setDarkMode(!isDarkMode);
+  const [isLightMode, setLightMode] = React.useState(true);
+  const toggleLightMode = () => {
+    setLightMode(!isLightMode);
   };
 
   return (
-    <ThemeProvider
-      theme={{
-        ...theme,
-        palette: { ...theme.palette, mode: isDarkMode ? "dark" : "light" },
-      }}
-    >
+    <ThemeProvider theme={isLightMode ? lightTheme : darkTheme}>
       <CssBaseline />
       <Box sx={{ display: "flex" }}>
         <DialogProvider>
           <Navbar
             open={open}
             handleDrawerOpen={handleDrawerOpen}
-            isDarkMode={isDarkMode}
-            toggleDarkMode={toggleDarkMode}
+            isLightMode={isLightMode}
+            toggleLightMode={toggleLightMode}
           />
         </DialogProvider>
-        <Drawer open={open} handleDrawerClose={handleDrawerClose} />
+        <Drawer
+          open={open}
+          handleDrawerClose={handleDrawerClose}
+          isLightMode={isLightMode}
+        />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           <Settings />
