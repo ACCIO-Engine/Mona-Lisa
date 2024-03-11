@@ -1,37 +1,40 @@
-import { useTheme } from "@mui/material/styles";
-import List from "@mui/material/List";
-import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import { CustomDrawer, DrawerHeader } from "./AccioDrawer.styled";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import SearchIcon from "@mui/icons-material/Search";
-import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
-import SettingsIcon from "@mui/icons-material/Settings";
+import React from 'react'
+import { useTheme } from '@mui/material/styles'
+import List from '@mui/material/List'
+import IconButton from '@mui/material/IconButton'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Divider from '@mui/material/Divider'
+import { CustomDrawer, DrawerHeader } from './AccioDrawer.styled'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import SearchIcon from '@mui/icons-material/Search'
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner'
+import SettingsIcon from '@mui/icons-material/Settings'
 
 interface AccioDrawerProps {
-  open: boolean;
-  handleDrawerClose: () => void;
+  open: boolean
+  handleDrawerClose: () => void
 }
 
-export default function AccioDrawer(props: AccioDrawerProps) {
-  const { open, handleDrawerClose } = props;
-  const theme = useTheme();
+export default function AccioDrawer (props: AccioDrawerProps): React.ReactElement {
+  const { open, handleDrawerClose } = props
+  const theme = useTheme()
 
   return (
     <CustomDrawer variant="permanent" open={open}>
       <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "rtl" ? (
+          {theme.direction === 'rtl'
+            ? (
             <ChevronRightIcon />
-          ) : (
+              )
+            : (
             <ChevronLeftIcon />
-          )}
+              )}
         </IconButton>
       </DrawerHeader>
       <Divider />
@@ -70,5 +73,5 @@ export default function AccioDrawer(props: AccioDrawerProps) {
         </ListItem>
       </List>
     </CustomDrawer>
-  );
+  )
 }
