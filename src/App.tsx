@@ -1,37 +1,54 @@
-import React from 'react'
-import theme from './theme'
-import { ThemeProvider } from '@emotion/react'
-import { CssBaseline } from '@mui/material'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Root from './layouts/Root/Root'
-import Home from './pages/Home/Home'
+import theme from "./theme";
+import { ThemeProvider } from "@emotion/react";
+import { Box, CssBaseline } from "@mui/material";
+import Navbar from "./layouts/Navbar/AccioNavbar";
+import Drawer from "./components/Drawer/AccioDrawer";
+import React from "react";
+import { DrawerHeader } from "./components/Drawer/AccioDrawer.styled";
+import Settings from "./layouts/Settings/Settings";
+import DialogProvider from "../src/components/Dialog/Dialog";
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Root />,
-    children: [
-      {
-        // index is true to make it the default route
-        index: true,
-        element: <Home />
-      }
-      // { path: "search", element: <Search /> },
-      // { path: "index", element: <Index /> },
-      // { path: "settings", element: <Settings /> },
-    ]
-  }
-]
-)
+function App() {
+  const [open, setOpen] = React.useState(false);
 
-function App (): React.ReactElement {
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const [isDarkMode, setDarkMode] = React.useState(false);
+  const toggleDarkMode = () => {
+    setDarkMode(!isDarkMode);
+  };
+
   return (
-
-    <ThemeProvider theme={theme}>
+    <ThemeProvider
+      theme={{
+        ...theme,
+        palette: { ...theme.palette, mode: isDarkMode ? "dark" : "light" },
+      }}
+    >
       <CssBaseline />
-      <RouterProvider router={router}/>
-        </ThemeProvider>
-  )
+      <Box sx={{ display: "flex" }}>
+        <DialogProvider>
+          <Navbar
+            open={open}
+            handleDrawerOpen={handleDrawerOpen}
+            isDarkMode={isDarkMode}
+            toggleDarkMode={toggleDarkMode}
+          />
+        </DialogProvider>
+        <Drawer open={open} handleDrawerClose={handleDrawerClose} />
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+          <Settings />
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

@@ -1,70 +1,91 @@
-import * as React from 'react'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import Badge from '@mui/material/Badge'
-import MenuItem from '@mui/material/MenuItem'
-import Menu from '@mui/material/Menu'
-import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import MailIcon from '@mui/icons-material/Mail'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import MoreIcon from '@mui/icons-material/MoreVert'
-import AddIcon from '@mui/icons-material/Add'
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AddIcon from "@mui/icons-material/Add";
 import {
   CustomAppBar,
   Search,
   SearchIconWrapper,
-  StyledInputBase
-} from './AccioNavbar.styled'
-import { Fab } from '@mui/material'
+  StyledInputBase,
+} from "./AccioNavbar.styled";
+import { Fab } from "@mui/material";
+import MaterialUISwitch from "../../components/ToggleButton.styled";
+import { useDialog } from "../../components/Dialog/Dialog";
 
 interface AccioNavbarProps {
-  open: boolean
-  handleDrawerOpen: () => void
+  open: boolean;
+  handleDrawerOpen: () => void;
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
 }
 
-const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
-  const { open, handleDrawerOpen } = props
+export default function AccioNavbar(props: AccioNavbarProps) {
+  const { open, handleDrawerOpen, isDarkMode, toggleDarkMode } = props;
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null)
-  const isMenuOpen = Boolean(anchorEl)
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+    React.useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>): void => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleProfileMenuOpen = (
+    event: React.MouseEvent<HTMLElement>
+  ): void => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleMobileMenuClose = (): void => {
-    setMobileMoreAnchorEl(null)
-  }
+    setMobileMoreAnchorEl(null);
+  };
 
   const handleMenuClose = (): void => {
-    setAnchorEl(null)
-    handleMobileMenuClose()
-  }
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>): void => {
-    setMobileMoreAnchorEl(event.currentTarget)
-  }
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
 
-  const menuId = 'primary-search-account-menu'
+  const showDialog = useDialog();
+
+  const handleShowDialog = async () => {
+    const confirmed = await showDialog({
+      title: "Custom Dialog",
+      message: "Custom message...",
+    });
+    if (confirmed) {
+      console.log("confirmed");
+    } else {
+      console.log("canceled");
+    }
+  };
+
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
+        vertical: "top",
+        horizontal: "right",
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -72,21 +93,21 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
-  )
+  );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile'
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
+        vertical: "top",
+        horizontal: "right",
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -124,7 +145,7 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
         <p>Profile</p>
       </MenuItem>
     </Menu>
-  )
+  );
 
   return (
     <>
@@ -137,7 +158,7 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' })
+              ...(open && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -146,7 +167,7 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
             Accio
           </Typography>
@@ -156,12 +177,12 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ "aria-label": "search" }}
             />
           </Search>
           <label htmlFor="upload-photo">
             <input
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               id="upload-photo"
               name="upload-photo"
               type="file"
@@ -171,7 +192,16 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
             </Fab>
           </label>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <MaterialUISwitch
+              sx={{ m: 1 }}
+              defaultChecked
+              onChange={toggleDarkMode}
+              checked={isDarkMode}
+            />
+            <IconButton size="large" color="inherit" onClick={handleShowDialog}>
+              <SettingsIcon />
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -193,7 +223,7 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -210,7 +240,5 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
       {renderMobileMenu}
       {renderMenu}
     </>
-  )
+  );
 }
-
-export default AccioNavbar
