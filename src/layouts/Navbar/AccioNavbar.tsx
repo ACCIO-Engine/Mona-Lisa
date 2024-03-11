@@ -12,7 +12,14 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import { CustomAppBar, Search, SearchIconWrapper, StyledInputBase } from './AccioNavbar.styled'
+import AddIcon from '@mui/icons-material/Add'
+import {
+  CustomAppBar,
+  Search,
+  SearchIconWrapper,
+  StyledInputBase
+} from './AccioNavbar.styled'
+import { Fab } from '@mui/material'
 
 interface AccioNavbarProps {
   open: boolean
@@ -123,7 +130,7 @@ export default function AccioNavbar (props: AccioNavbarProps): React.ReactElemen
     <Box sx={{ flexGrow: 1 }}>
       <CustomAppBar position="fixed" open={open}>
         <Toolbar>
-        <IconButton
+          <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -141,7 +148,7 @@ export default function AccioNavbar (props: AccioNavbarProps): React.ReactElemen
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            ACCiO
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -152,13 +159,19 @@ export default function AccioNavbar (props: AccioNavbarProps): React.ReactElemen
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          <label htmlFor="upload-photo">
+            <input
+              style={{ display: 'none' }}
+              id="upload-photo"
+              name="upload-photo"
+              type="file"
+            />
+            <Fab color="primary" size="small" component="span" aria-label="add">
+              <AddIcon />
+            </Fab>
+          </label>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
