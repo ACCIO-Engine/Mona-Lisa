@@ -22,8 +22,8 @@ const Root: React.FC = () => {
         <AccioDrawer open={open} handleDrawerClose={handleDrawerClose} />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
+          <Outlet />
         </Box>
-        <Outlet />
       </Box>
   )
 }

@@ -30,8 +30,6 @@ function App (): React.ReactElement {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <RouterProvider router={router}/>
-      {/* <PermanentDrawerLeft /> */}
-      {/* <MiniDrawer /> */}
         </ThemeProvider>
   )
 }

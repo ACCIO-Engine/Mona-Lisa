@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference types="vite-plugin-electron/electron-env" />
 
 declare namespace NodeJS {
@@ -23,5 +24,6 @@ declare namespace NodeJS {
 
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
   ipcRenderer: import('electron').IpcRenderer
 }

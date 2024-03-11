@@ -127,7 +127,7 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
   )
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <CustomAppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -209,7 +209,7 @@ const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
       </CustomAppBar>
       {renderMobileMenu}
       {renderMenu}
-    </Box>
+    </>
   )
 }
 
