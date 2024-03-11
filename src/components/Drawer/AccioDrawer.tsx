@@ -20,7 +20,7 @@ interface AccioDrawerProps {
   handleDrawerClose: () => void
 }
 
-export default function AccioDrawer (props: AccioDrawerProps): React.ReactElement {
+const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
   const { open, handleDrawerClose } = props
   const theme = useTheme()
 
@@ -75,3 +75,5 @@ export default function AccioDrawer (props: AccioDrawerProps): React.ReactElemen
     </CustomDrawer>
   )
 }
+
+export default AccioDrawer

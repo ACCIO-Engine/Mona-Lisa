@@ -5,7 +5,7 @@ import AccioDrawer from '../../components/Drawer/AccioDrawer'
 import { DrawerHeader } from '../../components/Drawer/AccioDrawer.styled'
 import { Outlet } from 'react-router-dom'
 
-export default function Root (): React.ReactElement {
+const Root: React.FC = () => {
   const [open, setOpen] = React.useState(false)
 
   const handleDrawerOpen = (): void => {
@@ -17,13 +17,15 @@ export default function Root (): React.ReactElement {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AccioNavbar open={open} handleDrawerOpen={handleDrawerOpen} />
-      <AccioDrawer open={open} handleDrawerClose={handleDrawerClose} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+      <Box sx={{ display: 'flex' }}>
+        <AccioNavbar open={open} handleDrawerOpen={handleDrawerOpen} />
+        <AccioDrawer open={open} handleDrawerClose={handleDrawerClose} />
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+        </Box>
+        <Outlet />
       </Box>
-      <Outlet />
-    </Box>
   )
 }
+
+export default Root

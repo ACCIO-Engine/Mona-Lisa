@@ -26,7 +26,7 @@ interface AccioNavbarProps {
   handleDrawerOpen: () => void
 }
 
-export default function AccioNavbar (props: AccioNavbarProps): React.ReactElement {
+const AccioNavbar: React.FC<AccioNavbarProps> = (props: AccioNavbarProps) => {
   const { open, handleDrawerOpen } = props
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -148,7 +148,7 @@ export default function AccioNavbar (props: AccioNavbarProps): React.ReactElemen
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            ACCiO
+            Accio
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -212,3 +212,5 @@ export default function AccioNavbar (props: AccioNavbarProps): React.ReactElemen
     </Box>
   )
 }
+
+export default AccioNavbar
