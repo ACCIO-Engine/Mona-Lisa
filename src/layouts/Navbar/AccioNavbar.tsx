@@ -24,6 +24,7 @@ import { Fab } from "@mui/material";
 import MaterialUISwitch from "../../components/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
+import NestedList from "../../components/NestedList";
 
 interface AccioNavbarProps {
   open: boolean;
@@ -197,6 +198,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               <AddIcon />
             </Fab>
           </label>
+          <NestedList></NestedList>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <MaterialUISwitch

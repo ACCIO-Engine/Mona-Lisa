@@ -23,6 +23,7 @@ const NestedList = () => {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose}>All subfolders</MenuItem>
+        <MenuItem onClick={handleClose}>Current folder</MenuItem>
         <NestedMenuItem
           leftIcon={<DateRangeIcon />}
           label="Date modified"
