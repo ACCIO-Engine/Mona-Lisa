@@ -1,5 +1,4 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -13,14 +12,20 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Search, SearchIconWrapper, StyledInputBase } from './Navbar.styled';
+import { CustomAppBar, Search, SearchIconWrapper, StyledInputBase } from './AccioNavbar.styled';
+
+interface AccioNavbarProps {
+  open: boolean;
+  handleDrawerOpen: () => void;
+}
 
 
-export default function Navbar() {
+export default function AccioNavbar(props: AccioNavbarProps) {
+  const { open, handleDrawerOpen } = props;
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -117,14 +122,17 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <CustomAppBar position="fixed" open={open}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
+        <IconButton
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: 5,
+              ...(open && { display: 'none' }),
+            }}
           >
             <MenuIcon />
           </IconButton>
@@ -186,7 +194,7 @@ export default function Navbar() {
             </IconButton>
           </Box>
         </Toolbar>
-      </AppBar>
+      </CustomAppBar>
       {renderMobileMenu}
       {renderMenu}
     </Box>
