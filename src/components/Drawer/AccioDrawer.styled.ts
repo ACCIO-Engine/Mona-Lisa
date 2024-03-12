@@ -57,6 +57,7 @@ export const StyledList = styled(List)({
   // selected and (selected + hover) states
   "&& .Mui-selected, && .Mui-selected:hover": {
     backgroundColor: "red",
+    borderRight: "5px solid blue",
     "&, & .MuiListItemIcon-root": {
       color: "pink",
     },
