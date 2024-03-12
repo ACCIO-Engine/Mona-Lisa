@@ -9,7 +9,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import { CustomDrawer, DrawerHeader } from "./AccioDrawer.styled";
+import { CustomDrawer, DrawerHeader, StyledList } from "./AccioDrawer.styled";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SearchIcon from "@mui/icons-material/Search";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
@@ -24,6 +24,12 @@ interface AccioDrawerProps {
 }
 
 const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const buttonProps = (value: number) => ({
+    selected: selectedIndex === value,
+    onClick: () => setSelectedIndex(value),
+  });
+
   const { open, handleDrawerClose, isLightMode } = props;
   const theme = useTheme();
 
@@ -44,9 +50,9 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
+      <StyledList>
         <ListItem key="Dashboard" disablePadding>
-          <ListItemButton>
+          <ListItemButton {...buttonProps(0)}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
@@ -54,7 +60,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem key="Search Mode" disablePadding>
-          <ListItemButton>
+          <ListItemButton {...buttonProps(1)}>
             <ListItemIcon>
               <SearchIcon />
             </ListItemIcon>
@@ -62,7 +68,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem key="Indexing Mode" disablePadding>
-          <ListItemButton>
+          <ListItemButton {...buttonProps(2)}>
             <ListItemIcon>
               <DocumentScannerIcon />
             </ListItemIcon>
@@ -70,14 +76,14 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem key="Settings" disablePadding>
-          <ListItemButton>
+          <ListItemButton {...buttonProps(3)}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Settings" />
           </ListItemButton>
         </ListItem>
-      </List>
+      </StyledList>
     </CustomDrawer>
   );
 };

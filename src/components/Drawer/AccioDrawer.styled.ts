@@ -1,6 +1,7 @@
 import { type CSSObject, type Theme } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import styled from "@mui/material/styles/styled";
+import { List } from "@mui/material";
 
 export const drawerWidth = 240;
 
@@ -51,3 +52,20 @@ export const CustomDrawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
+
+export const StyledList = styled(List)({
+  // selected and (selected + hover) states
+  "&& .Mui-selected, && .Mui-selected:hover": {
+    backgroundColor: "red",
+    "&, & .MuiListItemIcon-root": {
+      color: "pink",
+    },
+  },
+  // hover states
+  "& .MuiListItemButton-root:hover": {
+    backgroundColor: "orange",
+    "&, & .MuiListItemIcon-root": {
+      color: "yellow",
+    },
+  },
+});
