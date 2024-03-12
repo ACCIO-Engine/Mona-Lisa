@@ -53,7 +53,7 @@ export const CustomDrawer = styled(MuiDrawer, {
   }),
 }));
 
-export const StyledList = styled(List)({
+export const StyledList = styled(List)(({ theme }) => ({
   // selected and (selected + hover) states
   "&& .Mui-selected, && .Mui-selected:hover": {
     backgroundColor: "red",
@@ -69,4 +69,4 @@ export const StyledList = styled(List)({
       color: "yellow",
     },
   },
-});
+}));

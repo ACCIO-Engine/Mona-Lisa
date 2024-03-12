@@ -74,7 +74,7 @@ const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
           <CloseIcon />
         </IconButton>
 
-        <DialogContent sx={{ width: "700px" }}>
+        <DialogContent sx={{ width: "500px" }}>
           <Settings></Settings>
           {/* {options.message && (
             <DialogContentText>{options.message}</DialogContentText>

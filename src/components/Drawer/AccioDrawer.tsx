@@ -15,6 +15,7 @@ import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LightLogo from "../../assets/LightACCIO.svg";
 import DarkLogo from "../../assets/DarkACCIO.svg";
+import { Link } from "react-router-dom";
 
 interface AccioDrawerProps {
   open: boolean;
@@ -58,30 +59,39 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
         </ListItem>
-        <ListItem key="Search Mode" disablePadding>
-          <ListItemButton {...buttonProps(1)}>
-            <ListItemIcon>
-              <SearchIcon />
-            </ListItemIcon>
-            <ListItemText primary="Search Mode" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem key="Indexing Mode" disablePadding>
-          <ListItemButton {...buttonProps(2)}>
-            <ListItemIcon>
-              <DocumentScannerIcon />
-            </ListItemIcon>
-            <ListItemText primary="Indexing Mode" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem key="Settings" disablePadding>
-          <ListItemButton {...buttonProps(3)}>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItemButton>
-        </ListItem>
+        <Link to="/search" style={{ color: "inherit", textDecoration: "none" }}>
+          <ListItem key="Search Mode" disablePadding>
+            <ListItemButton {...buttonProps(1)}>
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Search Mode" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link to="/index" style={{ color: "inherit", textDecoration: "none" }}>
+          <ListItem key="Indexing Mode" disablePadding>
+            <ListItemButton {...buttonProps(2)}>
+              <ListItemIcon>
+                <DocumentScannerIcon />
+              </ListItemIcon>
+              <ListItemText primary="Indexing Mode" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link
+          to="/settings"
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          <ListItem key="Settings" disablePadding>
+            <ListItemButton {...buttonProps(3)}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
       </StyledList>
     </CustomDrawer>
   );
