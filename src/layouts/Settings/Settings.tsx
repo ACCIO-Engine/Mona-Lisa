@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import CustomSelect from "../../components/Select";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import InputDirectory from "../../components/InputDirectory";
 
 export default function VariableWidthGrid() {
   return (
@@ -20,6 +21,12 @@ export default function VariableWidthGrid() {
             label="mode"
             choices={["Classic", "Deep", "Mixed"]}
           ></CustomSelect>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography>Storage DB path</Typography>
+        </Grid>
+        <Grid item xs={7}>
+          <InputDirectory />
         </Grid>
         <Grid item xs={3}>
           <Typography>Select text model</Typography>
