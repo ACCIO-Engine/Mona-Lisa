@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 import CustomSelect from "../../components/Select";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Button } from "@mui/material";
 
 export default function VariableWidthGrid() {
   return (

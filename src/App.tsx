@@ -7,6 +7,7 @@ import React from "react";
 import { DrawerHeader } from "./components/Drawer/AccioDrawer.styled";
 import Settings from "./layouts/Settings/Settings";
 import DialogProvider from "../src/components/Dialog/Dialog";
+import Index from "./pages/Index/Index";
 
 function App() {
   const [open, setOpen] = React.useState(false);
@@ -43,7 +44,7 @@ function App() {
         />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
-          <Settings />
+          <Index />
         </Box>
       </Box>
     </ThemeProvider>
