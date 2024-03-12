@@ -50,7 +50,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <StyledList>
+      <StyledList isLightMode={isLightMode}>
         <ListItem key="Dashboard" disablePadding>
           <ListItemButton {...buttonProps(0)}>
             <ListItemIcon>

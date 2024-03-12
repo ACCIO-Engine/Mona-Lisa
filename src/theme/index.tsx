@@ -4,8 +4,6 @@ import {
   type Theme,
 } from "@mui/material/styles";
 
-// Define your custom theme
-
 export const lightTheme: Theme = responsiveFontSizes(
   createTheme({
     typography: {},

@@ -53,20 +53,24 @@ export const CustomDrawer = styled(MuiDrawer, {
   }),
 }));
 
-export const StyledList = styled(List)(({ theme }) => ({
+type ListProps = {
+  isLightMode: boolean;
+};
+
+export const StyledList = styled(List)((props: ListProps) => ({
   // selected and (selected + hover) states
   "&& .Mui-selected, && .Mui-selected:hover": {
-    backgroundColor: "red",
+    backgroundColor: props.isLightMode ? "#EBF5FF" : "#1f262e",
     borderRight: "5px solid blue",
     "&, & .MuiListItemIcon-root": {
-      color: "pink",
+      color: props.isLightMode ? "#0A6CCE" : "#66b2ff",
     },
   },
   // hover states
   "& .MuiListItemButton-root:hover": {
-    backgroundColor: "orange",
+    backgroundColor: props.isLightMode ? "#f3f6f9" : "rgba(31, 38, 46, 0.4)",
     "&, & .MuiListItemIcon-root": {
-      color: "yellow",
+      color: props.isLightMode ? "#0b0d0e" : "#ffffff",
     },
   },
 }));
