@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons";
+import { SnackbarProvider } from "../../contexts/SnackbarContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,11 +61,15 @@ export default function BasicTabs() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <IndexButtons />
-        <PathsGrid />
+        <SnackbarProvider>
+          <PathsGrid />
+        </SnackbarProvider>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <IndexButtons />
-        <PathsGrid />
+        <SnackbarProvider>
+          <PathsGrid />
+        </SnackbarProvider>
       </CustomTabPanel>
     </Box>
   );
