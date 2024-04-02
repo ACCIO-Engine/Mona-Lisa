@@ -1,11 +1,9 @@
-import React from 'react'
-import ResultsGrid from '../../layouts/ResultsGrid/ResultsGrid'
+import React from "react";
+import ResultsGrid from "../../layouts/ResultsGrid/ResultsGrid";
 
 const Home: React.FC = () => {
-  return (
-    <ResultsGrid />
-  )
-}
+  return <ResultsGrid />;
+};
 // {/* <ResultsGrid /> */}
 
-export default Home
+export default Home;
