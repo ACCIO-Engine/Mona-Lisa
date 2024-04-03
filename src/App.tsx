@@ -6,8 +6,9 @@ import Settings from "./layouts/Settings/Settings";
 import Index from "./pages/Index/Index";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./layouts/Root/Root";
-import Home from "./pages/Home/Home";
+import Results from "./pages/Results/Results";
 import { useAppState } from "./contexts/AppContext";
+import Home from "./pages/Home/Home";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       { path: "settings", element: <Settings /> },
-      { path: "search", element: <Home /> },
+      { path: "search", element: <Results /> },
       { path: "index", element: <Index /> },
     ],
   },
