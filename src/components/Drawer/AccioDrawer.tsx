@@ -59,7 +59,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
         </ListItem>
-        <Link to="/search" style={{ color: "inherit", textDecoration: "none" }}>
+        <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
           <ListItem key="Search Mode" disablePadding>
             <ListItemButton {...buttonProps(1)}>
               <ListItemIcon>

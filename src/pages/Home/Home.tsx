@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import { HomeContainer, FieldContainer, LogoContainer } from "./Home.styled";
-import LargeSearch from "../../components/TextFields/LargeSearch";
+import { HomeContainer, LogoContainer } from "./Home.styled";
 import NameOnlyLogo from "../../assets/name-only-logo.svg?react";
+import SearchControls from "../../layouts/Home/SearchControls/SearchControls";
 
 export default function Home() {
   return (
@@ -10,9 +10,7 @@ export default function Home() {
         <LogoContainer>
           <NameOnlyLogo height={200} />
         </LogoContainer>
-        <FieldContainer>
-          <LargeSearch />
-        </FieldContainer>
+        <SearchControls />
       </HomeContainer>
     </Box>
   );
