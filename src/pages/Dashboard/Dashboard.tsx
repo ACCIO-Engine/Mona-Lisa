@@ -8,6 +8,8 @@ const Dashboard: React.FC = () => {
         {/* <button onClick={handleClick}>run</button> */}
         {/* <button onClick={handleStop}>stop</button> */}
         <DashboardAccordion title='hedwig'/>
+        <DashboardAccordion title='nanobert'/>
+
         {/* <div style={{ whiteSpace: 'pre-wrap' }}>
             {logs}
         </div> */}

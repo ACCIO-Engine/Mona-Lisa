@@ -63,12 +63,13 @@ app.on('activate', () => {
 void app.whenReady().then(createWindow)
 
 process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
+process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
 
-function runShellCommand (command: string): any {
+function runShellCommand (command: string, cwd: string): any {
   const child = spawn(command, {
     // stdio: 'inherit',
     shell: true,
-    cwd: process.env.HEDWIG,
+    cwd: cwd,
     killSignal: 'SIGINT'
   })
   return child
@@ -94,10 +95,18 @@ module.exports = { runShellCommand, stopShellCommand }
 
 // IPC
 const runHedwig = (): any => {
-  return runShellCommand('python server.py')
+  return runShellCommand('python server.py', process.env.HEDWIG)
+}
+
+const runNanoBert = (): any => {
+  return runShellCommand('python server.py', process.env.NANOBERT)
 }
 
 const stopHedwig = (child: any): void => {
+  stopShellCommand(child)
+}
+
+const stopNanoBert = (child: any): void => {
   stopShellCommand(child)
 }
 
@@ -128,3 +137,5 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
 }
 
 connectProcess('hedwig', runHedwig, stopHedwig)
+
+connectProcess('nanobert', runNanoBert, stopNanoBert)

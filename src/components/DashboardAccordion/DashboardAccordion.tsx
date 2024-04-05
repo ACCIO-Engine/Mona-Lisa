@@ -75,7 +75,7 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
           id="panel1bh-header"
         >
           <AccordionHeader>
-            <AccordionTitle>Hedwig</AccordionTitle>
+            <AccordionTitle>{title}</AccordionTitle>
             {!isStarted
               ? (
               <StartButton
