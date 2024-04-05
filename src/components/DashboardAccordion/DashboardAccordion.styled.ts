@@ -9,7 +9,9 @@ export const LogsContainer = styled(Box)(({ theme }) => ({
 export const LogsTypography = styled(Typography)(({ theme }) => ({
   whiteSpace: 'pre-wrap',
   wordBreak: 'break-all',
-  fontWeight: 400
+  fontWeight: 400,
+  maxHeight: 400,
+  overflowY: 'auto'
 }))
 
 export const AccordionTitle = styled(Typography)(({ theme }) => ({

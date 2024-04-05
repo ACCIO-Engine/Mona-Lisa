@@ -37,11 +37,13 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
     setLogs('') // clear the logs
     ipcRenderer.send(startChannel)
     setIsStarted(true)
+    setExpanded(true)
   }
   const handleStop = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation()
     ipcRenderer.send(stopChannel)
     setIsStarted(false)
+    setExpanded(false)
   }
 
   const handleChange =
@@ -51,12 +53,8 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
       setExpanded(isExpanded)
     }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    console.log('adham')
-  }
-
   useEffect(() => {
-    ipcRenderer.on(dataChannel, (event, arg) => {
+    ipcRenderer.on(dataChannel, (event: any, arg: any) => {
       console.log(event)
       // concatenate the logs
       setLogs((logs) => `${logs}${arg}`)
@@ -99,11 +97,11 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
                 )}
           </AccordionHeader>
         </AccordionSummary>
-        <LogsContainer>
-          <AccordionDetails>
+        <AccordionDetails>
+          <LogsContainer>
             <LogsTypography>{logs}</LogsTypography>
-          </AccordionDetails>
-        </LogsContainer>
+          </LogsContainer>
+        </AccordionDetails>
       </Accordion>
     </div>
   )

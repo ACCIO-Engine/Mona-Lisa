@@ -64,12 +64,13 @@ void app.whenReady().then(createWindow)
 
 process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
+process.env.CHROMADB = path.join(__dirname, '../../Octopus')
 
-function runShellCommand (command: string, cwd: string): any {
+function runShellCommand (command: string, cwd: string | undefined): any {
   const child = spawn(command, {
     // stdio: 'inherit',
     shell: true,
-    cwd: cwd,
+    cwd,
     killSignal: 'SIGINT'
   })
   return child
@@ -85,13 +86,7 @@ function stopShellCommand (child: any): void {
   }
 }
 
-// setTimeout(() => {
-//   stopShellCommand(test)
-//   console.log('Command stopped')
-// }, 10000)
-
 module.exports = { runShellCommand, stopShellCommand }
-// module.exports = stopShellCommand
 
 // IPC
 const runHedwig = (): any => {
@@ -102,11 +97,19 @@ const runNanoBert = (): any => {
   return runShellCommand('python server.py', process.env.NANOBERT)
 }
 
+const runChromaDB = (): any => {
+  return runShellCommand('chroma run --path AccioVecDB --port 8006', process.env.CHROMADB)
+}
+
 const stopHedwig = (child: any): void => {
   stopShellCommand(child)
 }
 
 const stopNanoBert = (child: any): void => {
+  stopShellCommand(child)
+}
+
+const stopChromaDB = (child: any): void => {
   stopShellCommand(child)
 }
 
@@ -139,3 +142,5 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
 connectProcess('hedwig', runHedwig, stopHedwig)
 
 connectProcess('nanobert', runNanoBert, stopNanoBert)
+
+connectProcess('chromadb', runChromaDB, stopChromaDB)
