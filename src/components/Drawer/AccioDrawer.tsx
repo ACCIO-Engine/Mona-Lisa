@@ -16,6 +16,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LightLogo from "../../assets/LightACCIO.svg";
 import DarkLogo from "../../assets/DarkACCIO.svg";
 import { Link } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import routes from "../../routes/routes";
 
 interface AccioDrawerProps {
   open: boolean;
@@ -59,9 +61,25 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
         </ListItem>
-        <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
-          <ListItem key="Search Mode" disablePadding>
+        <Link
+          to={routes.home}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          <ListItem key="Home Search Mode" disablePadding>
             <ListItemButton {...buttonProps(1)}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home Search Mode" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link
+          to={routes.search}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          <ListItem key="Search Mode" disablePadding>
+            <ListItemButton {...buttonProps(2)}>
               <ListItemIcon>
                 <SearchIcon />
               </ListItemIcon>
@@ -69,9 +87,12 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link to="/index" style={{ color: "inherit", textDecoration: "none" }}>
+        <Link
+          to={routes.index}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
           <ListItem key="Indexing Mode" disablePadding>
-            <ListItemButton {...buttonProps(2)}>
+            <ListItemButton {...buttonProps(3)}>
               <ListItemIcon>
                 <DocumentScannerIcon />
               </ListItemIcon>
@@ -80,11 +101,11 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
           </ListItem>
         </Link>
         <Link
-          to="/settings"
+          to={routes.settings}
           style={{ color: "inherit", textDecoration: "none" }}
         >
           <ListItem key="Settings" disablePadding>
-            <ListItemButton {...buttonProps(3)}>
+            <ListItemButton {...buttonProps(4)}>
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>

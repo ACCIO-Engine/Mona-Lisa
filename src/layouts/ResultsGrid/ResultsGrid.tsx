@@ -2,28 +2,32 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ResultCard from "../../components/ResultCard/ResultCard";
-import { useQuery } from "@tanstack/react-query";
-import { searchImage } from "../../api/services";
 import { useSearchParams } from "react-router-dom";
+import { useSearchImage } from "../../application";
 
 const ResultsGrid: React.FC = () => {
   const [searchParams] = useSearchParams();
-  console.log(searchParams, searchParams.get("query"));
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ["search"],
-    queryFn: () => searchImage(searchParams.get("query") as string),
-  });
-  console.log(data, isError, isLoading);
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const { files, isError, isLoading, isSuccess, error, status } =
+    useSearchImage(searchParams.get("query") || "");
+  console.log(files, isError, isLoading, isSuccess, error, status);
   return (
     <Box sx={{ width: "100%" }}>
-      <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {arr.map((i) => (
-          <Grid item md={2} xs={4} key={i}>
-            <ResultCard />
-          </Grid>
-        ))}
-      </Grid>
+      {files && (
+        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          {files.map(
+            (file: {
+              path: string;
+              name: string;
+              score: number;
+              pages: number[];
+            }) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={file.path}>
+                <ResultCard file={file} />
+              </Grid>
+            )
+          )}
+        </Grid>
+      )}
     </Box>
   );
 };

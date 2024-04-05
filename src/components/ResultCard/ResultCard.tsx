@@ -1,4 +1,3 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -9,7 +8,16 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
-const ResultCard: React.FC = () => {
+const ResultCard = ({
+  file,
+}: {
+  file: {
+    path: string;
+    name: string;
+    score: number;
+    pages: number[];
+  };
+}) => {
   return (
     <Card
       sx={{
@@ -30,7 +38,7 @@ const ResultCard: React.FC = () => {
         }}
       >
         <Typography gutterBottom variant="h5" component="div">
-          File Name
+          {file.name}
         </Typography>
       </CardContent>
       <CardActions
