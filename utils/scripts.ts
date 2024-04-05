@@ -11,22 +11,10 @@ function runShellCommand (command: string): any {
     cwd: process.env.HEDWIG,
     killSignal: 'SIGINT'
   })
-
-  child.stdout.on('data', (data: any) => {
-    console.log(`${data}`)
-  })
-
-  child.stderr.on('data', (data: any) => {
-    console.error(`${data}`)
-  })
-
-  child.on('close', (code: number) => {
-    console.log(`child process exited with code ${code}`)
-  })
   return child
 }
 
-const test = runShellCommand('python server.py')
+// const test = runShellCommand('python server.py')
 
 function stopShellCommand (child: any): void {
   console.log('Stopping the command')
@@ -36,9 +24,10 @@ function stopShellCommand (child: any): void {
   }
 }
 
-setTimeout(() => {
-  stopShellCommand(test)
-  console.log('Command stopped')
-}, 10000)
+// setTimeout(() => {
+//   stopShellCommand(test)
+//   console.log('Command stopped')
+// }, 10000)
 
-module.exports = runShellCommand
+module.exports = { runShellCommand, stopShellCommand }
+// module.exports = stopShellCommand

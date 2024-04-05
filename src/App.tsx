@@ -1,40 +1,42 @@
-import { lightTheme, darkTheme } from "./theme";
-import { ThemeProvider } from "@emotion/react";
-import { CssBaseline } from "@mui/material";
-import React from "react";
-import Settings from "./layouts/Settings/Settings";
-import Index from "./pages/Index/Index";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Root from "./layouts/Root/Root";
-import Home from "./pages/Home/Home";
-import { useAppState } from "./contexts/AppContext";
+import { lightTheme, darkTheme } from './theme'
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline } from '@mui/material'
+import React from 'react'
+import Settings from './layouts/Settings/Settings'
+import Index from './pages/Index/Index'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Root from './layouts/Root/Root'
+import Home from './pages/Home/Home'
+import { useAppState } from './contexts/AppContext'
+import Dashboard from './pages/Dashboard/Dashboard'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Root />,
     children: [
       {
         // index is true to make it the default route
         index: true,
-        element: <Home />,
+        element: <Home />
       },
-      { path: "settings", element: <Settings /> },
-      { path: "search", element: <Home /> },
-      { path: "index", element: <Index /> },
-    ],
-  },
-]);
+      { path: 'settings', element: <Settings /> },
+      { path: 'search', element: <Home /> },
+      { path: 'index', element: <Index /> },
+      { path: 'dashboard', element: <Dashboard /> }
+    ]
+  }
+])
 
-function App(): React.ReactElement {
-  const { isLightMode } = useAppState();
+const App: React.FC = () => {
+  const { isLightMode } = useAppState()
 
   return (
     <ThemeProvider theme={isLightMode ? lightTheme : darkTheme}>
       <CssBaseline />
       <RouterProvider router={router} />
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App

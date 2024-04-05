@@ -1,5 +1,7 @@
-import { app, BrowserWindow } from 'electron'
+/* eslint-disable @typescript-eslint/no-var-requires */
+import { app, BrowserWindow, ipcMain as ipc } from 'electron'
 import path from 'node:path'
+import { spawn } from 'node:child_process'
 
 // The built directory structure
 //
@@ -18,6 +20,7 @@ let win: BrowserWindow | null
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
 
 function createWindow (): void {
+  console.log('Creating window')
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'icon.png'),
     autoHideMenuBar: true,
@@ -58,3 +61,62 @@ app.on('activate', () => {
 })
 
 void app.whenReady().then(createWindow)
+
+process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
+
+function runShellCommand (command: string): any {
+  const child = spawn(command, {
+    // stdio: 'inherit',
+    shell: true,
+    cwd: process.env.HEDWIG,
+    killSignal: 'SIGINT'
+  })
+  return child
+}
+
+// const test = runShellCommand('python server.py')
+
+function stopShellCommand (child: any): void {
+  console.log('Stopping the command')
+  if (child != null) {
+    console.log('Killing the child process')
+    spawn('taskkill', ['/pid', child.pid, '/f', '/t'])
+  }
+}
+
+// setTimeout(() => {
+//   stopShellCommand(test)
+//   console.log('Command stopped')
+// }, 10000)
+
+module.exports = { runShellCommand, stopShellCommand }
+// module.exports = stopShellCommand
+
+// IPC
+let child: any
+ipc.on('test', (event) => {
+  console.log('Test event received')
+  child = runShellCommand('python server.py')
+  child.stdout.on('data', (data: any) => {
+    console.log(`${data}`)
+    const str = `${data}`
+    event.reply('test-reply', str)
+  })
+
+  child.stderr.on('data', (data: any) => {
+    console.log(`${data}`)
+    const str = `${data}`
+    event.reply('test-reply', str)
+  })
+
+  child.on('close', (code: number) => {
+    console.log(`child process exited with code ${code}`)
+    event.reply('test-reply', `child process exited with code ${code}`)
+  })
+})
+
+ipc.on('stop', (event) => {
+  console.log('Stop event received')
+  stopShellCommand(child)
+  event.reply('test-reply', 'Command stopped')
+})
