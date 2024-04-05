@@ -23,5 +23,9 @@ export const AccordionHeader = styled(Box)(({ theme }) => ({
 }))
 
 export const StartButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.success.main,
+  color: theme.palette.success.main
+}))
+
+export const StopButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.error.main
 }))

@@ -4,12 +4,14 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import StopIcon from '@mui/icons-material/Stop'
 import {
   AccordionHeader,
   AccordionTitle,
   LogsContainer,
   LogsTypography,
-  StartButton
+  StartButton,
+  StopButton
 } from './DashboardAccordion.styled'
 
 interface DashboardAccordionProps {
@@ -21,6 +23,7 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
 ) => {
   const [expanded, setExpanded] = React.useState<boolean>(false)
   const [logs, setLogs] = useState('')
+  const [isStarted, setIsStarted] = useState(false)
 
   const { title } = props
 
@@ -31,11 +34,14 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
 
   const handleStart = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation()
+    setLogs('') // clear the logs
     ipcRenderer.send(startChannel)
+    setIsStarted(true)
   }
   const handleStop = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation()
     ipcRenderer.send(stopChannel)
+    setIsStarted(false)
   }
 
   const handleChange =
@@ -70,9 +76,27 @@ const DashboardAccordion: React.FC<DashboardAccordionProps> = (
         >
           <AccordionHeader>
             <AccordionTitle>Hedwig</AccordionTitle>
-            <StartButton aria-label="run" disableFocusRipple={true} disableRipple={true}>
-              <PlayArrowIcon />
-            </StartButton>
+            {!isStarted
+              ? (
+              <StartButton
+                aria-label="run"
+                disableFocusRipple={true}
+                disableRipple={true}
+                onClick={handleStart}
+              >
+                <PlayArrowIcon />
+              </StartButton>
+                )
+              : (
+              <StopButton
+                aria-label="stop"
+                disableFocusRipple={true}
+                disableRipple={true}
+                onClick={handleStop}
+              >
+                <StopIcon />
+              </StopButton>
+                )}
           </AccordionHeader>
         </AccordionSummary>
         <LogsContainer>
