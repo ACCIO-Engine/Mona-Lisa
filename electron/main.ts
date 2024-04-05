@@ -93,30 +93,38 @@ module.exports = { runShellCommand, stopShellCommand }
 // module.exports = stopShellCommand
 
 // IPC
-let child: any
-ipc.on('test', (event) => {
-  console.log('Test event received')
-  child = runShellCommand('python server.py')
-  child.stdout.on('data', (data: any) => {
-    console.log(`${data}`)
-    const str = `${data}`
-    event.reply('test-reply', str)
-  })
+const runHedwig = (): any => {
+  return runShellCommand('python server.py')
+}
 
-  child.stderr.on('data', (data: any) => {
-    console.log(`${data}`)
-    const str = `${data}`
-    event.reply('test-reply', str)
-  })
-
-  child.on('close', (code: number) => {
-    console.log(`child process exited with code ${code}`)
-    event.reply('test-reply', `child process exited with code ${code}`)
-  })
-})
-
-ipc.on('stop', (event) => {
-  console.log('Stop event received')
+const stopHedwig = (child: any): void => {
   stopShellCommand(child)
-  event.reply('test-reply', 'Command stopped')
-})
+}
+
+const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (child: any) => void): void => {
+  ipc.on(`${eventName}-start`, (event) => {
+    const child = runProcess()
+    child.stdout.on('data', (data: any) => {
+      console.log(`${data}`)
+      event.reply(`${eventName}-data`, `${data}`)
+    })
+
+    child.stderr.on('data', (data: any) => {
+      console.log(`${data}`)
+      event.reply(`${eventName}-data`, `${data}`)
+    })
+
+    child.on('close', (code: number) => {
+      console.log(`child process exited with code ${code}`)
+      event.reply(`${eventName}-data`, `child process exited with code ${code}`)
+    })
+
+    ipc.on(`${eventName}-stop`, () => {
+      console.log('Stop event received')
+      stopProcess(child)
+      // event.reply(`${eventName}-data`, 'Command stopped')
+    })
+  })
+}
+
+connectProcess('hedwig', runHedwig, stopHedwig)
