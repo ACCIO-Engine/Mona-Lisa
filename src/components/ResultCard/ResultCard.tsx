@@ -1,13 +1,13 @@
-import * as React from 'react'
-import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import Typography from '@mui/material/Typography'
-import { IconButton } from '@mui/material'
-import FolderOpenIcon from '@mui/icons-material/FolderOpen'
-import FileOpenIcon from '@mui/icons-material/FileOpen'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const ResultCard: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const ResultCard: React.FC = () => {
       sx={{
         maxWidth: 345,
         maxHeight: 300,
-        p: 2
+        p: 2,
       }}
     >
       <CardMedia
@@ -26,7 +26,7 @@ const ResultCard: React.FC = () => {
       />
       <CardContent
         sx={{
-          p: 0
+          p: 0,
         }}
       >
         <Typography gutterBottom variant="h5" component="div">
@@ -36,21 +36,21 @@ const ResultCard: React.FC = () => {
       <CardActions
         sx={{
           p: 0,
-          width: '100%'
+          width: "100%",
         }}
       >
         <IconButton color="primary">
-            <ContentCopyIcon />
-          </IconButton>
-          <IconButton color="primary">
-            <FileOpenIcon />
-          </IconButton>
-          <IconButton color="primary">
-            <FolderOpenIcon />
-          </IconButton>
+          <ContentCopyIcon />
+        </IconButton>
+        <IconButton color="primary">
+          <FileOpenIcon />
+        </IconButton>
+        <IconButton color="primary">
+          <FolderOpenIcon />
+        </IconButton>
       </CardActions>
     </Card>
-  )
-}
+  );
+};
 
-export default ResultCard
+export default ResultCard;

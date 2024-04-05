@@ -18,7 +18,7 @@ export default function LargeSearch({
   onSearch,
   onChooseMic,
 }: {
-  onChooseImage: () => void;
+  onChooseImage: (image: string) => void;
   onSearch: () => void;
   onChooseMic: () => void;
 }) {
@@ -59,7 +59,8 @@ export default function LargeSearch({
           accept="image/*"
           type="file"
           onChange={(e) => {
-            console.log(e.target.files);
+            console.log(e.target.files, e.target.files![0], e.target.files![0].path);
+            onChooseImage(e.target.files![0].path);
           }}
         />
       </IconButton>

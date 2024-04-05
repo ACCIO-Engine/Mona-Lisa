@@ -9,7 +9,9 @@ import Root from "./layouts/Root/Root";
 import Results from "./pages/Results/Results";
 import { useAppState } from "./contexts/AppContext";
 import Home from "./pages/Home/Home";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,10 +33,12 @@ function App(): React.ReactElement {
   const { isLightMode } = useAppState();
 
   return (
-    <ThemeProvider theme={isLightMode ? lightTheme : darkTheme}>
-      <CssBaseline />
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={isLightMode ? lightTheme : darkTheme}>
+        <CssBaseline />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
