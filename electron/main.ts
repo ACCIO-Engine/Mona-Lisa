@@ -2,6 +2,7 @@
 import { app, BrowserWindow, ipcMain as ipc } from 'electron'
 import path from 'node:path'
 import { spawn } from 'node:child_process'
+import os from 'node:os'
 
 // The built directory structure
 //
@@ -84,7 +85,12 @@ function stopShellCommand (child: any): void {
   console.log('Stopping the command')
   if (child != null) {
     console.log('Killing the child process')
-    spawn('taskkill', ['/pid', child.pid, '/f', '/t'])
+    if(os.platform() === 'win32'|| os.platform() === 'win64'){
+      spawn('taskkill', ['/pid', child.pid, '/f', '/t'])
+    }
+    else if(os.platform() === 'linux'){
+      spawn('kill', ['-9', child.pid])
+    }
   }
 }
 
