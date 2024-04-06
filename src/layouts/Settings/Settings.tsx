@@ -1,25 +1,25 @@
-import { Typography } from "@mui/material";
-import CustomSelect from "../../components/Select";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import InputDirectory from "../../components/InputDirectory";
+import { Typography } from '@mui/material'
+import CustomSelect from '../../components/Select'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import InputDirectory from '../../components/InputDirectory'
 
-export default function VariableWidthGrid() {
+export default function VariableWidthGrid () {
   return (
     <Box
       sx={{ flexGrow: 1 }}
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"space-between"}
+      display={'flex'}
+      flexDirection={'column'}
+      justifyContent={'space-between'}
     >
-      <Grid container rowSpacing={1} alignItems={"center"}>
+      <Grid container rowSpacing={1} alignItems={'center'}>
         <Grid item xs={3}>
           <Typography>Select mode</Typography>
         </Grid>
         <Grid item xs={7}>
           <CustomSelect
             label="mode"
-            choices={["Classic", "Deep", "Mixed"]}
+            choices={['Classic', 'Deep', 'Mixed']}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -34,7 +34,7 @@ export default function VariableWidthGrid() {
         <Grid item xs={7}>
           <CustomSelect
             label="Select text model"
-            choices={["Model1", "Model2", "Model3"]}
+            choices={['Model1', 'Model2', 'Model3']}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -43,7 +43,7 @@ export default function VariableWidthGrid() {
         <Grid item xs={7}>
           <CustomSelect
             label="Select image model"
-            choices={["Model1", "Model2", "Model3"]}
+            choices={['Model1', 'Model2', 'Model3']}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -52,7 +52,7 @@ export default function VariableWidthGrid() {
         <Grid item xs={7}>
           <CustomSelect
             label="Select video model"
-            choices={["Model1", "Model2", "Model3"]}
+            choices={['Model1', 'Model2', 'Model3']}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -61,7 +61,7 @@ export default function VariableWidthGrid() {
         <Grid item xs={7}>
           <CustomSelect
             label="Default search approach"
-            choices={["File name", "File content", "both"]}
+            choices={['File name', 'File content', 'both']}
           ></CustomSelect>
         </Grid>
       </Grid>
@@ -74,5 +74,5 @@ export default function VariableWidthGrid() {
         </Button>
       </Box> */}
     </Box>
-  );
+  )
 }

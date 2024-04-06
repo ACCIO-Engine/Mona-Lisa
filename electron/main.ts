@@ -1,5 +1,7 @@
-import { app, BrowserWindow } from "electron";
-import path from "node:path";
+/* eslint-disable @typescript-eslint/no-var-requires */
+import { app, BrowserWindow, ipcMain as ipc } from 'electron'
+import path from 'node:path'
+import { spawn } from 'node:child_process'
 
 // The built directory structure
 //
@@ -19,7 +21,8 @@ let win: BrowserWindow | null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
-function createWindow(): void {
+function createWindow (): void {
+  console.log('Creating window')
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "icon.png"),
     autoHideMenuBar: false,
@@ -59,4 +62,87 @@ app.on("activate", () => {
   }
 });
 
-void app.whenReady().then(createWindow);
+void app.whenReady().then(createWindow)
+
+process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
+process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
+process.env.CHROMADB = path.join(__dirname, '../../Octopus')
+
+function runShellCommand (command: string, cwd: string | undefined): any {
+  const child = spawn(command, {
+    // stdio: 'inherit',
+    shell: true,
+    cwd,
+    killSignal: 'SIGINT'
+  })
+  return child
+}
+
+// const test = runShellCommand('python server.py')
+
+function stopShellCommand (child: any): void {
+  console.log('Stopping the command')
+  if (child != null) {
+    console.log('Killing the child process')
+    spawn('taskkill', ['/pid', child.pid, '/f', '/t'])
+  }
+}
+
+module.exports = { runShellCommand, stopShellCommand }
+
+// IPC
+const runHedwig = (): any => {
+  return runShellCommand('python server.py', process.env.HEDWIG)
+}
+
+const runNanoBert = (): any => {
+  return runShellCommand('python server.py', process.env.NANOBERT)
+}
+
+const runChromaDB = (): any => {
+  return runShellCommand('chroma run --path AccioVecDB --port 8006', process.env.CHROMADB)
+}
+
+const stopHedwig = (child: any): void => {
+  stopShellCommand(child)
+}
+
+const stopNanoBert = (child: any): void => {
+  stopShellCommand(child)
+}
+
+const stopChromaDB = (child: any): void => {
+  stopShellCommand(child)
+}
+
+const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (child: any) => void): void => {
+  ipc.on(`${eventName}-start`, (event) => {
+    const child = runProcess()
+    child.stdout.on('data', (data: any) => {
+      console.log(`${data}`)
+      event.reply(`${eventName}-data`, `${data}`)
+    })
+
+    child.stderr.on('data', (data: any) => {
+      console.log(`${data}`)
+      event.reply(`${eventName}-data`, `${data}`)
+    })
+
+    child.on('close', (code: number) => {
+      console.log(`child process exited with code ${code}`)
+      event.reply(`${eventName}-data`, `child process exited with code ${code}`)
+    })
+
+    ipc.on(`${eventName}-stop`, () => {
+      console.log('Stop event received')
+      stopProcess(child)
+      // event.reply(`${eventName}-data`, 'Command stopped')
+    })
+  })
+}
+
+connectProcess('hedwig', runHedwig, stopHedwig)
+
+connectProcess('nanobert', runNanoBert, stopNanoBert)
+
+connectProcess('chromadb', runChromaDB, stopChromaDB)

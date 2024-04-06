@@ -20,39 +20,44 @@ import HomeIcon from "@mui/icons-material/Home";
 import routes from "../../routes/routes";
 
 interface AccioDrawerProps {
-  open: boolean;
-  handleDrawerClose: () => void;
-  isLightMode: boolean;
+  open: boolean
+  handleDrawerClose: () => void
+  isLightMode: boolean
 }
 
 const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(1)
   const buttonProps = (value: number) => ({
     selected: selectedIndex === value,
-    onClick: () => setSelectedIndex(value),
-  });
+    onClick: () => { setSelectedIndex(value) }
+  })
 
-  const { open, handleDrawerClose, isLightMode } = props;
-  const theme = useTheme();
+  const { open, handleDrawerClose, isLightMode } = props
+  const theme = useTheme()
 
   return (
     <CustomDrawer variant="permanent" open={open}>
-      <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
-        {isLightMode ? (
+      <DrawerHeader sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {isLightMode
+          ? (
           <img alt="" src={LightLogo} width={100} height={50} />
-        ) : (
+            )
+          : (
           <img alt="" src={DarkLogo} width={100} height={50} />
-        )}
+            )}
         <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "rtl" ? (
+          {theme.direction === 'rtl'
+            ? (
             <ChevronRightIcon />
-          ) : (
+              )
+            : (
             <ChevronLeftIcon />
-          )}
+              )}
         </IconButton>
       </DrawerHeader>
       <Divider />
       <StyledList isLightMode={isLightMode}>
+      <Link to={routes.dashboard} style={{ color: 'inherit', textDecoration: 'none' }}>
         <ListItem key="Dashboard" disablePadding>
           <ListItemButton {...buttonProps(0)}>
             <ListItemIcon>
@@ -61,6 +66,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
         </ListItem>
+        </Link>
         <Link
           to={routes.home}
           style={{ color: "inherit", textDecoration: "none" }}
@@ -115,7 +121,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
         </Link>
       </StyledList>
     </CustomDrawer>
-  );
-};
+  )
+}
 
-export default AccioDrawer;
+export default AccioDrawer
