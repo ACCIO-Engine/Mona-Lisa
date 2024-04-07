@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow, ipcMain as ipc } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain as ipc } from 'electron'
 import path from 'node:path'
 import { spawn } from 'node:child_process'
 import os from 'node:os'
@@ -22,7 +22,7 @@ let win: BrowserWindow | null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
-function createWindow (): void {
+function createWindow(): void {
   console.log('Creating window')
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "icon.png"),
@@ -44,6 +44,7 @@ function createWindow (): void {
     void win.loadFile(path.join(process.env.DIST, "index.html"));
   }
 }
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -69,7 +70,7 @@ process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
 process.env.CHROMADB = path.join(__dirname, '../../Octopus')
 
-function runShellCommand (command: string, cwd: string | undefined): any {
+function runShellCommand(command: string, cwd: string | undefined): any {
   const child = spawn(command, {
     // stdio: 'inherit',
     shell: true,
@@ -81,14 +82,14 @@ function runShellCommand (command: string, cwd: string | undefined): any {
 
 // const test = runShellCommand('python server.py')
 
-function stopShellCommand (child: any): void {
+function stopShellCommand(child: any): void {
   console.log('Stopping the command')
   if (child != null) {
     console.log('Killing the child process')
-    if(os.platform() === 'win32'|| os.platform() === 'win64'){
+    if (os.platform() === 'win32' || os.platform() === 'win64') {
       spawn('taskkill', ['/pid', child.pid, '/f', '/t'])
     }
-    else if(os.platform() === 'linux'){
+    else if (os.platform() === 'linux') {
       spawn('kill', ['-9', child.pid])
     }
   }
@@ -152,3 +153,42 @@ connectProcess('hedwig', runHedwig, stopHedwig)
 connectProcess('nanobert', runNanoBert, stopNanoBert)
 
 connectProcess('chromadb', runChromaDB, stopChromaDB)
+
+ipc.on('open-select-path-dialog', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openDirectory']
+  }).then(result => {
+    if (!result.canceled && result.filePaths.length > 0) {
+      const folderPath = result.filePaths[0];
+      // Do something with the selected folder path
+      console.log('Selected folder:', folderPath);
+    }
+  }).catch(err => {
+    console.error(err);
+  });
+})
+
+ipc.on('open-select-image-dialog', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }
+    ]
+  }).then(result => {
+    if (!result.canceled && result.filePaths.length > 0) {
+      const imagePath = result.filePaths[0];
+      // Do something with the selected image path
+      console.log('Selected image:', imagePath);
+
+      // Split the path string by the directory separator
+      const pathParts = imagePath.split("\\");
+
+      // Extract the last part (filename) from the path
+      const filename = pathParts[pathParts.length - 1];
+
+      event.sender.send('selected-image-path', filename);
+    }
+  }).catch(err => {
+    console.error(err);
+  });
+})
