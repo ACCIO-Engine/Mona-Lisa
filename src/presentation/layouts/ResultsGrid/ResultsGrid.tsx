@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ResultCard from "../../components/ResultCard/ResultCard";
 import { useSearchParams } from "react-router-dom";
-import { useSearchImage } from "../../application";
+import { useSearchImage } from "../../../application";
 
 const ResultsGrid: React.FC = () => {
   const [searchParams] = useSearchParams();
