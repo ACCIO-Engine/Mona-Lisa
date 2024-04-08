@@ -66,13 +66,13 @@ export default function BasicTabs() {
       <CustomTabPanel value={value} index={0}>
         <IndexButtons />
         <SnackbarProvider>
-          <PathsGrid />
+          <PathsGrid users={paths} />
         </SnackbarProvider>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <IndexButtons />
         <SnackbarProvider>
-          <PathsGrid />
+          <PathsGrid users={paths} />
         </SnackbarProvider>
       </CustomTabPanel>
     </Box>

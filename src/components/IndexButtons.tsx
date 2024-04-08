@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { useAddDirs } from "../application";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function IndexButtons() {
   const [path, setPath] = useState<string[]>([]);
@@ -11,6 +11,10 @@ export default function IndexButtons() {
     console.log(path)
     setPath(path)
   });
+
+  useEffect(() => {
+    addDirs(path)
+  }, [path])
 
   return (
     <Grid container columnSpacing={5} paddingBottom={2} alignItems={"center"}>
@@ -33,7 +37,7 @@ export default function IndexButtons() {
           variant="contained"
           onClick={() => {
             ipcRenderer.send('open-select-path-dialog');
-            addDirs(path)
+            insertDirs(path)
           }}
         >
           Remove
