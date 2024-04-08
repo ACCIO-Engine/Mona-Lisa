@@ -1,8 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, QueryClient } from "@tanstack/react-query";
 import { insertDirs } from "../../../infrastructure";
 
 const useAddDirs = () => {
-    return useMutation({ mutationFn: insertDirs });
+    const queryClient = new QueryClient();
+    return useMutation({
+        mutationFn: insertDirs,
+        // onSuccess: () => {
+        //     queryClient.invalidateQueries(["directories"]);
+        // },
+    });
 };
 
 export default useAddDirs;
