@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -14,55 +14,44 @@ import {
   StopButton
 } from './DashboardAccordion.styled'
 
+import { useDashboardContext } from '../../contexts/DashboardContext'
+import DashboardEntry from '../../../application/types/DashboardEntry.enum'
+
 interface DashboardAccordionProps {
-  title: string
+  title: DashboardEntry
 }
 
 const DashboardAccordion: React.FC<DashboardAccordionProps> = (
   props: DashboardAccordionProps
 ) => {
-  const [expanded, setExpanded] = React.useState<boolean>(false)
-  const [logs, setLogs] = useState('')
-  const [isStarted, setIsStarted] = useState(false)
-
   const { title } = props
-
-  const ipcRenderer = (window as any).ipcRenderer
   const startChannel = `${title}-start`
   const stopChannel = `${title}-stop`
-  const dataChannel = `${title}-data`
+
+  const { state, clearLogs, setIsStarted, setExpanded, ipcRenderer } = useDashboardContext()
+  const { logs, isStarted, expanded } = state[title]
 
   const handleStart = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    console.log('start')
     e.stopPropagation()
-    setLogs('') // clear the logs
+    clearLogs(title)
     ipcRenderer.send(startChannel)
-    setIsStarted(true)
-    setExpanded(true)
+    setIsStarted(title, true)
+    setExpanded(title, true)
   }
   const handleStop = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation()
     ipcRenderer.send(stopChannel)
-    setIsStarted(false)
-    setExpanded(false)
+    setIsStarted(title, false)
+    setExpanded(title, false)
   }
 
   const handleChange =
     () => (event: React.SyntheticEvent, isExpanded: boolean) => {
       console.log(isExpanded)
       console.log(expanded)
-      setExpanded(isExpanded)
+      setExpanded(title, isExpanded)
     }
-
-  useEffect(() => {
-    ipcRenderer.on(dataChannel, (event: any, arg: any) => {
-      console.log(event)
-      // concatenate the logs
-      setLogs((logs) => `${logs}${arg}`)
-    })
-    return () => {
-      ipcRenderer.removeAllListeners(dataChannel)
-    }
-  }, [])
 
   return (
     <div>

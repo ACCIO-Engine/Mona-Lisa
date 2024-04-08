@@ -11,15 +11,15 @@ const SearchContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   width: "100%",
   borderRadius: "24px",
-  border: `1px solid ${theme.palette.grey[300]}`,
+  border: `1px solid ${theme.palette.grey[300]}`
 }));
 export default function LargeSearch({
   onChooseImage,
-  onSearch,
-  onChooseMic,
+  onSearchText,
+  onChooseMic
 }: {
   onChooseImage: (image: string) => void;
-  onSearch: () => void;
+  onSearchText: (text: string) => void;
   onChooseMic: () => void;
 }) {
   return (
@@ -27,7 +27,7 @@ export default function LargeSearch({
       <Box sx={{ p: "10px" }} aria-label="menu">
         <SearchIcon
           sx={{
-            color: "grey.500",
+            color: "grey.500"
           }}
         />
       </Box>
@@ -35,6 +35,11 @@ export default function LargeSearch({
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search ACCIO"
         inputProps={{ "aria-label": "search google maps" }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onSearchText(e.currentTarget.value);
+          }
+        }}
       />
       <IconButton
         type="button"
@@ -59,7 +64,11 @@ export default function LargeSearch({
           accept="image/*"
           type="file"
           onChange={(e) => {
-            console.log(e.target.files, e.target.files![0], e.target.files![0].path);
+            console.log(
+              e.target.files,
+              e.target.files![0],
+              e.target.files![0].path
+            );
             onChooseImage(e.target.files![0].path);
           }}
         />
