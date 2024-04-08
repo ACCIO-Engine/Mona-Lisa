@@ -3,6 +3,10 @@ import Button from "@mui/material/Button";
 
 export default function IndexButtons() {
   const ipcRenderer = (window as any).ipcRenderer
+  ipcRenderer.on('selected-path', (event, path) => {
+    console.log(path)
+  });
+
   return (
     <Grid container columnSpacing={5} paddingBottom={2} alignItems={"center"}>
       <Grid item xs="auto">
@@ -20,7 +24,14 @@ export default function IndexButtons() {
         </Button>
       </Grid>
       <Grid item xs="auto">
-        <Button variant="contained">Remove</Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            ipcRenderer.send('open-select-path-dialog');
+          }}
+        >
+          Remove
+        </Button>
       </Grid>
       <Grid item xs="auto">
         <Button variant="contained">Swap</Button>

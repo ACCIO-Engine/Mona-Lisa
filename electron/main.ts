@@ -161,6 +161,7 @@ ipc.on('open-select-path-dialog', function (event) {
     if (!result.canceled && result.filePaths.length > 0) {
       const folderPath = result.filePaths[0];
       // Do something with the selected folder path
+      event.sender.send('selected-path', folderPath);
       console.log('Selected folder:', folderPath);
     }
   }).catch(err => {

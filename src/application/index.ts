@@ -1,3 +1,3 @@
 import useSearchImage from "./usecases/search/useSearchImage.usecase";
-
-export { useSearchImage };
+import useGetDirs from "./usecases/crawler/useGetDirs.usecase";
+export { useSearchImage, useGetDirs };

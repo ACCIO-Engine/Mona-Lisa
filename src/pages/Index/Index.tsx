@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons";
 import { SnackbarProvider } from "../../contexts/SnackbarContext";
+import { useGetDirs } from "../../application";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,6 +47,9 @@ export default function BasicTabs() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const { paths, isError, isLoading, isSuccess, error, status } = useGetDirs();
+  console.log(paths, isError, isLoading, isSuccess, error, status);
 
   return (
     <Box sx={{ width: "100%" }}>
