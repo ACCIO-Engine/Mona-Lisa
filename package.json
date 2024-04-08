@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.12",
     "@mui/x-data-grid": "^6.19.6",
+    "@tanstack/react-query": "^5.28.14",
     "mui-nested-menu": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -35,10 +36,12 @@
     "eslint-plugin-react": "^7.34.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "prettier": "3.2.5",
     "typescript": "^5.4.2",
     "vite": "^4.4.9",
     "vite-plugin-electron": "^0.14.0",
-    "vite-plugin-electron-renderer": "^0.14.5"
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "main": "dist-electron/main.js"
 }
