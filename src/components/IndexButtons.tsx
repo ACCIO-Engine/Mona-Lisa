@@ -1,10 +1,15 @@
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import { useAddDirs } from "../application";
+import { useState } from "react";
 
 export default function IndexButtons() {
+  const [path, setPath] = useState<string[]>([]);
+  const { mutate: addDirs } = useAddDirs()
   const ipcRenderer = (window as any).ipcRenderer
-  ipcRenderer.on('selected-path', (event, path) => {
+  ipcRenderer.on('selected-path', (event, path: string[]) => {
     console.log(path)
+    setPath(path)
   });
 
   return (
@@ -28,6 +33,7 @@ export default function IndexButtons() {
           variant="contained"
           onClick={() => {
             ipcRenderer.send('open-select-path-dialog');
+            addDirs(path)
           }}
         >
           Remove

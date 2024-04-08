@@ -156,10 +156,10 @@ connectProcess('chromadb', runChromaDB, stopChromaDB)
 
 ipc.on('open-select-path-dialog', function (event) {
   dialog.showOpenDialog(win, {
-    properties: ['openDirectory']
+    properties: ['openDirectory', 'multiSelections']
   }).then(result => {
     if (!result.canceled && result.filePaths.length > 0) {
-      const folderPath = result.filePaths[0];
+      const folderPath = result.filePaths;
       // Do something with the selected folder path
       event.sender.send('selected-path', folderPath);
       console.log('Selected folder:', folderPath);

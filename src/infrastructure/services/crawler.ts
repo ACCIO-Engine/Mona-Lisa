@@ -11,13 +11,14 @@ export const getDirs = async () => {
     });
 };
 
-export const addDirs = async (dirs: string[]) => {
+export const insertDirs = async (dirs: string[]) => {
+    console.log(JSON.stringify({ 'paths': dirs }))
     return fetch(`${BASE_URL}/add_to_dirs`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dirs }),
+        body: JSON.stringify({ 'paths': dirs }),
     }).then((res) => {
         if (!res.ok) {
             throw new Error("Network response was not ok");
@@ -26,13 +27,13 @@ export const addDirs = async (dirs: string[]) => {
     });
 }
 
-export const addIgnoreDirs = async (dirs: string[]) => {
+export const insertIgnoreDirs = async (dirs: string[]) => {
     return fetch(`${BASE_URL}/add_to_ignore`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dirs }),
+        body: JSON.stringify({ 'paths': dirs }),
     }).then((res) => {
         if (!res.ok) {
             throw new Error("Network response was not ok");
@@ -47,7 +48,7 @@ export const removeDirs = async (dirs: string[]) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dirs }),
+        body: JSON.stringify({ 'paths': dirs }),
     }).then((res) => {
         if (!res.ok) {
             throw new Error("Network response was not ok");
@@ -62,7 +63,7 @@ export const removeIgnoreDirs = async (dirs: string[]) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dirs }),
+        body: JSON.stringify({ 'paths': dirs }),
     }).then((res) => {
         if (!res.ok) {
             throw new Error("Network response was not ok");
