@@ -12,7 +12,8 @@ export default function useSearch() {
     searchType,
     setSearchType,
     enableSearch,
-    setEnableSearch
+    setEnableSearch,
+    queryEngine
   } = useSearchContext();
   const {
     data: files,
@@ -22,12 +23,12 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType],
+    queryKey: ["search", searchString, searchType, queryEngine],
     queryFn: () => {
       if (searchType === SearchType.IMAGE) {
-        return searchImage(searchString);
+        return searchImage(searchString, queryEngine);
       } else if (searchType === SearchType.TEXT) {
-        return searchText(searchString);
+        return searchText(searchString, queryEngine);
       }
     },
     enabled: enableSearch,

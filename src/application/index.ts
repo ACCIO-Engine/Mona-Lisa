@@ -1,5 +1,14 @@
+// Import usecases
 import useSearch from "./usecases/search/useSearch.usecase";
+// Import contexts
 import { useSearchContext, SearchProvider } from "./contexts/SearchContext";
+// Import types
 import SearchType from "./types/SearchType.enum";
-
-export { useSearch, useSearchContext, SearchProvider, SearchType };
+import QueryEngines from "./types/QueryEngines.enum";
+export {
+  useSearch,
+  useSearchContext,
+  SearchProvider,
+  SearchType,
+  QueryEngines
+};
