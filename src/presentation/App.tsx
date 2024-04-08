@@ -11,6 +11,7 @@ import { useAppState } from "./contexts/AppContext";
 import Home from "./pages/Home/Home";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from './pages/Dashboard/Dashboard'
+import DashboardProvider from "./contexts/DashboardContext";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -38,7 +39,9 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isLightMode ? lightTheme : darkTheme}>
         <CssBaseline />
-        <RouterProvider router={router} />
+        <DashboardProvider>
+          <RouterProvider router={router} />
+        </DashboardProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

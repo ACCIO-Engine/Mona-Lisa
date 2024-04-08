@@ -3,7 +3,7 @@ import { app, BrowserWindow, ipcMain as ipc } from 'electron'
 import path from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
 import os from 'node:os'
-import Store from 'electron-store'
+// import Store from 'electron-store'
 
 // The built directory structure
 //
@@ -70,7 +70,7 @@ process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
 process.env.CHROMADB = path.join(__dirname, '../../Octopus')
 
-const store = new Store()
+// const store = new Store()
 
 
 
@@ -97,6 +97,7 @@ function stopShellCommand (child: any): void {
     else if(os.platform() === 'linux'){
       spawnSync('kill', ['-9', child.pid])
     }
+    child = null
   }
 }
 
@@ -155,7 +156,8 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
     app.on('will-quit', () => {
       // Perform tasks such as notifying the user or confirming action
       console.log("Trying to kill process")
-      stopProcess(child)
+      if(child != null)
+        stopProcess(child)
   });
   })
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import DashboardAccordion from '../../components/DashboardAccordion/DashboardAccordion'
 import { Box } from '@mui/material'
+import DashboardEntry from '../../../application/types/DashboardEntry.enum'
 
 const Dashboard: React.FC = () => {
   return (
@@ -9,9 +10,9 @@ const Dashboard: React.FC = () => {
       flexDirection: 'column',
       gap: 2
     }}>
-        <DashboardAccordion title='hedwig'/>
-        <DashboardAccordion title='nanobert'/>
-        <DashboardAccordion title='chromadb'/>
+        <DashboardAccordion title={DashboardEntry.HEDWIG}/>
+        <DashboardAccordion title={DashboardEntry.NANO_BERT}/>
+        <DashboardAccordion title={DashboardEntry.CHROMA_DB}/>
     </Box>
   )
 }
