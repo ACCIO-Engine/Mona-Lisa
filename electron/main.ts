@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { app, BrowserWindow, ipcMain as ipc } from 'electron'
 import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { spawn, spawnSync } from 'node:child_process'
 import os from 'node:os'
+import Store from 'electron-store'
 
 // The built directory structure
 //
@@ -69,6 +70,10 @@ process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
 process.env.CHROMADB = path.join(__dirname, '../../Octopus')
 
+const store = new Store()
+
+
+
 function runShellCommand (command: string, cwd: string | undefined): any {
   const child = spawn(command, {
     // stdio: 'inherit',
@@ -86,10 +91,11 @@ function stopShellCommand (child: any): void {
   if (child != null) {
     console.log('Killing the child process')
     if(os.platform() === 'win32'|| os.platform() === 'win64'){
-      spawn('taskkill', ['/pid', child.pid, '/f', '/t'])
+      console.log(`pid = ${child.pid}`)
+      spawnSync('taskkill', ['/pid', child.pid, '/f', '/t'])
     }
     else if(os.platform() === 'linux'){
-      spawn('kill', ['-9', child.pid])
+      spawnSync('kill', ['-9', child.pid])
     }
   }
 }
@@ -124,6 +130,7 @@ const stopChromaDB = (child: any): void => {
 const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (child: any) => void): void => {
   ipc.on(`${eventName}-start`, (event) => {
     const child = runProcess()
+    console.log(`ID = ${child.pid}`)
     child.stdout.on('data', (data: any) => {
       console.log(`${data}`)
       event.reply(`${eventName}-data`, `${data}`)
@@ -144,6 +151,12 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
       stopProcess(child)
       // event.reply(`${eventName}-data`, 'Command stopped')
     })
+
+    app.on('will-quit', () => {
+      // Perform tasks such as notifying the user or confirming action
+      console.log("Trying to kill process")
+      stopProcess(child)
+  });
   })
 }
 
