@@ -3,6 +3,7 @@ import { searchImage } from "../../../infrastructure";
 import getFileNameFromPath from "../../utils/getFileNameFromPath";
 import SearchType from "../../types/SearchType.enum";
 import { useSearchContext } from "../../contexts/SearchContext";
+import { searchText } from "../../../infrastructure/services/search";
 
 export default function useSearch() {
   const {
@@ -25,6 +26,8 @@ export default function useSearch() {
     queryFn: () => {
       if (searchType === SearchType.IMAGE) {
         return searchImage(searchString);
+      } else if (searchType === SearchType.TEXT) {
+        return searchText(searchString);
       }
     },
     enabled: enableSearch,

@@ -12,8 +12,9 @@ export default function SearchControls() {
     search(image, SearchType.IMAGE);
     navigate("/search");
   };
-  const onSearch = () => {
-    console.log("Search");
+  const onSearchText = (text: string) => {
+    search(text, SearchType.TEXT);
+    navigate("/search");
   };
   const onChooseMic = () => {
     console.log("Choose Mic");
@@ -24,7 +25,7 @@ export default function SearchControls() {
       {currentControl === "text" && (
         <LargeSearch
           onChooseImage={onChooseImage}
-          onSearch={onSearch}
+          onSearchText={onSearchText}
           onChooseMic={onChooseMic}
         />
       )}
