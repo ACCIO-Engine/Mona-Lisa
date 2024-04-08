@@ -2,13 +2,10 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ResultCard from "../../components/ResultCard/ResultCard";
-import { useSearchParams } from "react-router-dom";
-import { useSearchImage } from "../../../application";
+import { useSearch } from "../../../application";
 
 const ResultsGrid: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const { files, isError, isLoading, isSuccess, error, status } =
-    useSearchImage(searchParams.get("query") || "");
+  const { files, isError, isLoading, isSuccess, error, status } = useSearch();
   console.log(files, isError, isLoading, isSuccess, error, status);
   return (
     <Box sx={{ width: "100%" }}>

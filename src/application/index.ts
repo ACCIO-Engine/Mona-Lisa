@@ -1,3 +1,5 @@
-import useSearchImage from "./usecases/search/useSearchImage.usecase";
+import useSearch from "./usecases/search/useSearch.usecase";
+import { useSearchContext, SearchProvider } from "./contexts/SearchContext";
+import SearchType from "./types/SearchType.enum";
 
-export { useSearchImage };
+export { useSearch, useSearchContext, SearchProvider, SearchType };
