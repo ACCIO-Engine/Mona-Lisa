@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons/IndexButtons";
 import { SnackbarProvider } from "../../contexts/SnackbarContext";
-import { useGetDirs } from "../../application";
+import { useGetDirs } from "../../../application";
 
 interface TabPanelProps {
   children?: React.ReactNode;
