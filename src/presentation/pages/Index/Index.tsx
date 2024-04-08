@@ -48,33 +48,42 @@ export default function BasicTabs() {
     setValue(newValue);
   };
 
+  interface PathsObject {
+    dirsToCrawl: string[]
+    dirsToIgnore: string[]
+  }
   const { paths, isError, isLoading, isSuccess, error, status } = useGetDirs();
   console.log(paths, isError, isLoading, isSuccess, error, status);
 
-  return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Indexed" {...a11yProps(0)} />
-          <Tab label="Ignored" {...a11yProps(1)} />
-        </Tabs>
+  if (!isLoading && isSuccess && !isError) {
+    return (
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Indexed" {...a11yProps(0)} />
+            <Tab label="Ignored" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <IndexButtons />
+          <SnackbarProvider>
+            <PathsGrid users={paths.dirsToCrawl} />
+          </SnackbarProvider>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <IndexButtons />
+          <SnackbarProvider>
+            <PathsGrid users={paths.dirsToIgnore} />
+          </SnackbarProvider>
+        </CustomTabPanel>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <IndexButtons />
-        <SnackbarProvider>
-          <PathsGrid users={paths} />
-        </SnackbarProvider>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <IndexButtons />
-        <SnackbarProvider>
-          <PathsGrid users={paths} />
-        </SnackbarProvider>
-      </CustomTabPanel>
-    </Box>
-  );
+    );
+  }
+  else {
+    return <div>Loading....</div>
+  }
 }

@@ -4,10 +4,11 @@ import { insertDirs } from "../../../infrastructure";
 const useAddDirs = () => {
     const queryClient = new QueryClient();
     return useMutation({
+        mutationKey: ['insertDirs'],
         mutationFn: insertDirs,
-        // onSuccess: () => {
-        //     queryClient.invalidateQueries(["directories"]);
-        // },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['directories'] })
+        },
     });
 };
 

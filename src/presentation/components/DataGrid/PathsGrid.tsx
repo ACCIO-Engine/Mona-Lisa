@@ -26,12 +26,6 @@ interface GridProps {
 export default function PathsGrid(props: GridProps) {
   const { openSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    setRows(props.users)
-  }, [props.users]);
-  const users = props.users;
-  const [rows, setRows] = useState(users);
-
   const handleEvent: GridEventListener<"rowClick"> = (params) => {
     copyTextToClipboard(`${params.row.paths}`).then((success) => {
       if (success) {
@@ -46,7 +40,7 @@ export default function PathsGrid(props: GridProps) {
     <Box sx={{ height: `calc(100vh - 270px)`, width: "100%" }}>
       <DataGrid
         scrollbarSize={10}
-        rows={paths}
+        rows={props.users.map((user, index) => ({ id: index, paths: user }))}
         columns={columns}
         disableRowSelectionOnClick
         checkboxSelection
