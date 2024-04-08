@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { useAddDirs } from "../application";
+import { useAddDirs } from "../../application";
 import { useEffect, useState } from "react";
 
 export default function IndexButtons() {

@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material'
-import CustomSelect from '../../components/Select'
+import CustomSelect from '../../components/ComboBox/Select'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import InputDirectory from '../../components/InputDirectory'
+import InputDirectory from '../../components/InputDirectory/InputDirectory'
 
-export default function VariableWidthGrid () {
+export default function VariableWidthGrid() {
   return (
     <Box
       sx={{ flexGrow: 1 }}

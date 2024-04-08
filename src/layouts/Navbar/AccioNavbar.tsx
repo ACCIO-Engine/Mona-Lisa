@@ -21,7 +21,7 @@ import {
   StyledInputBase,
 } from "./AccioNavbar.styled";
 import { Fab } from "@mui/material";
-import MaterialUISwitch from "../../components/ToggleButton.styled";
+import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
 import NestedList from "../../components/NestedList/NestedList";
@@ -35,7 +35,7 @@ interface AccioNavbarProps {
 export default function AccioNavbar(props: AccioNavbarProps) {
   const ipcRenderer = (window as any).ipcRenderer
 
-  ipcRenderer.on('selected-image-path', (event, imageName) => {
+  ipcRenderer.on('selected-image-path', (event, imageName: string) => {
     showImagePath('search-input', imageName)
   });
 

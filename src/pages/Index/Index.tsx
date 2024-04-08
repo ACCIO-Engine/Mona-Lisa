@@ -4,7 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
-import IndexButtons from "../../components/IndexButtons";
+import IndexButtons from "../../components/IndexButtons/IndexButtons";
 import { SnackbarProvider } from "../../contexts/SnackbarContext";
 import { useGetDirs } from "../../application";
 
