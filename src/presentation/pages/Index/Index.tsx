@@ -85,6 +85,18 @@ export default function BasicTabs() {
     removeIgnoreDir(selectedPaths)
   }
 
+  const handleSwapIndex2Ignore = () => {
+    console.log('swap index to ignore')
+    handleRemoveDir()
+    addIgnoreDirs(selectedPaths);
+  }
+
+  const handleSwapIgnore2Index = () => {
+    console.log('swap ignore to index')
+    handleRemoveIgnoreDir()
+    addDirs(selectedPaths);
+  }
+
   const handleAddDirs = () => {
     ipcRenderer.send('open-select-dirs-dialog')
   }
@@ -118,11 +130,11 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <IndexButtons handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
+        <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
         <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <IndexButtons handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
+        <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
         <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
       </CustomTabPanel>
     </Box>
