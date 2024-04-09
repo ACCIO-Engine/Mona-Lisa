@@ -2,8 +2,15 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { useAddDirs } from "../../../application";
 import { useEffect, useState } from "react";
+import copyTextToClipboard from "../../utils/copy";
+import { useSnackbar } from "../../contexts/SnackbarContext";
 
-export default function IndexButtons() {
+interface IndexButtonsProps {
+  selectedPaths: string[];
+}
+
+export default function IndexButtons(props: IndexButtonsProps) {
+  const { openSnackbar } = useSnackbar();
   const [path, setPath] = useState<string[]>([]);
   const { mutate: addDirs } = useAddDirs()
   const ipcRenderer = (window as any).ipcRenderer
@@ -15,6 +22,16 @@ export default function IndexButtons() {
   useEffect(() => {
     addDirs(path)
   }, [path])
+
+  const handleCopy = () => {
+    copyTextToClipboard(props.selectedPaths).then((success) => {
+      if (success) {
+        openSnackbar("Path copied to clipboard successfully", "success");
+      } else {
+        openSnackbar("Failed to copy path to clipboard", "error");
+      }
+    });
+  };
 
   return (
     <Grid container columnSpacing={5} paddingBottom={2} alignItems={"center"}>
@@ -47,7 +64,7 @@ export default function IndexButtons() {
         <Button variant="contained">Swap</Button>
       </Grid>
       <Grid item xs="auto">
-        <Button variant="contained">Copy</Button>
+        <Button variant="contained" onClick={handleCopy}>Copy</Button>
       </Grid>
     </Grid>
   );

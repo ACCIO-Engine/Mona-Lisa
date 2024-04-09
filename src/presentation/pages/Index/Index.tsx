@@ -7,7 +7,6 @@ import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons/IndexButtons";
 import { SnackbarProvider } from "../../contexts/SnackbarContext";
 import { useGetDirs } from "../../../application";
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -42,48 +41,39 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
+  const [selectedPath, setSelectedPath] = React.useState<string[]>([]);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  interface PathsObject {
-    dirsToCrawl: string[]
-    dirsToIgnore: string[]
-  }
   const { paths, isError, isLoading, isSuccess, error, status } = useGetDirs();
   console.log(paths, isError, isLoading, isSuccess, error, status);
-
-  if (!isLoading && isSuccess && !isError) {
-    return (
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Indexed" {...a11yProps(0)} />
-            <Tab label="Ignored" {...a11yProps(1)} />
-          </Tabs>
-        </Box>
-        <CustomTabPanel value={value} index={0}>
-          <IndexButtons />
-          <SnackbarProvider>
-            <PathsGrid users={paths.dirsToCrawl} />
-          </SnackbarProvider>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <IndexButtons />
-          <SnackbarProvider>
-            <PathsGrid users={paths.dirsToIgnore} />
-          </SnackbarProvider>
-        </CustomTabPanel>
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Indexed" {...a11yProps(0)} />
+          <Tab label="Ignored" {...a11yProps(1)} />
+        </Tabs>
       </Box>
-    );
-  }
-  else {
-    return <div>Loading....</div>
-  }
+      <CustomTabPanel value={value} index={0}>
+        <SnackbarProvider>
+          <IndexButtons selectedPaths={selectedPath} />
+          <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPath} />
+        </SnackbarProvider>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <SnackbarProvider>
+          <IndexButtons selectedPaths={selectedPath} />
+          <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPath} />
+        </SnackbarProvider>
+      </CustomTabPanel>
+    </Box>
+  );
 }

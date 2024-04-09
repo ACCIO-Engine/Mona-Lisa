@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridEventListener, GridRowId } from "@mui/x-data-grid";
 import copyTextToClipboard from "../../utils/copy";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 const columns: GridColDef[] = [
@@ -14,18 +14,26 @@ const columns: GridColDef[] = [
 
 interface GridProps {
   users: string[];
+  setSelectedPaths: (paths: string[]) => void;
 }
 export default function PathsGrid(props: GridProps) {
   const { openSnackbar } = useSnackbar();
 
   const handleEvent: GridEventListener<"rowClick"> = (params) => {
-    copyTextToClipboard(`${params.row.paths}`).then((success) => {
+    copyTextToClipboard([params.row.paths]).then((success) => {
       if (success) {
         openSnackbar("Path copied to clipboard successfully", "success");
       } else {
         openSnackbar("Failed to copy path to clipboard", "error");
       }
     });
+  };
+
+  const handleSelect = (selectionModel: GridRowId[]) => {
+    if (selectionModel.length > 0) {
+      const selectedRows = selectionModel.map((rowId) => props.users[rowId as number]);
+      props.setSelectedPaths(selectedRows);
+    }
   };
 
   return (
@@ -38,9 +46,7 @@ export default function PathsGrid(props: GridProps) {
         checkboxSelection
         onRowDoubleClick={handleEvent}
         autoHeight={false}
-        onRowSelectionModelChange={(newSelection) =>
-          console.log(newSelection, "newSelection")
-        }
+        onRowSelectionModelChange={handleSelect}
       />
     </Box>
   );

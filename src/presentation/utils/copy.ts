@@ -1,8 +1,9 @@
 export default async function copyTextToClipboard(
-  text: string
+  paths: string[]
 ): Promise<boolean> {
   try {
-    await navigator.clipboard.writeText(text);
+    const textToCopy = paths.length === 1 ? paths[0] : paths.join("\n");
+    await navigator.clipboard.writeText(textToCopy);
     return true;
   } catch (err) {
     console.error("Unable to copy to clipboard", err);
