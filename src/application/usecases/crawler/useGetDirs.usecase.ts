@@ -12,6 +12,7 @@ export default function useGetDirs() {
     } = useQuery({
         queryKey: ["directories"],
         queryFn: () => getDirs(),
+        staleTime: Infinity
     });
 
 

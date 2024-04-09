@@ -56,18 +56,21 @@ export default function BasicTabs() {
 
   const ipcRenderer = (window as any).ipcRenderer
 
-  const handleSelectedDirs = (event: any, paths: string[], isCancelled: boolean) => {
+  const handleSelectedDirs = React.useCallback((event: any, paths: string[], isCancelled: boolean) => {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAA")
     if (isCancelled) console.log('cancelled');
     else addDirs(paths);
-  };
+  }, [addDirs]);
 
-  const handleSelectedIgnoreDirs = (event: any, paths: string[], isCancelled: boolean) => {
+  const handleSelectedIgnoreDirs = React.useCallback((event: any, paths: string[], isCancelled: boolean) => {
     if (isCancelled) console.log('cancelled');
     else addIgnoreDirs(paths);
-  };
+  }, [addIgnoreDirs]);
 
-  ipcRenderer.on('selected-dirs', handleSelectedDirs);
-  ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
+  React.useEffect(() => {
+    ipcRenderer.on('selected-dirs', handleSelectedDirs);
+    ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
+  }, [handleSelectedDirs, handleSelectedIgnoreDirs]);
 
 
   // Event handlers
