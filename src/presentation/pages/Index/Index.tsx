@@ -8,6 +8,7 @@ import IndexButtons from "../../components/IndexButtons/IndexButtons";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { useAddDirs, useGetDirs, useRemoveDirs, useRemoveIgnoreDirs, useAddIgnoreDirs } from "../../../application";
 import copyTextToClipboard from "../../utils/copy";
+import { useQueryClient } from "@tanstack/react-query";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -46,41 +47,38 @@ export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
   const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+  const { mutate: addDirs } = useAddDirs(queryClient)
+  const { mutate: addIgnoreDirs } = useAddIgnoreDirs(queryClient)
+  const { mutate: removeDir } = useRemoveDirs(queryClient)
+  const { mutate: removeIgnoreDir } = useRemoveIgnoreDirs(queryClient)
+  const { paths } = useGetDirs();
+
+  const ipcRenderer = (window as any).ipcRenderer
+
+  const handleSelectedDirs = (event: any, paths: string[], isCancelled: boolean) => {
+    if (isCancelled) console.log('cancelled');
+    else addDirs(paths);
+  };
+
+  const handleSelectedIgnoreDirs = (event: any, paths: string[], isCancelled: boolean) => {
+    if (isCancelled) console.log('cancelled');
+    else addIgnoreDirs(paths);
+  };
+
+  ipcRenderer.on('selected-dirs', handleSelectedDirs);
+  ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
+
+
+  // Event handlers
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-
-  const { mutate: addDirs } = useAddDirs()
-  const { mutate: addIgnoreDirs } = useAddIgnoreDirs()
-  const ipcRenderer = (window as any).ipcRenderer
-
-  React.useEffect(() => {
-    const handleSelectedDirs = (event: any, paths: string[], isCancelled: boolean) => {
-      if (isCancelled) console.log('cancelled');
-      else addDirs(paths);
-    };
-
-    const handleSelectedIgnoreDirs = (event: any, paths: string[], isCancelled: boolean) => {
-      if (isCancelled) console.log('cancelled');
-      else addIgnoreDirs(paths);
-    };
-
-    ipcRenderer.on('selected-dirs', handleSelectedDirs);
-    ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
-
-    return () => {
-      ipcRenderer.removeListener('selected-dirs', handleSelectedDirs);
-      ipcRenderer.removeListener('selected-ignore-dirs', handleSelectedIgnoreDirs);
-    };
-  }, [addDirs, addIgnoreDirs, ipcRenderer]);
-
-  // buttons tasks
-  const { mutate: removeDir } = useRemoveDirs()
   const handleRemoveDir = () => {
     removeDir(selectedPaths)
   }
-  const { mutate: removeIgnoreDir } = useRemoveIgnoreDirs()
+
   const handleRemoveIgnoreDir = () => {
     removeIgnoreDir(selectedPaths)
   }
@@ -115,8 +113,6 @@ export default function BasicTabs() {
     });
   };
 
-  const { paths, isError, isLoading, isSuccess, error, status } = useGetDirs();
-  console.log(paths, isError, isLoading, isSuccess, error, status);
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

@@ -173,7 +173,6 @@ ipc.on('open-select-dirs-dialog', function (event) {
   dialog.showOpenDialog(win, {
     properties: ['openDirectory', 'multiSelections']
   }).then(result => {
-    console.log(result.filePaths, result.canceled)
     event.sender.send('selected-dirs', result.filePaths, result.canceled);
   }).catch(err => {
     console.error(err);
@@ -184,7 +183,6 @@ ipc.on('open-select-ignore-dirs-dialog', function (event) {
   dialog.showOpenDialog(win, {
     properties: ['openDirectory', 'multiSelections']
   }).then(result => {
-    console.log(result.filePaths, result.canceled)
     event.sender.send('selected-ignore-dirs', result.filePaths, result.canceled);
   }).catch(err => {
     console.error(err);
@@ -200,8 +198,6 @@ ipc.on('open-select-image-dialog', function (event) {
   }).then(result => {
     if (!result.canceled && result.filePaths.length > 0) {
       const imagePath = result.filePaths[0];
-      // Do something with the selected image path
-      console.log('Selected image:', imagePath);
 
       // Split the path string by the directory separator
       const pathParts = imagePath.split("\\");

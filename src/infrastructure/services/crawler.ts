@@ -10,32 +10,32 @@ export const getDirs = async () => {
 
 export const insertDirs = async (dirs: string[]) => {
     console.log(JSON.stringify({ 'paths': dirs }))
-    const respose = await fetch(`${BASE_URL}/add_to_dirs`, {
+    const response = await fetch(`${BASE_URL}/add_to_dirs`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ 'paths': dirs }),
     });
-    if (!respose.ok) {
+    if (!response.ok) {
         throw new Error("Network response was not ok");
     }
-    return respose.json();
+    return response;
 };
 
 export const insertIgnoreDirs = async (dirs: string[]) => {
     console.log(JSON.stringify({ 'paths': dirs }))
-    const respose = await fetch(`${BASE_URL}/add_to_ignore`, {
+    const response = await fetch(`${BASE_URL}/add_to_ignore`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ 'paths': dirs }),
     });
-    if (!respose.ok) {
+    if (!response.ok) {
         throw new Error("Network response was not ok");
     }
-    return respose.json();
+    return response;
 };
 
 export const removeDirs = async (dirs: string[]) => {
@@ -50,7 +50,7 @@ export const removeDirs = async (dirs: string[]) => {
     if (!response.ok) {
         throw new Error("Network response was not ok");
     }
-    return response.json();
+    return response;
 };
 
 export const removeIgnoreDirs = async (dirs: string[]) => {
@@ -65,5 +65,5 @@ export const removeIgnoreDirs = async (dirs: string[]) => {
     if (!response.ok) {
         throw new Error("Network response was not ok");
     }
-    return response.json();
+    return response;
 };
