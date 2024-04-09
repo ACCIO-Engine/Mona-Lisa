@@ -12,6 +12,7 @@ import Home from "./pages/Home/Home";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from './pages/Dashboard/Dashboard'
 import DashboardProvider from "./contexts/DashboardContext";
+import { SnackbarProvider } from "./contexts/SnackbarContext";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
       { path: 'settings', element: <Settings /> },
       { path: 'search', element: <Results /> },
-      { path: 'index', element: <Index /> },
+      { path: 'index', element: <SnackbarProvider><Index /></SnackbarProvider> },
       { path: 'dashboard', element: <Dashboard /> }
     ]
   }

@@ -5,8 +5,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons/IndexButtons";
-import { SnackbarProvider } from "../../contexts/SnackbarContext";
-import { useGetDirs } from "../../../application";
+import { useSnackbar } from "../../contexts/SnackbarContext";
+import { useAddDirs, useGetDirs, useRemoveDirs, useRemoveIgnoreDirs, useAddIgnoreDirs } from "../../../application";
+import copyTextToClipboard from "../../utils/copy";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -41,11 +42,59 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
-  const [selectedPath, setSelectedPath] = React.useState<string[]>([]);
+  const [selectedPaths, setSelectedPaths] = React.useState<string[]>([]);
   const [value, setValue] = React.useState(0);
 
+  const { openSnackbar } = useSnackbar();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+
+  const { mutate: addDirs } = useAddDirs()
+  const { mutate: addIgnoreDirs } = useAddIgnoreDirs()
+  const ipcRenderer = (window as any).ipcRenderer
+
+  ipcRenderer.on('selected-dirs', (event, paths: string[], isCancelled: boolean) => {
+    if (isCancelled)
+      console.log('cancelled')
+    else
+      addDirs(paths)
+  });
+
+  ipcRenderer.on('selected-ignore-dirs', (event, paths: string[], isCancelled: boolean) => {
+    if (isCancelled)
+      console.log('cancelled')
+    else
+      addIgnoreDirs(paths)
+  });
+
+  // buttons tasks
+  const { mutate: removeDir } = useRemoveDirs()
+  const handleRemoveDir = () => {
+    removeDir(selectedPaths)
+  }
+  const { mutate: removeIgnoreDir } = useRemoveIgnoreDirs()
+  const handleRemoveIgnoreDir = () => {
+    removeIgnoreDir(selectedPaths)
+  }
+
+  const handleAddDirs = () => {
+    ipcRenderer.send('open-select-dirs-dialog')
+  }
+
+  const handleAddIgnoreDirs = () => {
+    ipcRenderer.send('open-select-ignore-dirs-dialog')
+  }
+
+  const handleCopy = () => {
+    copyTextToClipboard(selectedPaths).then((success) => {
+      if (success) {
+        openSnackbar("Path copied to clipboard successfully", "success");
+      } else {
+        openSnackbar("Failed to copy path to clipboard", "error");
+      }
+    });
   };
 
   const { paths, isError, isLoading, isSuccess, error, status } = useGetDirs();
@@ -63,16 +112,12 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <SnackbarProvider>
-          <IndexButtons selectedPaths={selectedPath} />
-          <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPath} />
-        </SnackbarProvider>
+        <IndexButtons handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
+        <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SnackbarProvider>
-          <IndexButtons selectedPaths={selectedPath} />
-          <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPath} />
-        </SnackbarProvider>
+        <IndexButtons handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
+        <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
       </CustomTabPanel>
     </Box>
   );

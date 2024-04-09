@@ -169,16 +169,23 @@ connectProcess('nanobert', runNanoBert, stopNanoBert)
 
 connectProcess('chromadb', runChromaDB, stopChromaDB)
 
-ipc.on('open-select-path-dialog', function (event) {
+ipc.on('open-select-dirs-dialog', function (event) {
   dialog.showOpenDialog(win, {
     properties: ['openDirectory', 'multiSelections']
   }).then(result => {
-    if (!result.canceled && result.filePaths.length > 0) {
-      const folderPath = result.filePaths;
-      // Do something with the selected folder path
-      event.sender.send('selected-path', folderPath);
-      console.log('Selected folder:', folderPath);
-    }
+    console.log(result.filePaths, result.canceled)
+    event.sender.send('selected-dirs', result.filePaths, result.canceled);
+  }).catch(err => {
+    console.error(err);
+  });
+})
+
+ipc.on('open-select-ignore-dirs-dialog', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openDirectory', 'multiSelections']
+  }).then(result => {
+    console.log(result.filePaths, result.canceled)
+    event.sender.send('selected-ignore-dirs', result.filePaths, result.canceled);
   }).catch(err => {
     console.error(err);
   });
