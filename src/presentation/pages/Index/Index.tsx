@@ -55,19 +55,25 @@ export default function BasicTabs() {
   const { mutate: addIgnoreDirs } = useAddIgnoreDirs()
   const ipcRenderer = (window as any).ipcRenderer
 
-  ipcRenderer.on('selected-dirs', (event, paths: string[], isCancelled: boolean) => {
-    if (isCancelled)
-      console.log('cancelled')
-    else
-      addDirs(paths)
-  });
+  React.useEffect(() => {
+    const handleSelectedDirs = (event: any, paths: string[], isCancelled: boolean) => {
+      if (isCancelled) console.log('cancelled');
+      else addDirs(paths);
+    };
 
-  ipcRenderer.on('selected-ignore-dirs', (event, paths: string[], isCancelled: boolean) => {
-    if (isCancelled)
-      console.log('cancelled')
-    else
-      addIgnoreDirs(paths)
-  });
+    const handleSelectedIgnoreDirs = (event: any, paths: string[], isCancelled: boolean) => {
+      if (isCancelled) console.log('cancelled');
+      else addIgnoreDirs(paths);
+    };
+
+    ipcRenderer.on('selected-dirs', handleSelectedDirs);
+    ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
+
+    return () => {
+      ipcRenderer.removeListener('selected-dirs', handleSelectedDirs);
+      ipcRenderer.removeListener('selected-ignore-dirs', handleSelectedIgnoreDirs);
+    };
+  }, [addDirs, addIgnoreDirs, ipcRenderer]);
 
   // buttons tasks
   const { mutate: removeDir } = useRemoveDirs()
