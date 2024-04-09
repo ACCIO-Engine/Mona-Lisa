@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import copyTextToClipboard from "../../utils/copy";
 import { useSnackbar } from "../../contexts/SnackbarContext";
-import { useEffect, useState } from "react";
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
   {
@@ -11,13 +10,6 @@ const columns: GridColDef[] = [
     valueGetter: (params) => `${params.row.paths || ""}`,
     width: 150,
   },
-];
-
-const paths = [
-  // create tuples of id, paths
-  { id: 1, paths: "path1" },
-  { id: 2, paths: "path2" },
-  { id: 3, paths: "path3" },
 ];
 
 interface GridProps {

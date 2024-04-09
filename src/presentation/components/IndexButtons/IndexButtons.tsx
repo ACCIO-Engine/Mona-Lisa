@@ -27,6 +27,7 @@ export default function IndexButtons() {
           id="add-path"
           onClick={() => {
             ipcRenderer.send('open-select-path-dialog');
+            addDirs(path)
           }}
         >
           Add
@@ -36,8 +37,7 @@ export default function IndexButtons() {
         <Button
           variant="contained"
           onClick={() => {
-            ipcRenderer.send('open-select-path-dialog');
-            insertDirs(path)
+
           }}
         >
           Remove
