@@ -57,7 +57,6 @@ export default function BasicTabs() {
   const ipcRenderer = (window as any).ipcRenderer
 
   const handleSelectedDirs = React.useCallback((event: any, paths: string[], isCancelled: boolean) => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAA")
     if (isCancelled) console.log('cancelled');
     else addDirs(paths);
   }, [addDirs]);

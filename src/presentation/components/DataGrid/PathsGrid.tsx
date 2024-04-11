@@ -8,7 +8,7 @@ const columns: GridColDef[] = [
     field: "paths",
     headerName: "Paths",
     valueGetter: (params) => `${params.row.paths || ""}`,
-    width: 150,
+    flex: 1
   },
 ];
 
