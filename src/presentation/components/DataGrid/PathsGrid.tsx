@@ -13,8 +13,8 @@ const columns: GridColDef[] = [
 ];
 
 interface GridProps {
-  paths: string[];
-  setSelectedPaths: (paths: string[]) => void;
+  paths: Set<string>;
+  setSelectedPaths: (paths: Set<string>) => void;
 }
 export default function PathsGrid(props: GridProps) {
   const { openSnackbar } = useSnackbar();
@@ -31,8 +31,8 @@ export default function PathsGrid(props: GridProps) {
 
   const handleSelect = (selectionModel: GridRowId[]) => {
     if (selectionModel.length > 0) {
-      const selectedRows = selectionModel.map((rowId) => props.paths[rowId as number]);
-      props.setSelectedPaths(selectedRows);
+      const selectedRows = selectionModel.map((rowId) => Array.from(props.paths)[rowId as number]);
+      props.setSelectedPaths(new Set(selectedRows));
     }
   };
 
@@ -40,7 +40,7 @@ export default function PathsGrid(props: GridProps) {
     <Box sx={{ height: `calc(100vh - 270px)`, width: "100%" }}>
       <DataGrid
         scrollbarSize={10}
-        rows={props.paths.map((paths, index) => ({ id: index, paths: path }))}
+        rows={Array.from(props.paths).map((path, index) => ({ id: index, paths: path }))}
         columns={columns}
         disableRowSelectionOnClick
         checkboxSelection

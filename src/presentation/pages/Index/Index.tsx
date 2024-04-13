@@ -45,28 +45,25 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
-  const [selectedPaths, setSelectedPaths] = React.useState<string[]>([]);
+  const [selectedPaths, setSelectedPaths] = React.useState<Set<string>>(new Set<string>());
+  const [ignoredPaths, setIgnoredPaths] = React.useState<Set<string>>(new Set<string>());
+  const [crawledPaths, setCrawledPaths] = React.useState<Set<string>>(new Set<string>());
   const [value, setValue] = React.useState(0);
 
   const { openSnackbar } = useSnackbar();
-  const queryClient = useQueryClient();
-  const { mutate: addDirs } = useAddDirs(queryClient)
-  const { mutate: addIgnoreDirs } = useAddIgnoreDirs(queryClient)
-  const { mutate: removeDir } = useRemoveDirs(queryClient)
-  const { mutate: removeIgnoreDir } = useRemoveIgnoreDirs(queryClient)
-  const { paths } = useGetDirs();
 
   const ipcRenderer = (window as any).ipcRenderer
 
-  const handleSelectedDirs = React.useCallback((event: any, paths: string[], isCancelled: boolean) => {
-    if (isCancelled) console.log('cancelled');
-    else addDirs(paths);
-  }, [addDirs]);
+  const handleSelectedDirs = (event: any, dirs: string[]) => {
+    const uniqueDirs = new Set(dirs);
+    setCrawledPaths((prevCrawledPaths) => new Set([...prevCrawledPaths, ...uniqueDirs]));
+  };
 
-  const handleSelectedIgnoreDirs = React.useCallback((event: any, paths: string[], isCancelled: boolean) => {
-    if (isCancelled) console.log('cancelled');
-    else addIgnoreDirs(paths);
-  }, [addIgnoreDirs]);
+  const handleSelectedIgnoreDirs = (event: any, dirs: string[]) => {
+    const uniqueDirs = new Set(dirs);
+    setIgnoredPaths((prevIgnoredPaths) => new Set([...prevIgnoredPaths, ...uniqueDirs]));
+  };
+
 
   React.useEffect(() => {
     ipcRenderer.on('selected-dirs', handleSelectedDirs);
@@ -80,24 +77,47 @@ export default function BasicTabs() {
   };
 
   const handleRemoveDir = () => {
-    removeDir(selectedPaths)
+    const newCrawledPaths = new Set(crawledPaths);
+    selectedPaths.forEach(path => {
+      newCrawledPaths.delete(path);
+    });
+    setCrawledPaths(newCrawledPaths);
+
   }
 
   const handleRemoveIgnoreDir = () => {
-    removeIgnoreDir(selectedPaths)
+    const newIgnoredPaths = new Set(ignoredPaths);
+    selectedPaths.forEach(path => {
+      newIgnoredPaths.delete(path);
+    });
+    setIgnoredPaths(newIgnoredPaths);
+
   }
 
   const handleSwapIndex2Ignore = () => {
-    console.log('swap index to ignore')
-    handleRemoveDir()
-    addIgnoreDirs(selectedPaths);
-  }
+    console.log('swap index to ignore');
+    // Create a new set of crawled paths without the selected paths
+    const newCrawledPaths = new Set([...crawledPaths].filter((path) => !selectedPaths.has(path)));
+    // Add selected paths to ignored paths set
+    const newIgnoredPaths = new Set([...ignoredPaths, ...selectedPaths]);
+    console.log(newCrawledPaths, newIgnoredPaths)
+    // Update the state with the new sets
+    setCrawledPaths(newCrawledPaths);
+    setIgnoredPaths(newIgnoredPaths);
+  };
 
   const handleSwapIgnore2Index = () => {
-    console.log('swap ignore to index')
-    handleRemoveIgnoreDir()
-    addDirs(selectedPaths);
-  }
+    console.log('swap ignore to index');
+    // Create a new set of ignored paths without the selected paths
+    const newIgnoredPaths = new Set([...ignoredPaths].filter((path) => !selectedPaths.has(path)));
+    // Add selected paths to crawled paths set
+    const newCrawledPaths = new Set([...crawledPaths, ...selectedPaths]);
+
+    // Update the state with the new sets
+    setCrawledPaths(newCrawledPaths);
+    setIgnoredPaths(newIgnoredPaths);
+  };
+
 
   const handleAddDirs = () => {
     ipcRenderer.send('open-select-dirs-dialog')
@@ -108,7 +128,8 @@ export default function BasicTabs() {
   }
 
   const handleCopy = () => {
-    copyTextToClipboard(selectedPaths).then((success) => {
+    const selectedPathsArray = Array.from(selectedPaths);
+    copyTextToClipboard(selectedPathsArray).then((success) => {
       if (success) {
         openSnackbar("Path copied to clipboard successfully", "success");
       } else {
@@ -140,11 +161,11 @@ export default function BasicTabs() {
         </Box>
         <CustomTabPanel value={value} index={0}>
           <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
-          <PathsGrid paths={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
+          <PathsGrid paths={crawledPaths} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
-          <PathsGrid paths={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
+          <PathsGrid paths={ignoredPaths} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <Settings
@@ -165,7 +186,7 @@ export default function BasicTabs() {
       </Box>
       <Button variant="contained"
         onClick={() =>
-          ipcRenderer.send('save', { selectedMode, DBPath, selectedTextModel, selectedImageModel, selectedVideoModel, selectedSearchApproach })}>
+          ipcRenderer.send('save', { selectedMode, DBPath, selectedTextModel, selectedImageModel, selectedVideoModel, selectedSearchApproach, crawledPaths, ignoredPaths })}>
         save
       </Button>
     </>
