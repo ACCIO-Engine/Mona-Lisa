@@ -13,7 +13,7 @@ const columns: GridColDef[] = [
 ];
 
 interface GridProps {
-  users: string[];
+  paths: string[];
   setSelectedPaths: (paths: string[]) => void;
 }
 export default function PathsGrid(props: GridProps) {
@@ -31,7 +31,7 @@ export default function PathsGrid(props: GridProps) {
 
   const handleSelect = (selectionModel: GridRowId[]) => {
     if (selectionModel.length > 0) {
-      const selectedRows = selectionModel.map((rowId) => props.users[rowId as number]);
+      const selectedRows = selectionModel.map((rowId) => props.paths[rowId as number]);
       props.setSelectedPaths(selectedRows);
     }
   };
@@ -40,7 +40,7 @@ export default function PathsGrid(props: GridProps) {
     <Box sx={{ height: `calc(100vh - 270px)`, width: "100%" }}>
       <DataGrid
         scrollbarSize={10}
-        rows={props.users.map((user, index) => ({ id: index, paths: user }))}
+        rows={props.paths.map((paths, index) => ({ id: index, paths: path }))}
         columns={columns}
         disableRowSelectionOnClick
         checkboxSelection

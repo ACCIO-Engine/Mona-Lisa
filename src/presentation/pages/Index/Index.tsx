@@ -140,11 +140,11 @@ export default function BasicTabs() {
         </Box>
         <CustomTabPanel value={value} index={0}>
           <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
-          <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
+          <PathsGrid paths={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
-          <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
+          <PathsGrid paths={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <Settings
