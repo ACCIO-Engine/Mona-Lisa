@@ -1,8 +1,7 @@
-enum SearchType {
-  TEXT = "text",
-  IMAGE = "image",
-  VIDEO = "video",
-  Audio = "audio"
+enum SearchMode {
+  CLASSICAL = "Classical",
+  DEEP = "Deep",
+  MIXED = "Mixed",
 }
 
-export default SearchType;
+export default SearchMode;

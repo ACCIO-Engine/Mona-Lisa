@@ -9,6 +9,8 @@ import { useSnackbar } from "../../contexts/SnackbarContext";
 import { useAddDirs, useGetDirs, useRemoveDirs, useRemoveIgnoreDirs, useAddIgnoreDirs } from "../../../application";
 import copyTextToClipboard from "../../utils/copy";
 import { useQueryClient } from "@tanstack/react-query";
+import Settings from "../../layouts/Settings/Settings";
+import { Button } from "@mui/material";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -115,26 +117,57 @@ export default function BasicTabs() {
     });
   };
 
+  const [selectedMode, setSelectedMode] = React.useState<string>("");
+  const [DBPath, setDBPath] = React.useState<string>("");
+  const [selectedTextModel, setSelectedTextModel] = React.useState<string>("");
+  const [selectedImageModel, setSelectedImageModel] = React.useState<string>("");
+  const [selectedVideoModel, setSelectedVideoModel] = React.useState<string>("");
+  const [selectedSearchApproach, setSelectedSearchApproach] = React.useState<string>("");
+
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Indexed" {...a11yProps(0)} />
-          <Tab label="Ignored" {...a11yProps(1)} />
-        </Tabs>
+    <>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Indexed" {...a11yProps(0)} />
+            <Tab label="Ignored" {...a11yProps(1)} />
+            <Tab label="Settings" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
+          <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
+          <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <Settings
+            mode={selectedMode}
+            setMode={setSelectedMode}
+            storageDBPath={DBPath}
+            setStorageDBPath={setDBPath}
+            textModel={selectedTextModel}
+            setTextModel={setSelectedTextModel}
+            imageModel={selectedImageModel}
+            setImageModel={setSelectedImageModel}
+            videoModel={selectedVideoModel}
+            setVideoModel={setSelectedVideoModel}
+            defaultSearchApproach={selectedSearchApproach}
+            setDefaultSearchApproach={setSelectedSearchApproach}
+          />
+        </CustomTabPanel>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
-        <PathsGrid users={paths ? paths.dirsToCrawl : []} setSelectedPaths={setSelectedPaths} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
-        <PathsGrid users={paths ? paths.dirsToIgnore : []} setSelectedPaths={setSelectedPaths} />
-      </CustomTabPanel>
-    </Box>
+      <Button variant="contained"
+        onClick={() =>
+          ipcRenderer.send('save', { selectedMode, DBPath, selectedTextModel, selectedImageModel, selectedVideoModel, selectedSearchApproach })}>
+        save
+      </Button>
+    </>
   );
 }

@@ -216,13 +216,13 @@ ipc.on('select-DBpath', function (event) {
   dialog.showOpenDialog(win, {
     properties: ['openDirectory',]
   }).then(result => {
-    if (!result.canceled && result.filePaths.length > 0) {
-      const folderPath = result.filePaths[0];
-      // Do something with the selected folder path
-      event.sender.send('selected-DBpath', folderPath);
-      console.log('Selected folder:', folderPath);
-    }
+    event.sender.send('selected-DBpath', result.filePaths[0], result.canceled);
+    console.log('Selected folder:', result.filePaths[0]);
   }).catch(err => {
     console.error(err);
   });
+})
+
+ipc.on('save', (sender, data) => {
+  console.log(data)
 })
