@@ -69,6 +69,7 @@ void app.whenReady().then(createWindow)
 process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
 process.env.CHROMADB = path.join(__dirname, '../../Octopus')
+process.env.OCTOPUS = path.join(__dirname, '../../Octopus')
 
 // const store = new Store()
 
@@ -116,6 +117,11 @@ const runChromaDB = (): any => {
   return runShellCommand('chroma run --path AccioVecDB --port 8006', process.env.CHROMADB)
 }
 
+const runOctopus = (): any => {
+  return runShellCommand(' java -jar ./Octopus-0.01.jar', process.env.OCTOPUS)
+}
+
+
 const stopHedwig = (child: any): void => {
   stopShellCommand(child)
 }
@@ -125,6 +131,10 @@ const stopNanoBert = (child: any): void => {
 }
 
 const stopChromaDB = (child: any): void => {
+  stopShellCommand(child)
+}
+
+const stopOctopus = (child: any): void => {
   stopShellCommand(child)
 }
 
@@ -167,3 +177,5 @@ connectProcess('hedwig', runHedwig, stopHedwig)
 connectProcess('nanobert', runNanoBert, stopNanoBert)
 
 connectProcess('chromadb', runChromaDB, stopChromaDB)
+
+connectProcess('octopus', runOctopus, stopOctopus)
