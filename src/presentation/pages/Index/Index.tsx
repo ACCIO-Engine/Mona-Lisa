@@ -43,6 +43,13 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
+  const [selectedMode, setSelectedMode] = React.useState<string>("");
+  const [DBPath, setDBPath] = React.useState<string>("");
+  const [selectedTextModel, setSelectedTextModel] = React.useState<string>("");
+  const [selectedImageModel, setSelectedImageModel] = React.useState<string>("");
+  const [selectedVideoModel, setSelectedVideoModel] = React.useState<string>("");
+  const [selectedSearchApproach, setSelectedSearchApproach] = React.useState<string>("");
+
   const [selectedPaths, setSelectedPaths] = React.useState<Set<string>>(new Set<string>());
   const [ignoredPaths, setIgnoredPaths] = React.useState<Set<string>>(new Set<string>());
   const [crawledPaths, setCrawledPaths] = React.useState<Set<string>>(new Set<string>());
@@ -52,32 +59,37 @@ export default function BasicTabs() {
 
   const ipcRenderer = (window as any).ipcRenderer
 
-  const handleSelectedDirs = (event: any, dirs: string[]) => {
+  const handleSelectedDirs = React.useCallback((event: any, dirs: string[]) => {
+    console.log("AAAAAAAAAAAAAAAAAAAA")
     const uniqueDirs = new Set(dirs);
     setCrawledPaths((prevCrawledPaths) => new Set([...prevCrawledPaths, ...uniqueDirs]));
-  };
+  }, [setCrawledPaths]);
 
-  const handleSelectedIgnoreDirs = (event: any, dirs: string[]) => {
+  const handleSelectedIgnoreDirs = React.useCallback((event: any, dirs: string[]) => {
+    console.log("AAAAAAAAAAAAAAAAAAAA")
     const uniqueDirs = new Set(dirs);
     setIgnoredPaths((prevIgnoredPaths) => new Set([...prevIgnoredPaths, ...uniqueDirs]));
-  };
+  }, [setIgnoredPaths]);
 
   // receive config data from main process
+  const handleLoadConfig = React.useCallback((event: any, config: any) => {
+    console.log("AAAAAAAAAAA")
+    setSelectedMode(config.selectedMode);
+    setDBPath(config.DBPath);
+    setSelectedTextModel(config.selectedTextModel);
+    setSelectedImageModel(config.selectedImageModel);
+    setSelectedVideoModel(config.selectedVideoModel);
+    setSelectedSearchApproach(config.selectedSearchApproach);
+    setCrawledPaths(new Set(config.crawledPaths));
+    setIgnoredPaths(new Set(config.ignoredPaths));
+  }, [setSelectedMode, setDBPath, setSelectedTextModel, setSelectedImageModel, setSelectedVideoModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
+
   React.useEffect(() => {
+    console.log("EFEEECT")
     ipcRenderer.send('get-config');
-    ipcRenderer.on('config', (event: any, config: any) => {
-      console.log(config);
-      setSelectedMode(config.selectedMode);
-      setDBPath(config.DBPath);
-      setSelectedTextModel(config.selectedTextModel);
-      setSelectedImageModel(config.selectedImageModel);
-      setSelectedVideoModel(config.selectedVideoModel);
-      setSelectedSearchApproach(config.selectedSearchApproach);
-      setCrawledPaths(new Set(config.crawledPaths));
-      setIgnoredPaths(new Set(config.ignoredPaths));
-    }
-    );
-  }, []);
+    ipcRenderer.on('config', handleLoadConfig);
+  }, [handleLoadConfig]);
+
   React.useEffect(() => {
     ipcRenderer.on('selected-dirs', handleSelectedDirs);
     ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
@@ -151,12 +163,6 @@ export default function BasicTabs() {
     });
   };
 
-  const [selectedMode, setSelectedMode] = React.useState<string>("");
-  const [DBPath, setDBPath] = React.useState<string>("");
-  const [selectedTextModel, setSelectedTextModel] = React.useState<string>("");
-  const [selectedImageModel, setSelectedImageModel] = React.useState<string>("");
-  const [selectedVideoModel, setSelectedVideoModel] = React.useState<string>("");
-  const [selectedSearchApproach, setSelectedSearchApproach] = React.useState<string>("");
 
   return (
     <>
