@@ -3,6 +3,8 @@ import { app, BrowserWindow, dialog, ipcMain as ipc } from 'electron'
 import path from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
 import os from 'node:os'
+import fs from 'fs';
+import readConfigFile from '../src/application/utils/readConfigFile'
 // import Store from 'electron-store'
 
 // The built directory structure
@@ -65,7 +67,30 @@ app.on("activate", () => {
   }
 });
 
-void app.whenReady().then(createWindow)
+app.on('ready', () => {
+  // Read the configuration file
+  fs.readFile(path.resolve(__dirname, 'config.json'), (err, data) => {
+    if (err) {
+      console.error('Error reading configuration file:', err);
+      return;
+    }
+
+    try {
+      const config = JSON.parse(data.toString());
+      // Apply configuration settings here
+      // For example, set window dimensions
+      if (config.width && config.height) {
+        mainWindow.setSize(config.width, config.height);
+      }
+    } catch (err) {
+      console.error('Error parsing configuration file:', err);
+    }
+
+    // Create the application window after reading the configuration
+    createWindow();
+  });
+});
+
 
 process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
@@ -225,4 +250,17 @@ ipc.on('select-DBpath', function (event) {
 
 ipc.on('save', (sender, data) => {
   console.log(data)
+  // save data to json file but first convert crawledPaths and ignoredPaths to list
+  data.crawledPaths = Array.from(data.crawledPaths);
+  data.ignoredPaths = Array.from(data.ignoredPaths);
+  const jsonData = JSON.stringify(data);
+  const filePath = path.join(__dirname, "config.json");
+  fs.writeFileSync(filePath, jsonData);
+  console.log("config saved to JSON file:", filePath);
+})
+
+// receive config request from renderer process
+ipc.on('get-config', (event) => {
+  const config = readConfigFile();
+  event.sender.send('config', config);
 })

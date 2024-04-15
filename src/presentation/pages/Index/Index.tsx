@@ -6,9 +6,7 @@ import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons/IndexButtons";
 import { useSnackbar } from "../../contexts/SnackbarContext";
-import { useAddDirs, useGetDirs, useRemoveDirs, useRemoveIgnoreDirs, useAddIgnoreDirs } from "../../../application";
 import copyTextToClipboard from "../../utils/copy";
-import { useQueryClient } from "@tanstack/react-query";
 import Settings from "../../layouts/Settings/Settings";
 import { Button } from "@mui/material";
 interface TabPanelProps {
@@ -64,7 +62,22 @@ export default function BasicTabs() {
     setIgnoredPaths((prevIgnoredPaths) => new Set([...prevIgnoredPaths, ...uniqueDirs]));
   };
 
-
+  // receive config data from main process
+  React.useEffect(() => {
+    ipcRenderer.send('get-config');
+    ipcRenderer.on('config', (event: any, config: any) => {
+      console.log(config);
+      setSelectedMode(config.selectedMode);
+      setDBPath(config.DBPath);
+      setSelectedTextModel(config.selectedTextModel);
+      setSelectedImageModel(config.selectedImageModel);
+      setSelectedVideoModel(config.selectedVideoModel);
+      setSelectedSearchApproach(config.selectedSearchApproach);
+      setCrawledPaths(new Set(config.crawledPaths));
+      setIgnoredPaths(new Set(config.ignoredPaths));
+    }
+    );
+  }, []);
   React.useEffect(() => {
     ipcRenderer.on('selected-dirs', handleSelectedDirs);
     ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
