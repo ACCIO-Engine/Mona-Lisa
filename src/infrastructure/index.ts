@@ -1,3 +1,3 @@
 import { searchImage } from "./services/search";
-
-export { searchImage };
+import { getDirs, insertDirs, insertIgnoreDirs, removeDirs, removeIgnoreDirs } from "./services/crawler";
+export { searchImage, getDirs, insertDirs, insertIgnoreDirs, removeDirs, removeIgnoreDirs };

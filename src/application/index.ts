@@ -1,3 +1,8 @@
+import useGetDirs from "./usecases/crawler/useGetDirs.usecase";
+import useAddDirs from "./usecases/crawler/useAddDirs.usecase";
+import useAddIgnoreDirs from "./usecases/crawler/useAddIgnoreDirs.usecase";
+import useRemoveDirs from "./usecases/crawler/useRemoveDirs.usecase";
+import useRemoveIgnoreDirs from "./usecases/crawler/useRemoveIgnoreDirs.usecase";
 // Import usecases
 import useSearch from "./usecases/search/useSearch.usecase";
 // Import contexts
@@ -10,5 +15,6 @@ export {
   useSearchContext,
   SearchProvider,
   SearchType,
-  QueryEngines
+  QueryEngines,
+  useGetDirs, useAddDirs, useAddIgnoreDirs, useRemoveDirs, useRemoveIgnoreDirs
 };

@@ -7,15 +7,11 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 interface CustomSelectProps {
   choices: string[];
   label: string;
+  selectedValue: string;
+  setSelectedValue: (value: string) => void;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ choices, label }) => {
-  const [selectedValue, setSelectedValue] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedValue(event.target.value);
-  };
-
+const CustomSelect: React.FC<CustomSelectProps> = ({ selectedValue, setSelectedValue, choices, label }) => {
   return (
     <FormControl fullWidth sx={{ display: "flex" }}>
       <InputLabel id="select-label">{label}</InputLabel>
@@ -24,10 +20,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ choices, label }) => {
         id="select"
         value={selectedValue}
         label={label}
-        onChange={handleChange}
+        onChange={(event: SelectChangeEvent) => setSelectedValue(event.target.value as string)}
       >
         {choices.map((choice, index) => (
-          <MenuItem key={index} value={index}>
+          <MenuItem key={index} value={choice}>
             {choice}
           </MenuItem>
         ))}

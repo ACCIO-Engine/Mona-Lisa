@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow, ipcMain as ipc } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain as ipc } from 'electron'
 import path from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
 import os from 'node:os'
+import fs from 'fs';
 // import Store from 'electron-store'
 
 // The built directory structure
@@ -23,7 +24,7 @@ let win: BrowserWindow | null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
-function createWindow (): void {
+function createWindow(): void {
   console.log('Creating window')
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "icon.png"),
@@ -46,6 +47,7 @@ function createWindow (): void {
   }
 }
 
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -64,7 +66,30 @@ app.on("activate", () => {
   }
 });
 
-void app.whenReady().then(createWindow)
+app.on('ready', () => {
+  // Read the configuration file
+  fs.readFile(path.resolve(__dirname, 'config.json'), (err, data) => {
+    if (err) {
+      console.error('Error reading configuration file:', err);
+      return;
+    }
+
+    try {
+      const config = JSON.parse(data.toString());
+      // Apply configuration settings here
+      // For example, set window dimensions
+      if (config.width && config.height) {
+        mainWindow.setSize(config.width, config.height);
+      }
+    } catch (err) {
+      console.error('Error parsing configuration file:', err);
+    }
+
+    // Create the application window after reading the configuration
+    createWindow();
+  });
+});
+
 
 process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
@@ -75,7 +100,7 @@ process.env.OCTOPUS = path.join(__dirname, '../../Octopus')
 
 
 
-function runShellCommand (command: string, cwd: string | undefined): any {
+function runShellCommand(command: string, cwd: string | undefined): any {
   const child = spawn(command, {
     // stdio: 'inherit',
     shell: true,
@@ -87,15 +112,15 @@ function runShellCommand (command: string, cwd: string | undefined): any {
 
 // const test = runShellCommand('python server.py')
 
-function stopShellCommand (child: any): void {
+function stopShellCommand(child: any): void {
   console.log('Stopping the command')
   if (child != null) {
     console.log('Killing the child process')
-    if(os.platform() === 'win32'|| os.platform() === 'win64'){
+    if (os.platform() === 'win32' || os.platform() === 'win64') {
       console.log(`pid = ${child.pid}`)
       spawnSync('taskkill', ['/pid', child.pid, '/f', '/t'])
     }
-    else if(os.platform() === 'linux'){
+    else if (os.platform() === 'linux') {
       spawnSync('kill', ['-9', child.pid])
     }
     child = null
@@ -166,9 +191,9 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
     app.on('will-quit', () => {
       // Perform tasks such as notifying the user or confirming action
       console.log("Trying to kill process")
-      if(child != null)
+      if (child != null)
         stopProcess(child)
-  });
+    });
   })
 }
 
@@ -178,4 +203,77 @@ connectProcess('nanobert', runNanoBert, stopNanoBert)
 
 connectProcess('chromadb', runChromaDB, stopChromaDB)
 
+ipc.on('open-select-dirs-dialog', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openDirectory', 'multiSelections']
+  }).then(result => {
+    event.sender.send('selected-dirs', result.filePaths, result.canceled);
+  }).catch(err => {
+    console.error(err);
+  });
+})
+
+ipc.on('open-select-ignore-dirs-dialog', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openDirectory', 'multiSelections']
+  }).then(result => {
+    event.sender.send('selected-ignore-dirs', result.filePaths, result.canceled);
+  }).catch(err => {
+    console.error(err);
+  });
+})
+
+ipc.on('open-select-image-dialog', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }
+    ]
+  }).then(result => {
+    if (!result.canceled && result.filePaths.length > 0) {
+      const imagePath = result.filePaths[0];
+
+      // Split the path string by the directory separator
+      const pathParts = imagePath.split("\\");
+
+      // Extract the last part (filename) from the path
+      const filename = pathParts[pathParts.length - 1];
+
+      event.sender.send('selected-image-path', filename);
+    }
+  }).catch(err => {
+    console.error(err);
+  });
+})
+
+ipc.on('select-DBpath', function (event) {
+  dialog.showOpenDialog(win, {
+    properties: ['openDirectory',]
+  }).then(result => {
+    event.sender.send('selected-DBpath', result.filePaths[0], result.canceled);
+    console.log('Selected folder:', result.filePaths[0]);
+  }).catch(err => {
+    console.error(err);
+  });
+})
+
+ipc.on('save', (sender, data) => {
+  console.log(data)
+  // save data to json file but first convert crawledPaths and ignoredPaths to list
+  data.paths = Array.from(data.paths);
+  data.ignoredPaths = Array.from(data.ignoredPaths);
+  const jsonData = JSON.stringify(data);
+  const filePath = path.join(__dirname, "../../Octopus/config.json");
+  fs.writeFileSync(filePath, jsonData);
+  console.log("config saved to JSON file:", filePath);
+})
+
+// receive config request from renderer process
+ipc.on('get-config', (event) => {
+  const filePath = path.join(__dirname, "../../Octopus/config.json");
+  const data = fs.readFileSync(filePath, 'utf8');
+  const config = JSON.parse(data);
+  console.log(config)
+  event.sender.send('config', config);
+})
 connectProcess('octopus', runOctopus, stopOctopus)

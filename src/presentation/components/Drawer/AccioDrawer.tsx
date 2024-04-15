@@ -40,32 +40,32 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
       <DrawerHeader sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {isLightMode
           ? (
-          <img alt="" src={LightLogo} width={100} height={50} />
-            )
+            <img alt="" src={LightLogo} width={100} height={50} />
+          )
           : (
-          <img alt="" src={DarkLogo} width={100} height={50} />
-            )}
+            <img alt="" src={DarkLogo} width={100} height={50} />
+          )}
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'rtl'
             ? (
-            <ChevronRightIcon />
-              )
+              <ChevronRightIcon />
+            )
             : (
-            <ChevronLeftIcon />
-              )}
+              <ChevronLeftIcon />
+            )}
         </IconButton>
       </DrawerHeader>
       <Divider />
       <StyledList isLightMode={isLightMode}>
-      <Link to={routes.dashboard} style={{ color: 'inherit', textDecoration: 'none' }}>
-        <ListItem key="Dashboard" disablePadding>
-          <ListItemButton {...buttonProps(0)}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItemButton>
-        </ListItem>
+        <Link to={routes.dashboard} style={{ color: 'inherit', textDecoration: 'none' }}>
+          <ListItem key="Dashboard" disablePadding>
+            <ListItemButton {...buttonProps(0)}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </ListItem>
         </Link>
         <Link
           to={routes.home}
@@ -103,19 +103,6 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
                 <DocumentScannerIcon />
               </ListItemIcon>
               <ListItemText primary="Indexing Mode" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link
-          to={routes.settings}
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          <ListItem key="Settings" disablePadding>
-            <ListItemButton {...buttonProps(4)}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
             </ListItemButton>
           </ListItem>
         </Link>
