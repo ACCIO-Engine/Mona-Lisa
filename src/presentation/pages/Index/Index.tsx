@@ -85,15 +85,19 @@ export default function BasicTabs() {
   }, [setSelectedMode, setDBPath, setSelectedTextModel, setSelectedImageModel, setSelectedVideoModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
 
   React.useEffect(() => {
-    console.log("EFEEECT")
+    console.log("EFECT");
     ipcRenderer.send('get-config');
     ipcRenderer.on('config', handleLoadConfig);
-  }, [handleLoadConfig]);
+    return () => {
+      // remove all event listeners when component unmounts
+      ipcRenderer.removeAllListeners('config');
+    }
+  }, [handleLoadConfig, ipcRenderer]);
 
   React.useEffect(() => {
     ipcRenderer.on('selected-dirs', handleSelectedDirs);
     ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
-  }, [handleSelectedDirs, handleSelectedIgnoreDirs]);
+  }, [handleSelectedDirs, handleSelectedIgnoreDirs, ipcRenderer]);
 
 
   // Event handlers
