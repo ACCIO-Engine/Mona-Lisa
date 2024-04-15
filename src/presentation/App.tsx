@@ -25,7 +25,6 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />
       },
-      { path: 'settings', element: <Settings /> },
       { path: 'search', element: <Results /> },
       { path: 'index', element: <SnackbarProvider><Index /></SnackbarProvider> },
       { path: 'dashboard', element: <Dashboard /> }
