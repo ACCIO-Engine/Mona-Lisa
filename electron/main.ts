@@ -4,7 +4,6 @@ import path from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
 import os from 'node:os'
 import fs from 'fs';
-import readConfigFile from '../src/application/utils/readConfigFile'
 // import Store from 'electron-store'
 
 // The built directory structure
@@ -261,17 +260,20 @@ ipc.on('select-DBpath', function (event) {
 ipc.on('save', (sender, data) => {
   console.log(data)
   // save data to json file but first convert crawledPaths and ignoredPaths to list
-  data.crawledPaths = Array.from(data.crawledPaths);
+  data.paths = Array.from(data.paths);
   data.ignoredPaths = Array.from(data.ignoredPaths);
   const jsonData = JSON.stringify(data);
-  const filePath = path.join(__dirname, "config.json");
+  const filePath = path.join(__dirname, "../../Octopus/config.json");
   fs.writeFileSync(filePath, jsonData);
   console.log("config saved to JSON file:", filePath);
 })
 
 // receive config request from renderer process
 ipc.on('get-config', (event) => {
-  const config = readConfigFile();
+  const filePath = path.join(__dirname, "../../Octopus/config.json");
+  const data = fs.readFileSync(filePath, 'utf8');
+  const config = JSON.parse(data);
+  console.log(config)
   event.sender.send('config', config);
 })
 connectProcess('octopus', runOctopus, stopOctopus)

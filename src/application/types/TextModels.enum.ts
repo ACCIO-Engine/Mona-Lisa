@@ -1,5 +1,5 @@
 enum TextModels {
-    NANOBERT = "NanoBERT",
+    NANOBERT = "nanobert",
     MODEL2 = "Model2",
 }
 

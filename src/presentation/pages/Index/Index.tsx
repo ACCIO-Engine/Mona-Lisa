@@ -73,19 +73,17 @@ export default function BasicTabs() {
 
   // receive config data from main process
   const handleLoadConfig = React.useCallback((event: any, config: any) => {
-    console.log("AAAAAAAAAAA")
-    setSelectedMode(config.selectedMode);
-    setDBPath(config.DBPath);
-    setSelectedTextModel(config.selectedTextModel);
-    setSelectedImageModel(config.selectedImageModel);
-    setSelectedVideoModel(config.selectedVideoModel);
-    setSelectedSearchApproach(config.selectedSearchApproach);
-    setCrawledPaths(new Set(config.crawledPaths));
+    setSelectedMode(config.mode);
+    setDBPath(config.vectorDBPath);
+    setSelectedTextModel(config.embedders);
+    setSelectedImageModel(config.imageCaptioners);
+    setSelectedVideoModel(config.videoCaptioners);
+    setSelectedSearchApproach(config.searchAppraoch);
+    setCrawledPaths(new Set(config.paths));
     setIgnoredPaths(new Set(config.ignoredPaths));
   }, [setSelectedMode, setDBPath, setSelectedTextModel, setSelectedImageModel, setSelectedVideoModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
 
   React.useEffect(() => {
-    console.log("EFECT");
     ipcRenderer.send('get-config');
     ipcRenderer.on('config', handleLoadConfig);
     return () => {
@@ -209,7 +207,8 @@ export default function BasicTabs() {
       </Box>
       <Button variant="contained"
         onClick={() =>
-          ipcRenderer.send('save', { selectedMode, DBPath, selectedTextModel, selectedImageModel, selectedVideoModel, selectedSearchApproach, crawledPaths, ignoredPaths })}>
+          ipcRenderer.send('save',
+            { "Mode": selectedMode, "vectorDBPath": DBPath, "embedders": selectedTextModel, "imageCaptioners": selectedImageModel, "videoCaptioners": selectedVideoModel, "searchAppraoch": selectedSearchApproach, "paths": crawledPaths, "ignoredPaths": ignoredPaths })}>
         save
       </Button>
     </>

@@ -1,5 +1,5 @@
 enum VideoModels {
-    MODEL1 = 'model1',
+    MODEL1 = 'attention',
     MODEL2 = 'model2',
 }
 

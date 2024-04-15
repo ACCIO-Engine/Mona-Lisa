@@ -1,5 +1,5 @@
 enum ImageModels {
-    MODEL1 = 'model1',
+    MODEL1 = 'vit-gpt2',
     MODEL2 = 'model2',
 }
 
