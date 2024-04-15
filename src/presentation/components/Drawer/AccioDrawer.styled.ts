@@ -55,13 +55,14 @@ export const CustomDrawer = styled(MuiDrawer, {
 
 type ListProps = {
   isLightMode: boolean;
+  theme: Theme;
 };
 
 export const StyledList = styled(List)((props: ListProps) => ({
   // selected and (selected + hover) states
   "&& .Mui-selected, && .Mui-selected:hover": {
     backgroundColor: props.isLightMode ? "#EBF5FF" : "#1f262e",
-    borderRight: "5px solid #3495f7",
+    borderRight: `5px solid ${props.theme.palette.primary.main}`,
     "&, & .MuiListItemIcon-root": {
       color: props.isLightMode ? "#0A6CCE" : "#66b2ff",
     },
