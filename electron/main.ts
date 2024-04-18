@@ -68,7 +68,7 @@ app.on("activate", () => {
 
 app.on('ready', () => {
   // Read the configuration file
-  fs.readFile(path.resolve(__dirname, 'config.json'), (err, data) => {
+  fs.readFile(path.resolve(__dirname, "../../Octopus/config.json"), (err, data) => {
     if (err) {
       console.error('Error reading configuration file:', err);
       return;
