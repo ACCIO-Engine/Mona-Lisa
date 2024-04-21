@@ -5,10 +5,15 @@ import { useSearchContext, SearchProvider } from "./contexts/SearchContext";
 // Import types
 import SearchType from "./types/SearchType.enum";
 import QueryEngines from "./types/QueryEngines.enum";
+import FileType from "./types/FileType.enum";
+import File from "./types/File.entity";
 export {
   useSearch,
   useSearchContext,
   SearchProvider,
   SearchType,
-  QueryEngines
+  QueryEngines,
+  FileType
 };
+
+export type { File };

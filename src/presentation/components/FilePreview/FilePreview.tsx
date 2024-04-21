@@ -7,34 +7,47 @@ import { IconButton } from "@mui/material";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { File, FileType } from "../../../application";
 
-const ResultCard = ({
-  file,
-}: {
-  file: {
-    path: string;
-    name: string;
-    score: number;
-    pages: number[];
-  };
-}) => {
+
+const ImageFilePreview = ({ file }: { file: File }) => {
+  return <img alt={file.name} height="200" src={`file://${file.path}`} />;
+};
+
+const DefaultFilePreview = ({ file }: { file: File }) => {
+  return (
+    <CardContent
+      sx={{
+        p: 0
+      }}
+    >
+      <Typography gutterBottom variant="h5" component="div">
+        {file.name}
+      </Typography>
+    </CardContent>
+  );
+};
+
+const FilePreview = ({ file }: { file: File }) => {
+  const filePreview =
+    file.type === FileType.Image ? (
+      <ImageFilePreview file={file} />
+    ) : (
+      <DefaultFilePreview file={file} />
+    );
+
   return (
     <Card
       sx={{
         maxWidth: 345,
         maxHeight: 300,
-        p: 2,
+        p: 2
       }}
     >
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="200"
-        image="icon.png"
-      />
+      {filePreview}
       <CardContent
         sx={{
-          p: 0,
+          p: 0
         }}
       >
         <Typography gutterBottom variant="h5" component="div">
@@ -44,7 +57,7 @@ const ResultCard = ({
       <CardActions
         sx={{
           p: 0,
-          width: "100%",
+          width: "100%"
         }}
       >
         <IconButton color="primary">
@@ -61,4 +74,4 @@ const ResultCard = ({
   );
 };
 
-export default ResultCard;
+export default FilePreview;

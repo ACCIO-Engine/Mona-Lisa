@@ -4,6 +4,7 @@ import getFileNameFromPath from "../../utils/getFileNameFromPath";
 import SearchType from "../../types/SearchType.enum";
 import { useSearchContext } from "../../contexts/SearchContext";
 import { searchText } from "../../../infrastructure/services/search";
+import getFileType from "../../utils/getFileType";
 
 export default function useSearch() {
   const {
@@ -26,8 +27,10 @@ export default function useSearch() {
     queryKey: ["search", searchString, searchType, queryEngine],
     queryFn: () => {
       if (searchType === SearchType.IMAGE) {
+        console.log("Image query", searchString, queryEngine);
         return searchImage(searchString, queryEngine);
       } else if (searchType === SearchType.TEXT) {
+        console.log("Text query", searchString, queryEngine);
         return searchText(searchString, queryEngine);
       }
     },
@@ -47,7 +50,8 @@ export default function useSearch() {
         path: file.path,
         score: file.score,
         pages: file.pages,
-        name: getFileNameFromPath(file.path)
+        name: getFileNameFromPath(file.path),
+        type: getFileType(file.path)
       })
     ),
     enableSearch,

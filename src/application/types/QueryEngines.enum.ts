@@ -1,7 +1,7 @@
 enum QueryEngines {
   TFIDF = "TFIDF",
   BM25 = "BM25",
-  SEMANTIC = "SEMANTIC_SEARCH"
+  SEMANTIC = "SEMANTIC"
 }
 
 export default QueryEngines;
