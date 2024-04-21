@@ -16,16 +16,21 @@ import {
   SelectChangeEvent
 } from "@mui/material";
 export default function SearchControls() {
-  const { queryEngine, setQueryEngine } = useSearchContext();
+  const { setQueryEngine } = useSearchContext();
   const [currentControl, setCurrentControl] = useState<"text" | "mic">("text");
+  const [localQueryEngine, setLocalQueryEngine] = useState<QueryEngines>(
+    QueryEngines.TFIDF
+  );
   const navigate = useNavigate();
   const { search } = useSearch();
   const onChooseImage = (image: string) => {
     search(image, SearchType.IMAGE);
+    setQueryEngine(localQueryEngine);
     navigate("/search");
   };
   const onSearchText = (text: string) => {
     search(text, SearchType.TEXT);
+    setQueryEngine(localQueryEngine);
     navigate("/search");
   };
   const onChooseMic = () => {
@@ -33,7 +38,7 @@ export default function SearchControls() {
     setCurrentControl("mic");
   };
   const handleEngineChange = (event: SelectChangeEvent<string>) => {
-    setQueryEngine(event.target.value as QueryEngines);
+    setLocalQueryEngine(event.target.value as QueryEngines);
   };
   return (
     <FieldContainer>
@@ -51,7 +56,7 @@ export default function SearchControls() {
         <Select
           labelId="demo-simple-select-helper-label"
           id="demo-simple-select-helper"
-          value={queryEngine}
+          value={localQueryEngine}
           label="Query Engine"
           onChange={handleEngineChange}
         >

@@ -18,13 +18,14 @@ import {
   CustomAppBar,
   Search,
   SearchIconWrapper,
-  StyledInputBase,
+  StyledInputBase
 } from "./AccioNavbar.styled";
-import { Fab } from "@mui/material";
+import { Fab, InputBase } from "@mui/material";
 import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
 import NestedList from "../../components/NestedList/NestedList";
+import { SearchType, useSearch } from "../../../application";
 interface AccioNavbarProps {
   open: boolean;
   handleDrawerOpen: () => void;
@@ -33,10 +34,14 @@ interface AccioNavbarProps {
 }
 
 export default function AccioNavbar(props: AccioNavbarProps) {
-  const ipcRenderer = (window as any).ipcRenderer
+  const { search } = useSearch();
+  const handleSearch = (query: string) => {
+    search(query, SearchType.TEXT);
+  };
+  const ipcRenderer = (window as any).ipcRenderer;
 
-  ipcRenderer.on('selected-image-path', (event, imageName: string) => {
-    showImagePath('search-input', imageName)
+  ipcRenderer.on("selected-image-path", (event, imageName: string) => {
+    showImagePath("search-input", imageName);
   });
 
   const { open, handleDrawerOpen, isLightMode, toggleLightMode } = props;
@@ -71,7 +76,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
   const handleShowDialog = async () => {
     const confirmed = await showDialog({
       title: "Custom Dialog",
-      message: "Custom message...",
+      message: "Custom message..."
     });
     if (confirmed) {
       console.log("confirmed");
@@ -86,13 +91,13 @@ export default function AccioNavbar(props: AccioNavbarProps) {
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: "top",
-        horizontal: "right",
+        horizontal: "right"
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
         vertical: "top",
-        horizontal: "right",
+        horizontal: "right"
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -108,13 +113,13 @@ export default function AccioNavbar(props: AccioNavbarProps) {
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
         vertical: "top",
-        horizontal: "right",
+        horizontal: "right"
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
         vertical: "top",
-        horizontal: "right",
+        horizontal: "right"
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -165,7 +170,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: "none" }),
+              ...(open && { display: "none" })
             }}
           >
             <MenuIcon />
@@ -186,11 +191,22 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               id="search-input"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(e.currentTarget.value as string);
+                }
+              }}
             />
           </Search>
-          <Fab color="primary" size="small" component="span" aria-label="add" onClick={() => {
-            ipcRenderer.send('open-select-image-dialog');
-          }}>
+          <Fab
+            color="primary"
+            size="small"
+            component="span"
+            aria-label="add"
+            onClick={() => {
+              ipcRenderer.send("open-select-image-dialog");
+            }}
+          >
             <AddIcon />
           </Fab>
           <NestedList></NestedList>

@@ -14,24 +14,49 @@ const ImageFilePreview = ({ file }: { file: File }) => {
     <CardMedia
       component="img"
       alt={file.name}
-      height="200"
       image={`file://${file.path}`}
+      width="100%"
+      height="100%"
     />
+  );
+};
+
+const PDFFilePreview = ({ file }: { file: File }) => {
+  return (
+    <iframe
+      title={file.name}
+      src={`file://${file.path}#page=1`}
+      width="100%"
+      height="100%"
+    />
+  );
+};
+
+const WordFilePreview = ({ file }: { file: File }) => {
+  return (
+    <>
+      <CardMedia
+        component="img"
+        alt={file.name}
+        image={Logo}
+        width="100%"
+        height="100%"
+      />
+      <Typography gutterBottom variant="h5" component="div">
+        {file.name}
+      </Typography>
+    </>
   );
 };
 
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
-    <CardContent
-      sx={{
-        p: 0
-      }}
-    >
-      <CardMedia component="img" alt={file.name} height="200" image={Logo} />
+    <>
+      <CardMedia component="img" alt={file.name} image={Logo} />
       <Typography gutterBottom variant="h5" component="div">
         {file.name}
       </Typography>
-    </CardContent>
+    </>
   );
 };
 
@@ -39,6 +64,10 @@ const FilePreview = ({ file }: { file: File }) => {
   const filePreview =
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
+    ) : file.type === FileType.PDF ? (
+      <PDFFilePreview file={file} />
+    ) : file.type === FileType.Word ? (
+      <WordFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );
@@ -51,7 +80,14 @@ const FilePreview = ({ file }: { file: File }) => {
         p: 2
       }}
     >
-      {filePreview}
+      <CardContent
+        sx={{
+          p: 0,
+          height: 200
+        }}
+      >
+        {filePreview}
+      </CardContent>
       <CardContent
         sx={{
           p: 0
