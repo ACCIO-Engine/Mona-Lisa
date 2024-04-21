@@ -8,10 +8,16 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { File, FileType } from "../../../application";
-
-
+import Logo from "../../assets/imageOnly.svg";
 const ImageFilePreview = ({ file }: { file: File }) => {
-  return <img alt={file.name} height="200" src={`file://${file.path}`} />;
+  return (
+    <CardMedia
+      component="img"
+      alt={file.name}
+      height="200"
+      image={`file://${file.path}`}
+    />
+  );
 };
 
 const DefaultFilePreview = ({ file }: { file: File }) => {
@@ -21,6 +27,7 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
         p: 0
       }}
     >
+      <CardMedia component="img" alt={file.name} height="200" image={Logo} />
       <Typography gutterBottom variant="h5" component="div">
         {file.name}
       </Typography>
