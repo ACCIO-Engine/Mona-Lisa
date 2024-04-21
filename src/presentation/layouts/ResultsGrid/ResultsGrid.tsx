@@ -1,12 +1,9 @@
-import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import FilePreview from "../../components/FilePreview/FilePreview";
-import { File, useSearch } from "../../../application";
+import { File } from "../../../application";
 
-const ResultsGrid: React.FC = () => {
-  const { files, isError, isLoading, isSuccess, error, status } = useSearch();
-  console.log(files, isError, isLoading, isSuccess, error, status);
+const ResultsGrid = ({ files }: { files: File[] }) => {
   return (
     <Box sx={{ width: "100%" }}>
       {files && (
