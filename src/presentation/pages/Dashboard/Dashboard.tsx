@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
         <DashboardAccordion title={DashboardEntry.HEDWIG}/>
         <DashboardAccordion title={DashboardEntry.NANO_BERT}/>
         <DashboardAccordion title={DashboardEntry.CHROMA_DB}/>
+        <DashboardAccordion title={DashboardEntry.OCTOPUS}/>
     </Box>
   )
 }

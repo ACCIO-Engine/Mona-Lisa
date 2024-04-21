@@ -21,11 +21,10 @@ import {
   StyledInputBase,
 } from "./AccioNavbar.styled";
 import { Fab } from "@mui/material";
-import MaterialUISwitch from "../../components/ToggleButton.styled";
+import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
 import NestedList from "../../components/NestedList/NestedList";
-
 interface AccioNavbarProps {
   open: boolean;
   handleDrawerOpen: () => void;
@@ -34,6 +33,12 @@ interface AccioNavbarProps {
 }
 
 export default function AccioNavbar(props: AccioNavbarProps) {
+  const ipcRenderer = (window as any).ipcRenderer
+
+  ipcRenderer.on('selected-image-path', (event, imageName: string) => {
+    showImagePath('search-input', imageName)
+  });
+
   const { open, handleDrawerOpen, isLightMode, toggleLightMode } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -183,21 +188,11 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               id="search-input"
             />
           </Search>
-          <label htmlFor="upload-photo">
-            <input
-              style={{ display: "none" }}
-              id="upload-photo"
-              name="upload-photo"
-              type="file"
-              onChange={(e) => {
-                if (e.target.files === null) console.error("No file selected");
-                else showImagePath("search-input", e.target.files[0].name);
-              }}
-            />
-            <Fab color="primary" size="small" component="span" aria-label="add">
-              <AddIcon />
-            </Fab>
-          </label>
+          <Fab color="primary" size="small" component="span" aria-label="add" onClick={() => {
+            ipcRenderer.send('open-select-image-dialog');
+          }}>
+            <AddIcon />
+          </Fab>
           <NestedList></NestedList>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>

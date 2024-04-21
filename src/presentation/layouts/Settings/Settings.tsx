@@ -1,10 +1,30 @@
 import { Typography } from '@mui/material'
-import CustomSelect from '../../components/Select'
+import CustomSelect from '../../components/ComboBox/Select'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import InputDirectory from '../../components/InputDirectory'
+import InputDirectory from '../../components/InputDirectory/InputDirectory'
+import SearchMode from '../../../application/types/SearchMode.enum'
+import TextModels from '../../../application/types/TextModels.enum'
+import ImageModels from '../../../application/types/ImageModels.enum'
+import VideoModels from '../../../application/types/VideoModels.enum'
+import SearchApproaches from '../../../application/types/SearchApproaches.enum'
 
-export default function VariableWidthGrid () {
+interface SettingsProps {
+  mode: string
+  setMode: (mode: string) => void
+  storageDBPath: string
+  setStorageDBPath: (path: string) => void
+  textModel: string
+  setTextModel: (model: string) => void
+  imageModel: string
+  setImageModel: (model: string) => void
+  videoModel: string
+  setVideoModel: (model: string) => void
+  defaultSearchApproach: string
+  setDefaultSearchApproach: (approach: string) => void
+}
+
+export default function Settings(props: SettingsProps) {
   return (
     <Box
       sx={{ flexGrow: 1 }}
@@ -19,14 +39,16 @@ export default function VariableWidthGrid () {
         <Grid item xs={7}>
           <CustomSelect
             label="mode"
-            choices={['Classic', 'Deep', 'Mixed']}
+            choices={Object.values(SearchMode)}
+            selectedValue={props.mode}
+            setSelectedValue={props.setMode}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
           <Typography>Storage DB path</Typography>
         </Grid>
         <Grid item xs={7}>
-          <InputDirectory />
+          <InputDirectory directory={props.storageDBPath} setDirectory={props.setStorageDBPath} />
         </Grid>
         <Grid item xs={3}>
           <Typography>Select text model</Typography>
@@ -34,7 +56,9 @@ export default function VariableWidthGrid () {
         <Grid item xs={7}>
           <CustomSelect
             label="Select text model"
-            choices={['Model1', 'Model2', 'Model3']}
+            choices={Object.values(TextModels)}
+            selectedValue={props.textModel}
+            setSelectedValue={props.setTextModel}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -43,7 +67,9 @@ export default function VariableWidthGrid () {
         <Grid item xs={7}>
           <CustomSelect
             label="Select image model"
-            choices={['Model1', 'Model2', 'Model3']}
+            choices={Object.values(ImageModels)}
+            selectedValue={props.imageModel}
+            setSelectedValue={props.setImageModel}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -52,7 +78,9 @@ export default function VariableWidthGrid () {
         <Grid item xs={7}>
           <CustomSelect
             label="Select video model"
-            choices={['Model1', 'Model2', 'Model3']}
+            choices={Object.values(VideoModels)}
+            selectedValue={props.videoModel}
+            setSelectedValue={props.setVideoModel}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
@@ -61,18 +89,12 @@ export default function VariableWidthGrid () {
         <Grid item xs={7}>
           <CustomSelect
             label="Default search approach"
-            choices={['File name', 'File content', 'both']}
+            choices={Object.values(SearchApproaches)}
+            selectedValue={props.defaultSearchApproach}
+            setSelectedValue={props.setDefaultSearchApproach}
           ></CustomSelect>
         </Grid>
       </Grid>
-      {/* <Box position={"fixed"}>
-        <Button>
-          <Typography>Apply</Typography>
-        </Button>
-        <Button>
-          <Typography>Cancel</Typography>
-        </Button>
-      </Box> */}
     </Box>
   )
 }
