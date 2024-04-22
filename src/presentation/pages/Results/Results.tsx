@@ -1,7 +1,6 @@
 import React from "react";
 import ResultsGrid from "../../layouts/ResultsGrid/ResultsGrid";
 import { useSearch } from "../../../application";
-import { Box } from "@mui/material";
 import {
   ErrorAlert,
   InfoAlert,
@@ -20,6 +19,9 @@ const Results: React.FC = () => {
           {isError && error && <ErrorAlert message={error.message} />}
           {files && files.length === 0 && (
             <InfoAlert message="No files found." />
+          )}
+          {!files && !isError && !isLoading && !isSuccess && (
+            <InfoAlert message="Search for files using the search bar above." />
           )}
         </MessageAlerts>
       )}

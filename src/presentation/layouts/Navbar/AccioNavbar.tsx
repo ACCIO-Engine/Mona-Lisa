@@ -25,7 +25,9 @@ import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled"
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
 import NestedList from "../../components/NestedList/NestedList";
-import { SearchType, useSearch } from "../../../application";
+import { SearchType, useSearch, useSearchContext } from "../../../application";
+import { useNavigate } from "react-router-dom";
+import routes from "../../routes/routes";
 interface AccioNavbarProps {
   open: boolean;
   handleDrawerOpen: () => void;
@@ -35,6 +37,14 @@ interface AccioNavbarProps {
 
 export default function AccioNavbar(props: AccioNavbarProps) {
   const { search } = useSearch();
+  const { searchString } = useSearchContext();
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  // route change
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    setSearchQuery(searchString);
+    navigate(routes.search);
+  }, [searchString, navigate]);
   const handleSearch = (query: string) => {
     search(query, SearchType.TEXT);
   };
@@ -191,11 +201,13 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               id="search-input"
+              value={searchQuery}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearch(e.currentTarget.value as string);
                 }
               }}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </Search>
           <Fab
