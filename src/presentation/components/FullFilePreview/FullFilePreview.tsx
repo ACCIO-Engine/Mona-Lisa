@@ -3,14 +3,24 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { IconButton } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Dialog,
+  IconButton,
+  Slide,
+  Toolbar
+} from "@mui/material";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { File, FileType } from "../../../application";
 import Logo from "../../assets/imageOnly.svg";
-import FullFilePreview from "../FullFilePreview/FullFilePreview";
-import { useState } from "react";
+import { GridCloseIcon } from "@mui/x-data-grid";
+import React from "react";
+import { TransitionProps } from "@mui/material/transitions";
+import { FileContainer } from "./FullFilePreview.styled";
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
     <CardMedia
@@ -44,9 +54,6 @@ const WordFilePreview = ({ file }: { file: File }) => {
         width="100%"
         height="100%"
       />
-      <Typography gutterBottom variant="h5" component="div">
-        {file.name}
-      </Typography>
     </>
   );
 };
@@ -55,16 +62,26 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
     <>
       <CardMedia component="img" alt={file.name} image={Logo} />
-      <Typography gutterBottom variant="h5" component="div">
-        {file.name}
-      </Typography>
     </>
   );
 };
-
-const FilePreview = ({ file }: { file: File }) => {
-  const [openFullPreview, setOpenFullPreview] = useState(false);
-
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+const FullFilePreview = ({
+  open,
+  setOpen,
+  file
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  file: File;
+}) => {
   const filePreview =
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
@@ -76,56 +93,41 @@ const FilePreview = ({ file }: { file: File }) => {
       <DefaultFilePreview file={file} />
     );
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <>
-      <FullFilePreview
-        file={file}
-        open={openFullPreview}
-        setOpen={setOpenFullPreview}
-      />
-      <Card
-        sx={{
-          maxWidth: 345,
-          maxHeight: 300,
-          p: 2
-        }}
-      >
-        <CardContent
-          sx={{
-            p: 0,
-            height: 200
-          }}
-        >
-          {filePreview}
-        </CardContent>
-        <CardContent
-          sx={{
-            p: 0
-          }}
-        >
-          <Typography gutterBottom variant="h5" component="div">
+    <Dialog
+      fullScreen
+      open={open}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+    >
+      <AppBar sx={{ position: "relative" }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <GridCloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             {file.name}
           </Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            p: 0,
-            width: "100%"
-          }}
-        >
           <IconButton color="primary">
             <ContentCopyIcon />
-          </IconButton>
-          <IconButton color="primary" onClick={() => setOpenFullPreview(true)}>
-            <FileOpenIcon />
           </IconButton>
           <IconButton color="primary">
             <FolderOpenIcon />
           </IconButton>
-        </CardActions>
-      </Card>
-    </>
+        </Toolbar>
+      </AppBar>
+      <FileContainer>{filePreview}</FileContainer>
+    </Dialog>
   );
 };
 
-export default FilePreview;
+export default FullFilePreview;
