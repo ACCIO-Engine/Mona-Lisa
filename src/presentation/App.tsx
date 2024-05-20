@@ -10,30 +10,37 @@ import Results from "./pages/Results/Results";
 import { useAppState } from "./contexts/AppContext";
 import Home from "./pages/Home/Home";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Dashboard from './pages/Dashboard/Dashboard'
+import Dashboard from "./pages/Dashboard/Dashboard";
 import DashboardProvider from "./contexts/DashboardContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Root />,
     children: [
       {
-        // index is true to make it the default route
         index: true,
+        path: "/",
         element: <Home />
       },
-      { path: 'search', element: <Results /> },
-      { path: 'index', element: <SnackbarProvider><Index /></SnackbarProvider> },
-      { path: 'dashboard', element: <Dashboard /> }
+      { path: "search", element: <Results /> },
+      {
+        path: "index",
+        element: (
+          <SnackbarProvider>
+            <Index />
+          </SnackbarProvider>
+        )
+      },
+      { path: "dashboard", element: <Dashboard /> }
     ]
   }
-])
+]);
 
 const App: React.FC = () => {
-  const { isLightMode } = useAppState()
+  const { isLightMode } = useAppState();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -45,6 +52,6 @@ const App: React.FC = () => {
       </ThemeProvider>
     </QueryClientProvider>
   );
-}
+};
 
-export default App
+export default App;

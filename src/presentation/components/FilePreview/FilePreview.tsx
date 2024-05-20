@@ -11,6 +11,9 @@ import { File, FileType } from "../../../application";
 import Logo from "../../assets/imageOnly.svg";
 import FullFilePreview from "../FullFilePreview/FullFilePreview";
 import { useState } from "react";
+import PDFIcon from "../../assets/pdf.svg?react";
+import DOCIcon from "../../assets/doc.svg?react";
+import PPTIcon from "../../assets/ppt.svg?react";
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
     <CardMedia
@@ -24,29 +27,20 @@ const ImageFilePreview = ({ file }: { file: File }) => {
 };
 
 const PDFFilePreview = ({ file }: { file: File }) => {
-  return (
-    <iframe
-      title={file.name}
-      src={`file://${file.path}#page=1`}
-      width="100%"
-      height="100%"
-    />
-  );
+  return <PDFIcon />;
 };
 
 const WordFilePreview = ({ file }: { file: File }) => {
   return (
     <>
-      <CardMedia
-        component="img"
-        alt={file.name}
-        image={Logo}
-        width="100%"
-        height="100%"
-      />
-      <Typography gutterBottom variant="h5" component="div">
-        {file.name}
-      </Typography>
+      <DOCIcon />
+    </>
+  );
+};
+const PowerPointFilePreview = ({ file }: { file: File }) => {
+  return (
+    <>
+      <PPTIcon />
     </>
   );
 };
@@ -72,6 +66,8 @@ const FilePreview = ({ file }: { file: File }) => {
       <PDFFilePreview file={file} />
     ) : file.type === FileType.Word ? (
       <WordFilePreview file={file} />
+    ) : file.type === FileType.PowerPoint ? (
+      <PowerPointFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );
@@ -85,15 +81,20 @@ const FilePreview = ({ file }: { file: File }) => {
       />
       <Card
         sx={{
-          maxWidth: 345,
-          maxHeight: 300,
+          height: 250,
+          width: 250,
           p: 2
         }}
       >
         <CardContent
           sx={{
             p: 0,
-            height: 200
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "auto",
+            height: 150,
+            width: 150
           }}
         >
           {filePreview}

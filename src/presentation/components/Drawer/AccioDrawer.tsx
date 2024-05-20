@@ -12,7 +12,6 @@ import { CustomDrawer, DrawerHeader, StyledList } from "./AccioDrawer.styled";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SearchIcon from "@mui/icons-material/Search";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
-import SettingsIcon from "@mui/icons-material/Settings";
 import LightLogo from "../../assets/LightACCIO.svg";
 import DarkLogo from "../../assets/DarkACCIO.svg";
 import { Link } from "react-router-dom";
@@ -20,44 +19,45 @@ import HomeIcon from "@mui/icons-material/Home";
 import routes from "../../routes/routes";
 
 interface AccioDrawerProps {
-  open: boolean
-  handleDrawerClose: () => void
-  isLightMode: boolean
+  open: boolean;
+  handleDrawerClose: () => void;
+  isLightMode: boolean;
 }
 
 const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1)
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
   const buttonProps = (value: number) => ({
     selected: selectedIndex === value,
-    onClick: () => { setSelectedIndex(value) }
-  })
+    onClick: () => {
+      setSelectedIndex(value);
+    }
+  });
 
-  const { open, handleDrawerClose, isLightMode } = props
-  const theme = useTheme()
+  const { open, handleDrawerClose, isLightMode } = props;
+  const theme = useTheme();
 
   return (
     <CustomDrawer variant="permanent" open={open}>
-      <DrawerHeader sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {isLightMode
-          ? (
-            <img alt="" src={LightLogo} width={100} height={50} />
-          )
-          : (
-            <img alt="" src={DarkLogo} width={100} height={50} />
-          )}
+      <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
+        {isLightMode ? (
+          <img alt="" src={LightLogo} width={100} height={50} />
+        ) : (
+          <img alt="" src={DarkLogo} width={100} height={50} />
+        )}
         <IconButton onClick={handleDrawerClose}>
-          {theme.direction === 'rtl'
-            ? (
-              <ChevronRightIcon />
-            )
-            : (
-              <ChevronLeftIcon />
-            )}
+          {theme.direction === "rtl" ? (
+            <ChevronRightIcon />
+          ) : (
+            <ChevronLeftIcon />
+          )}
         </IconButton>
       </DrawerHeader>
       <Divider />
       <StyledList isLightMode={isLightMode}>
-        <Link to={routes.dashboard} style={{ color: 'inherit', textDecoration: 'none' }}>
+        <Link
+          to={routes.dashboard}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
           <ListItem key="Dashboard" disablePadding>
             <ListItemButton {...buttonProps(0)}>
               <ListItemIcon>
@@ -76,7 +76,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary="Home Search Mode" />
+              <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
         </Link>
@@ -89,7 +89,7 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
               <ListItemIcon>
                 <SearchIcon />
               </ListItemIcon>
-              <ListItemText primary="Search Mode" />
+              <ListItemText primary="Search" />
             </ListItemButton>
           </ListItem>
         </Link>
@@ -102,13 +102,13 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
               <ListItemIcon>
                 <DocumentScannerIcon />
               </ListItemIcon>
-              <ListItemText primary="Indexing Mode" />
+              <ListItemText primary="Indexing" />
             </ListItemButton>
           </ListItem>
         </Link>
       </StyledList>
     </CustomDrawer>
-  )
-}
+  );
+};
 
-export default AccioDrawer
+export default AccioDrawer;
