@@ -4,6 +4,8 @@ import getFileNameFromPath from "../../utils/getFileNameFromPath";
 import SearchType from "../../types/SearchType.enum";
 import { useSearchContext } from "../../contexts/SearchContext";
 import getFileType from "../../utils/getFileType";
+import { useFiltersContext } from "../../contexts/FiltersContext";
+import { FileTypes } from "../../types/SearchOptions";
 
 export default function useSearch() {
   const {
@@ -15,6 +17,7 @@ export default function useSearch() {
     setEnableSearch,
     queryEngine
   } = useSearchContext();
+  const { timeModified, size, fileType } = useFiltersContext();
   const {
     data: files,
     isError,
@@ -23,14 +26,26 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType, queryEngine],
+    queryKey: ["search", searchString, searchType, queryEngine, fileType],
     queryFn: () => {
+      const fileTypes: string[] = (Object.keys(fileType) as (keyof FileTypes)[])
+        .filter((key) => fileType[key])
+        .map((key) => key.toUpperCase());
+      console.log("query", searchString, queryEngine, fileTypes, fileTypes);
       if (searchType === SearchType.IMAGE) {
-        console.log("Image query", searchString, queryEngine);
-        return searchService(searchString, queryEngine, SearchType.IMAGE);
+        return searchService({
+          query: searchString,
+          queryEngine: queryEngine,
+          searchType: SearchType.IMAGE,
+          fileTypes: fileTypes
+        });
       } else if (searchType === SearchType.TEXT) {
-        console.log("Text query", searchString, queryEngine);
-        return searchService(searchString, queryEngine, SearchType.TEXT);
+        return searchService({
+          query: searchString,
+          queryEngine: queryEngine,
+          searchType: SearchType.TEXT,
+          fileTypes: fileTypes
+        });
       }
     },
     enabled: enableSearch,

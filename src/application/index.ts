@@ -7,6 +7,7 @@ import useRemoveIgnoreDirs from "./usecases/crawler/useRemoveIgnoreDirs.usecase"
 import useSearch from "./usecases/search/useSearch.usecase";
 // Import contexts
 import { useSearchContext, SearchProvider } from "./contexts/SearchContext";
+import { useFiltersContext } from "./contexts/FiltersContext";
 // Import types
 import SearchType from "./types/SearchType.enum";
 import QueryEngines from "./types/QueryEngines.enum";
@@ -23,7 +24,8 @@ export {
   useAddDirs,
   useAddIgnoreDirs,
   useRemoveDirs,
-  useRemoveIgnoreDirs
+  useRemoveIgnoreDirs,
+  useFiltersContext
 };
 
 export type { File };

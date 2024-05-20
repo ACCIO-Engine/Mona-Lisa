@@ -46,7 +46,7 @@ export const useSearchContext = (): SearchContextProps => {
   const context = useContext(SearchContext);
 
   if (!context) {
-    throw new Error("useAppState must be used within an AppStateProvider");
+    throw new Error("useSearchContext must be used within a SearchProvider");
   }
 
   return context;

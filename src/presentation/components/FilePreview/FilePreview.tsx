@@ -14,6 +14,7 @@ import { useState } from "react";
 import PDFIcon from "../../assets/pdf.svg?react";
 import DOCIcon from "../../assets/doc.svg?react";
 import PPTIcon from "../../assets/ppt.svg?react";
+import TextIcon from "../../assets/txt.svg?react";
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
     <CardMedia
@@ -44,6 +45,13 @@ const PowerPointFilePreview = ({ file }: { file: File }) => {
     </>
   );
 };
+const TextFilePreview = ({ file }: { file: File }) => {
+  return (
+    <>
+      <TextIcon />
+    </>
+  );
+};
 
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
@@ -68,6 +76,8 @@ const FilePreview = ({ file }: { file: File }) => {
       <WordFilePreview file={file} />
     ) : file.type === FileType.PowerPoint ? (
       <PowerPointFilePreview file={file} />
+    ) : file.type === FileType.Text ? (
+      <TextFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );
