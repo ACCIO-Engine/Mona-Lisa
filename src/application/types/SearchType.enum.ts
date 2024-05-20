@@ -1,8 +1,8 @@
 enum SearchType {
-    TEXT = "text",
-    IMAGE = "image",
-    VIDEO = "video",
-    Audio = "audio"
+    TEXT = "TEXT",
+    IMAGE = "IMAGE",
+    VIDEO = "VIDEO",
+    Audio = "AUDIO"
 }
 
 export default SearchType;

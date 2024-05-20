@@ -13,14 +13,14 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SettingsIcon from "@mui/icons-material/Settings";
-import AddIcon from "@mui/icons-material/Add";
+import ImageIcon from "@mui/icons-material/Image";
 import {
   CustomAppBar,
   Search,
   SearchIconWrapper,
   StyledInputBase
 } from "./AccioNavbar.styled";
-import { Fab, InputBase } from "@mui/material";
+import { Fab } from "@mui/material";
 import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled";
 import { useDialog } from "../../components/Dialog/Dialog";
 import showImagePath from "../../utils/showImagePath";
@@ -219,7 +219,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               ipcRenderer.send("open-select-image-dialog");
             }}
           >
-            <AddIcon />
+            <ImageIcon />
           </Fab>
           <NestedList></NestedList>
           <Box sx={{ flexGrow: 1 }} />

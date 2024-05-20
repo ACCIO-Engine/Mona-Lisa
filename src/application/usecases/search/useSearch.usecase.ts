@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { searchImage } from "../../../infrastructure";
+import { search as searchService } from "../../../infrastructure";
 import getFileNameFromPath from "../../utils/getFileNameFromPath";
 import SearchType from "../../types/SearchType.enum";
 import { useSearchContext } from "../../contexts/SearchContext";
-import { searchText } from "../../../infrastructure/services/search";
 import getFileType from "../../utils/getFileType";
 
 export default function useSearch() {
@@ -28,10 +27,10 @@ export default function useSearch() {
     queryFn: () => {
       if (searchType === SearchType.IMAGE) {
         console.log("Image query", searchString, queryEngine);
-        return searchImage(searchString, queryEngine);
+        return searchService(searchString, queryEngine, SearchType.IMAGE);
       } else if (searchType === SearchType.TEXT) {
         console.log("Text query", searchString, queryEngine);
-        return searchText(searchString, queryEngine);
+        return searchService(searchString, queryEngine, SearchType.TEXT);
       }
     },
     enabled: enableSearch,
