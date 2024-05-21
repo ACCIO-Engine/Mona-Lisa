@@ -15,6 +15,7 @@ import PDFIcon from "../../assets/pdf.svg?react";
 import DOCIcon from "../../assets/doc.svg?react";
 import PPTIcon from "../../assets/ppt.svg?react";
 import TextIcon from "../../assets/txt.svg?react";
+import VideoIcon from "../../assets/video.svg?react";
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
     <CardMedia
@@ -53,6 +54,10 @@ const TextFilePreview = ({ file }: { file: File }) => {
   );
 };
 
+const VideoFilePreview = ({ file }: { file: File }) => {
+  return <VideoIcon />;
+};
+
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
     <>
@@ -78,6 +83,8 @@ const FilePreview = ({ file }: { file: File }) => {
       <PowerPointFilePreview file={file} />
     ) : file.type === FileType.Text ? (
       <TextFilePreview file={file} />
+    ) : file.type === FileType.Video ? (
+      <VideoFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );

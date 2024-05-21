@@ -3,6 +3,7 @@ enum FileType {
   PDF = "pdf",
   Word = "word",
   PowerPoint = "powerpoint",
-  Text = "text"
+  Text = "text",
+  Video = "video"
 }
 export default FileType;
