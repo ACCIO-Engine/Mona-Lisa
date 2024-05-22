@@ -11,6 +11,15 @@ import { Container, MessageAlerts } from "./Results.styled";
 const Results: React.FC = () => {
   const { files, isError, isLoading, isSuccess, error, status } = useSearch();
   console.log(files, isError, isLoading, isSuccess, error, status);
+  //   const tempFiles: File[] = [
+  //   {
+  //     path: "/mnt/D/Material/4th/graduation-project/Octopus/TestFiles/video1.mp4",
+  //     score: 0.011982929094215963,
+  //     type: "video",
+  //     pages: [0]
+  //   }
+  // ];
+  // console.log("tempFiles = ", tempFiles);
   return (
     <Container>
       {!(isSuccess && files && files.length > 0) && (

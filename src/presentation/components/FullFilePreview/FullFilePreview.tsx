@@ -58,6 +58,15 @@ const WordFilePreview = ({ file }: { file: File }) => {
   );
 };
 
+const VideoFilePreview = ({ file }: { file: File }) => {
+  return (
+    <video width="100%" height="100%" controls>
+      <source src={`file://${file.path}`} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  );
+};
+
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
     <>
@@ -89,6 +98,8 @@ const FullFilePreview = ({
       <PDFFilePreview file={file} />
     ) : file.type === FileType.Word ? (
       <WordFilePreview file={file} />
+    ) : file.type === FileType.Video ? (
+      <VideoFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );

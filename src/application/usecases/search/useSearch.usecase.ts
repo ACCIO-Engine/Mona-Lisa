@@ -56,7 +56,7 @@ export default function useSearch() {
     setSearchType(searchType);
     setEnableSearch(true);
   };
-
+  console.log("files", files);
   return {
     search,
     files: files?.map(
