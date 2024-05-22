@@ -28,22 +28,28 @@ export const search = async ({
   modifiedTimeEnd
 }: SearchParams) => {
   const params = new URLSearchParams({
-    query: encodeURIComponent(query),
+    query,
     engine: queryEngine,
     searchType,
     pageSize: pageSize.toString(),
     page: page.toString()
   });
-  
-  // fileSizes.forEach((size) => params.append("fileSizes", size));
-  fileTypes.forEach((type) => params.append("fileTypes", type));
 
-  // if (modifiedTimeStart) {
-  //   params.append("modifiedTimeStart", modifiedTimeStart.toISOString());
-  // }
-  // if (modifiedTimeEnd) {
-  //   params.append("modifiedTimeEnd", modifiedTimeEnd.toISOString());
-  // }
+  console.log(
+    "params before = ",
+    params.toString(),
+    query
+  );
+
+  fileTypes.forEach((type) => params.append("fileTypes", type));
+  console.log("params = ", params.toString());
+
+  if (modifiedTimeStart) {
+    params.append("modifiedTimeStart", modifiedTimeStart.toISOString());
+  }
+  if (modifiedTimeEnd) {
+    params.append("modifiedTimeEnd", modifiedTimeEnd.toISOString());
+  }
 
   const url = `${BASE_URL}/search?${params.toString()}`;
 
