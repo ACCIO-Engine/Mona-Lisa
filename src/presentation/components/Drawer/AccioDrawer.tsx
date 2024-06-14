@@ -1,28 +1,51 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import { CustomDrawer, DrawerHeader, StyledList } from "./AccioDrawer.styled";
+import { CustomDrawer } from "./AccioDrawer.styled";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SearchIcon from "@mui/icons-material/Search";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
+import FullLogo from "../../assets/full.svg?react";
 import LightLogo from "../../assets/LightACCIO.svg";
 import DarkLogo from "../../assets/DarkACCIO.svg";
 import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import routes from "../../routes/routes";
+import { List } from "@mui/material";
 
 interface AccioDrawerProps {
   open: boolean;
+  handleDrawerOpen: () => void;
   handleDrawerClose: () => void;
   isLightMode: boolean;
 }
+
+interface NavLinkItemProps {
+  to: string;
+  icon: React.ReactNode;
+  text: string;
+  buttonProps: {
+    selected: boolean;
+    onClick: () => void;
+  };
+}
+
+const NavLinkItem: React.FC<NavLinkItemProps> = ({ to, icon, text, buttonProps }) => {
+  return (
+    <Link to={to} style={{ color: "inherit", textDecoration: "none" }}>
+      <ListItem key={text} disablePadding>
+        <ListItemButton {...buttonProps}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItemButton>
+      </ListItem>
+    </Link>
+  );
+};
 
 const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -33,80 +56,48 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
     }
   });
 
-  const { open, handleDrawerClose, isLightMode } = props;
-  const theme = useTheme();
-
+  const { open, handleDrawerOpen, handleDrawerClose, isLightMode } = props;
   return (
     <CustomDrawer variant="permanent" open={open}>
-      <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
-        {isLightMode ? (
-          <img alt="" src={LightLogo} width={100} height={50} />
-        ) : (
-          <img alt="" src={DarkLogo} width={100} height={50} />
-        )}
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "rtl" ? (
-            <ChevronRightIcon />
-          ) : (
-            <ChevronLeftIcon />
-          )}
-        </IconButton>
-      </DrawerHeader>
+      <IconButton sx={
+        {
+          width: "fit-content",
+          marginX: "auto"
+        }
+      } onClick={open ? handleDrawerClose : handleDrawerOpen}>
+        {
+          !open ? <FullLogo width={50} height={50} /> : isLightMode ?
+            <img src={LightLogo} alt="Light Logo" width={100} height={50} /> :
+            <img src={DarkLogo} alt="Dark Logo" width={100} height={50} />
+        }
+      </IconButton>
       <Divider />
-      <StyledList isLightMode={isLightMode}>
-        <Link
-          to={routes.dashboard}
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          <ListItem key="Dashboard" disablePadding>
-            <ListItemButton {...buttonProps(0)}>
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link
+      <List>
+        <NavLinkItem
           to={routes.home}
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          <ListItem key="Home Search Mode" disablePadding>
-            <ListItemButton {...buttonProps(1)}>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link
+          icon={<HomeIcon />}
+          text="Home"
+          buttonProps={buttonProps(1)}
+        />
+        <NavLinkItem
+          to={routes.dashboard}
+          icon={<DashboardIcon />}
+          text="Dashboard"
+          buttonProps={buttonProps(0)}
+        />
+        <NavLinkItem
           to={routes.search}
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          <ListItem key="Search Mode" disablePadding>
-            <ListItemButton {...buttonProps(2)}>
-              <ListItemIcon>
-                <SearchIcon />
-              </ListItemIcon>
-              <ListItemText primary="Search" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link
+          icon={<SearchIcon />}
+          text="Search"
+          buttonProps={buttonProps(2)}
+        />
+        <NavLinkItem
           to={routes.index}
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          <ListItem key="Indexing Mode" disablePadding>
-            <ListItemButton {...buttonProps(3)}>
-              <ListItemIcon>
-                <DocumentScannerIcon />
-              </ListItemIcon>
-              <ListItemText primary="Indexing" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-      </StyledList>
+          icon={<DocumentScannerIcon />}
+          text="Indexing"
+          buttonProps={buttonProps(3)}
+        />
+      </List>
     </CustomDrawer>
   );
 };

@@ -1,4 +1,4 @@
-import { lightTheme, darkTheme } from "./theme";
+import { globalStyles, mainTheme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import React from "react";
@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import DashboardProvider from "./contexts/DashboardContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
+import GlobalStyles from "@mui/material/GlobalStyles";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -39,13 +40,16 @@ const router = createBrowserRouter([
   }
 ]);
 
+
 const App: React.FC = () => {
   const { isLightMode } = useAppState();
-
+  console.log("isLightMode", isLightMode);
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={isLightMode ? lightTheme : darkTheme}>
+      <ThemeProvider theme={mainTheme(isLightMode)}>
         <CssBaseline />
+        <GlobalStyles
+          styles={globalStyles(isLightMode)} />
         <DashboardProvider>
           <RouterProvider router={router} />
         </DashboardProvider>

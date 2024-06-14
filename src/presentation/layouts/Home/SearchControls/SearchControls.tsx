@@ -10,7 +10,6 @@ import {
 } from "../../../../application";
 import {
   Box,
-  Button,
   FormControl,
   IconButton,
   InputLabel,
@@ -20,6 +19,7 @@ import {
 } from "@mui/material";
 import FilterDialog from "../filters/filters";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+
 export default function SearchControls() {
   const { setQueryEngine } = useSearchContext();
   const [dialogOpen, setDialogOpen] = useState(false);

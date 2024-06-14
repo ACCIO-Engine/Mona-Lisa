@@ -1,8 +1,9 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { HomeContainer, LogoContainer } from "./Home.styled";
-import NameOnlyLogo from "../../assets/name-only-logo.svg?react";
-import LightNameOnlyLogo from "../../assets/light-name-only-logo.svg?react";
+import LightNameOnlyLogo from "../../assets/name-only-logo.svg?react";
+import DarkNameOnlyLogo from "../../assets/name-only-logo-dark.svg?react";
 import SearchControls from "../../layouts/Home/SearchControls/SearchControls";
+import { SLOGAN } from "../../Constants.ts";
 
 export default function Home() {
   const theme = useTheme();
@@ -10,11 +11,16 @@ export default function Home() {
     <Box>
       <HomeContainer>
         <LogoContainer>
+          {/*<NameOnlyLogo height={200} />*/}
+
           {theme.palette.mode === "dark" ? (
-            <LightNameOnlyLogo height={200} />
+            <DarkNameOnlyLogo height={200} />
           ) : (
-            <NameOnlyLogo height={200} />
+            <LightNameOnlyLogo height={200} />
           )}
+          <Typography variant="h6" component="h1">
+            {SLOGAN}
+          </Typography>
         </LogoContainer>
         <SearchControls />
       </HomeContainer>

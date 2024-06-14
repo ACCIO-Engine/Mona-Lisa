@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
+import useLocalStorage from "../hooks/useLocalStorage.ts";
 
 interface AppStateContextProps {
   isLightMode: boolean;
@@ -10,16 +11,16 @@ const AppStateContext = createContext<AppStateContextProps | undefined>(
 );
 
 export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [isLightMode, setLightMode] = useState(true);
+                                                                            children
+                                                                          }) => {
+  const [isLightMode, setLightMode] = useLocalStorage("isLightMode", "true");
 
   const toggleLightMode = (): void => {
-    setLightMode((prevMode) => !prevMode);
+    setLightMode(isLightMode === "true" ? "false" : "true");
   };
 
   return (
-    <AppStateContext.Provider value={{ isLightMode, toggleLightMode }}>
+    <AppStateContext.Provider value={{ isLightMode: isLightMode === "true", toggleLightMode }}>
       {children}
     </AppStateContext.Provider>
   );
