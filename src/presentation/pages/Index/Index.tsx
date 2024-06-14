@@ -13,7 +13,6 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
-  other?: any;
 }
 
 function CustomTabPanel(props: TabPanelProps) {

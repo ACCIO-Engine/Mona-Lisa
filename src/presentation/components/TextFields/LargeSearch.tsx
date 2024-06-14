@@ -5,19 +5,24 @@ import { Box, styled } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import ImageIcon from "@mui/icons-material/Image";
 
+import { alpha } from "@mui/system";
+
 const SearchContainer = styled(Box)(({ theme }) => ({
   p: "2px 4px",
   display: "flex",
   alignItems: "center",
   width: "100%",
   borderRadius: "24px",
-  border: `1px solid ${theme.palette.grey[300]}`
+  background: `radial-gradient(circle at center,${alpha(theme.palette.primary.light, 0.05)} 0%, ${alpha(theme.palette.primary.light, 0.1)} 50%, ${alpha(theme.palette.primary.light, 0.2)} 100%)`,
+  boxShadow: `0 8px 1rem 0 ${alpha(theme.palette.primary.dark, 0.2)}`,
+  backdropFilter: "blur( 4px )",
+  WebkitBackdropFilter: "blur( 4px )"
 }));
 export default function LargeSearch({
-  onChooseImage,
-  onSearchText,
-  onChooseMic
-}: {
+                                      onChooseImage,
+                                      onSearchText,
+                                      onChooseMic
+                                    }: {
   onChooseImage: (image: string) => void;
   onSearchText: (text: string) => void;
   onChooseMic: () => void;

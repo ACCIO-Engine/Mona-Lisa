@@ -21,6 +21,12 @@ const darkTheme = responsiveFontSizes(
         light: "#2EBEE3",
         dark: "#031F34",
         contrastText: "#fff"
+      },
+      secondary: {
+        main: "#031F34",
+        light: "#2EBEE3",
+        dark: "#031F34",
+        contrastText: "#fff"
       }
     },
     components: {
@@ -48,6 +54,12 @@ const lightTheme = responsiveFontSizes(
       mode: "light",
       primary: {
         main: "#031F34",
+        light: "#2EBEE3",
+        dark: "#031F34",
+        contrastText: "#fff"
+      },
+      secondary: {
+        main: "#fff",
         light: "#2EBEE3",
         dark: "#031F34",
         contrastText: "#fff"

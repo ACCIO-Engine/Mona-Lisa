@@ -73,7 +73,8 @@ export default function SearchControls() {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          width: "100%"
+          width: "100%",
+          minHeight: "9rem"
         }}
       >
         {currentControl === "text" && (
