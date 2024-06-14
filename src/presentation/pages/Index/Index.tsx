@@ -1,7 +1,6 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PathsGrid from "../../components/DataGrid/PathsGrid";
 import IndexButtons from "../../components/IndexButtons/IndexButtons";
@@ -14,6 +13,7 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  other?: any;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -29,7 +29,7 @@ function CustomTabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -170,7 +170,12 @@ export default function BasicTabs() {
   return (
     <>
       <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          display: "flex",
+          justifyContent: "space-between"
+        }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -189,6 +194,22 @@ export default function BasicTabs() {
               fontSize: "1rem"
             }} {...a11yProps(2)} />
           </Tabs>
+          <Button variant="contained"
+                  sx={{ margin: "0 1rem 1rem 0" }}
+                  onClick={() =>
+                    ipcRenderer.send("save",
+                      {
+                        "Mode": selectedMode,
+                        "vectorDBPath": DBPath,
+                        "embedders": selectedTextModel,
+                        "imageCaptioners": selectedImageModel,
+                        "videoCaptioners": selectedVideoModel,
+                        "searchAppraoch": selectedSearchApproach,
+                        "paths": crawledPaths,
+                        "ignoredPaths": ignoredPaths
+                      })}>
+            save
+          </Button>
         </Box>
         <CustomTabPanel value={value} index={0}>
           <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs}
@@ -217,21 +238,6 @@ export default function BasicTabs() {
           />
         </CustomTabPanel>
       </Box>
-      <Button variant="contained"
-              onClick={() =>
-                ipcRenderer.send("save",
-                  {
-                    "Mode": selectedMode,
-                    "vectorDBPath": DBPath,
-                    "embedders": selectedTextModel,
-                    "imageCaptioners": selectedImageModel,
-                    "videoCaptioners": selectedVideoModel,
-                    "searchAppraoch": selectedSearchApproach,
-                    "paths": crawledPaths,
-                    "ignoredPaths": ignoredPaths
-                  })}>
-        save
-      </Button>
     </>
   );
 }
