@@ -11,8 +11,6 @@ export default function Home() {
     <Box>
       <HomeContainer>
         <LogoContainer>
-          {/*<NameOnlyLogo height={200} />*/}
-
           {theme.palette.mode === "dark" ? (
             <DarkNameOnlyLogo height={200} />
           ) : (

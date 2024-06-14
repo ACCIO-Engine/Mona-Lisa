@@ -7,23 +7,67 @@ import "@fontsource/barlow"; // Defaults to weight 400
 import "@fontsource/barlow/400.css"; // Specify weight
 import "@fontsource/barlow/400-italic.css"; // Specify weight and style
 
-export const mainTheme = (mode: boolean): Theme =>
-  responsiveFontSizes(
-    createTheme({
-      typography: {
-        fontFamily: "Barlow"
-      },
-      palette: {
-        mode: mode ? "light" : "dark",
-        primary: {
-          main: "#0769AE",
-          light: "#2EBEE3",
-          dark: "#031F34",
-          contrastText: "#fff"
+export const mainTheme = (mode: boolean): Theme => (mode ? lightTheme : darkTheme);
+
+const darkTheme = responsiveFontSizes(
+  createTheme({
+    typography: {
+      fontFamily: "Barlow"
+    },
+    palette: {
+      mode: "dark",
+      primary: {
+        main: "#fff",
+        light: "#2EBEE3",
+        dark: "#031F34",
+        contrastText: "#fff"
+      }
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            color: "white", // Add your desired color
+            backgroundColor: "#031F34", // Add your desired background color
+            "&:hover": {
+              backgroundColor: "#2EBEE3" // Add your desired hover color
+            }
+          }
         }
       }
-    })
-  );
+    }
+  })
+);
+
+const lightTheme = responsiveFontSizes(
+  createTheme({
+    typography: {
+      fontFamily: "Barlow"
+    },
+    palette: {
+      mode: "light",
+      primary: {
+        main: "#031F34",
+        light: "#2EBEE3",
+        dark: "#031F34",
+        contrastText: "#fff"
+      }
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            color: "white", // Add your desired color
+            backgroundColor: "#031F34", // Add your desired background color
+            "&:hover": {
+              backgroundColor: "#2390a9" // Add your desired hover color
+            }
+          }
+        }
+      }
+    }
+  })
+);
 
 export const globalStyles = (mode: boolean) =>
   mode ? lightGlobalStyles : darkGlobalStyles;
@@ -31,7 +75,6 @@ export const globalStyles = (mode: boolean) =>
 
 const lightGlobalStyles = {
   body: {
-    backgroundImage: "linear-gradient(to right top, #00afff, #3bbbfd, #5dc7fb, #7ad2f9, #96ddf8, #98def8, #9adff8, #9ce0f8, #85d8f9, #6dd0fb, #52c7fd, #2fbeff)",
     height: "100vh",
     backgroundSize: "100% 100%",
     backgroundPosition: "0px 0px,0px 0px,0px 0px,0px 0px,0px 0px",

@@ -75,25 +75,25 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
       <List>
         <NavLinkItem
           to={routes.home}
-          icon={<HomeIcon />}
+          icon={<HomeIcon color={"primary"} />}
           text="Home"
           buttonProps={buttonProps(1)}
         />
         <NavLinkItem
           to={routes.dashboard}
-          icon={<DashboardIcon />}
+          icon={<DashboardIcon color={"primary"} />}
           text="Dashboard"
           buttonProps={buttonProps(0)}
         />
         <NavLinkItem
           to={routes.search}
-          icon={<SearchIcon />}
+          icon={<SearchIcon color={"primary"} />}
           text="Search"
           buttonProps={buttonProps(2)}
         />
         <NavLinkItem
           to={routes.index}
-          icon={<DocumentScannerIcon />}
+          icon={<DocumentScannerIcon color={"primary"} />}
           text="Indexing"
           buttonProps={buttonProps(3)}
         />

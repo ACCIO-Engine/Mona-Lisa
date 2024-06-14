@@ -9,6 +9,7 @@ import { useSnackbar } from "../../contexts/SnackbarContext";
 import copyTextToClipboard from "../../utils/copy";
 import Settings from "../../layouts/Settings/Settings";
 import { Button } from "@mui/material";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -38,7 +39,7 @@ function CustomTabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`
   };
 }
 
@@ -57,16 +58,16 @@ export default function BasicTabs() {
 
   const { openSnackbar } = useSnackbar();
 
-  const ipcRenderer = (window as any).ipcRenderer
+  const ipcRenderer = (window as any).ipcRenderer;
 
   const handleSelectedDirs = React.useCallback((event: any, dirs: string[]) => {
-    console.log("AAAAAAAAAAAAAAAAAAAA")
+    console.log("AAAAAAAAAAAAAAAAAAAA");
     const uniqueDirs = new Set(dirs);
     setCrawledPaths((prevCrawledPaths) => new Set([...prevCrawledPaths, ...uniqueDirs]));
   }, [setCrawledPaths]);
 
   const handleSelectedIgnoreDirs = React.useCallback((event: any, dirs: string[]) => {
-    console.log("AAAAAAAAAAAAAAAAAAAA")
+    console.log("AAAAAAAAAAAAAAAAAAAA");
     const uniqueDirs = new Set(dirs);
     setIgnoredPaths((prevIgnoredPaths) => new Set([...prevIgnoredPaths, ...uniqueDirs]));
   }, [setIgnoredPaths]);
@@ -84,17 +85,17 @@ export default function BasicTabs() {
   }, [setSelectedMode, setDBPath, setSelectedTextModel, setSelectedImageModel, setSelectedVideoModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
 
   React.useEffect(() => {
-    ipcRenderer.send('get-config');
-    ipcRenderer.on('config', handleLoadConfig);
+    ipcRenderer.send("get-config");
+    ipcRenderer.on("config", handleLoadConfig);
     return () => {
       // remove all event listeners when component unmounts
-      ipcRenderer.removeAllListeners('config');
-    }
+      ipcRenderer.removeAllListeners("config");
+    };
   }, [handleLoadConfig, ipcRenderer]);
 
   React.useEffect(() => {
-    ipcRenderer.on('selected-dirs', handleSelectedDirs);
-    ipcRenderer.on('selected-ignore-dirs', handleSelectedIgnoreDirs);
+    ipcRenderer.on("selected-dirs", handleSelectedDirs);
+    ipcRenderer.on("selected-ignore-dirs", handleSelectedIgnoreDirs);
   }, [handleSelectedDirs, handleSelectedIgnoreDirs, ipcRenderer]);
 
 
@@ -110,7 +111,7 @@ export default function BasicTabs() {
     });
     setCrawledPaths(newCrawledPaths);
 
-  }
+  };
 
   const handleRemoveIgnoreDir = () => {
     const newIgnoredPaths = new Set(ignoredPaths);
@@ -119,22 +120,22 @@ export default function BasicTabs() {
     });
     setIgnoredPaths(newIgnoredPaths);
 
-  }
+  };
 
   const handleSwapIndex2Ignore = () => {
-    console.log('swap index to ignore');
+    console.log("swap index to ignore");
     // Create a new set of crawled paths without the selected paths
     const newCrawledPaths = new Set([...crawledPaths].filter((path) => !selectedPaths.has(path)));
     // Add selected paths to ignored paths set
     const newIgnoredPaths = new Set([...ignoredPaths, ...selectedPaths]);
-    console.log(newCrawledPaths, newIgnoredPaths)
+    console.log(newCrawledPaths, newIgnoredPaths);
     // Update the state with the new sets
     setCrawledPaths(newCrawledPaths);
     setIgnoredPaths(newIgnoredPaths);
   };
 
   const handleSwapIgnore2Index = () => {
-    console.log('swap ignore to index');
+    console.log("swap ignore to index");
     // Create a new set of ignored paths without the selected paths
     const newIgnoredPaths = new Set([...ignoredPaths].filter((path) => !selectedPaths.has(path)));
     // Add selected paths to crawled paths set
@@ -147,12 +148,12 @@ export default function BasicTabs() {
 
 
   const handleAddDirs = () => {
-    ipcRenderer.send('open-select-dirs-dialog')
-  }
+    ipcRenderer.send("open-select-dirs-dialog");
+  };
 
   const handleAddIgnoreDirs = () => {
-    ipcRenderer.send('open-select-ignore-dirs-dialog')
-  }
+    ipcRenderer.send("open-select-ignore-dirs-dialog");
+  };
 
   const handleCopy = () => {
     const selectedPathsArray = Array.from(selectedPaths);
@@ -175,17 +176,28 @@ export default function BasicTabs() {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Indexed" {...a11yProps(0)} />
-            <Tab label="Ignored" {...a11yProps(1)} />
-            <Tab label="Settings" {...a11yProps(2)} />
+            <Tab label="Indexed" sx={{
+              fontWeight: "bold",
+              fontSize: "1rem"
+            }} {...a11yProps(0)} />
+            <Tab label="Ignored" sx={{
+              fontWeight: "bold",
+              fontSize: "1rem"
+            }} {...a11yProps(1)} />
+            <Tab label="Settings" sx={{
+              fontWeight: "bold",
+              fontSize: "1rem"
+            }} {...a11yProps(2)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs} handleCopy={handleCopy} handleRemove={handleRemoveDir} />
+          <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs}
+                        handleCopy={handleCopy} handleRemove={handleRemoveDir} />
           <PathsGrid paths={crawledPaths} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs} handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
+          <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs}
+                        handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
           <PathsGrid paths={ignoredPaths} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
@@ -206,9 +218,18 @@ export default function BasicTabs() {
         </CustomTabPanel>
       </Box>
       <Button variant="contained"
-        onClick={() =>
-          ipcRenderer.send('save',
-            { "Mode": selectedMode, "vectorDBPath": DBPath, "embedders": selectedTextModel, "imageCaptioners": selectedImageModel, "videoCaptioners": selectedVideoModel, "searchAppraoch": selectedSearchApproach, "paths": crawledPaths, "ignoredPaths": ignoredPaths })}>
+              onClick={() =>
+                ipcRenderer.send("save",
+                  {
+                    "Mode": selectedMode,
+                    "vectorDBPath": DBPath,
+                    "embedders": selectedTextModel,
+                    "imageCaptioners": selectedImageModel,
+                    "videoCaptioners": selectedVideoModel,
+                    "searchAppraoch": selectedSearchApproach,
+                    "paths": crawledPaths,
+                    "ignoredPaths": ignoredPaths
+                  })}>
         save
       </Button>
     </>

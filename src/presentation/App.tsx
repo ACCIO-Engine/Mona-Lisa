@@ -2,7 +2,6 @@ import { globalStyles, mainTheme } from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import React from "react";
-import Settings from "./layouts/Settings/Settings";
 import Index from "./pages/Index/Index";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./layouts/Root/Root";
