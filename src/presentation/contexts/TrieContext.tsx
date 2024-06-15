@@ -45,24 +45,6 @@ const TrieProvider: React.FC<TrieProviderProps> = ({
             const text = await response.text();
             console.log("text", text);
             const wordsArray = text.split("\n");
-            // const wordsArray = [
-            //     "apple",
-            //     "app",
-            //     "a",
-            //     "ajdd",
-            //     "agfhg",
-            //     "ahgjuuu",
-            //     "ajsjhhj",
-            //     "orange",
-            //     "banana",
-            //     "grape",
-            //     "watermelon",
-            //     "strawberry",
-            //     "mango",
-            //     "pineapple",
-            //     "kiwi",
-            //     "pear"
-            // ];
             console.log("wordsArray", wordsArray);
 
             const newTrie = new Trie();

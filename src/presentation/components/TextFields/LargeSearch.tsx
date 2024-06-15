@@ -44,8 +44,10 @@ export default function LargeSearch({
     (event) => {
       const newInputValue = event.target.value;
       setInputValue(newInputValue);
-      if (newInputValue && trie) {
-        const filteredOptions = trie.search(newInputValue.toLowerCase());
+      const tokens = newInputValue.split(' ');
+      const lastToken = tokens[tokens.length-1];
+      if (lastToken && trie) {
+        const filteredOptions = trie.search(lastToken.toLowerCase());
         console.log(`finished search with length ${filteredOptions.length}`);
         if (filteredOptions.length < 10) {
           console.log(filteredOptions);
@@ -58,6 +60,13 @@ export default function LargeSearch({
     [trie]
   );
 
+  const handleOptionClick = (index, e) => {
+    console.log(index);
+    const tokens = inputValue.split(' ');
+    tokens[tokens.length-1] = options[index];
+    setInputValue(tokens.join(' '));
+    setOptions([]);
+  }
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
 
@@ -71,7 +80,7 @@ export default function LargeSearch({
         component="div"
         disablePadding
       >
-        <ListItemButton>
+        <ListItemButton onClick={handleOptionClick.bind(null, index)}>
           <ListItemText primary={`${options[index]}`} />
         </ListItemButton>
       </ListItem>
@@ -101,7 +110,7 @@ export default function LargeSearch({
           value={inputValue}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              onSearchText(e.currentTarget.value);
+              onSearchText(inputValue);
             }
           }}
           onChange={handleInputChange}
@@ -139,14 +148,7 @@ export default function LargeSearch({
           />
         </IconButton>
       </SearchContainer>
-      <Box
-        sx={
-          {
-            // bgcolor:"#fff",
-            // color: "#000"
-          }
-        }
-      >
+      <Box>
         <FixedSizeList
           height={150}
           itemSize={35}
