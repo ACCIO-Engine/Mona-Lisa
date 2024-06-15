@@ -59,7 +59,7 @@ export default function SearchControls() {
         sx={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center",
+          alignItems: "start",
           justifyContent: "center",
           width: "100%",
           minHeight: "9rem"

@@ -1,11 +1,20 @@
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, styled } from "@mui/material";
+import {
+  Box,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  styled
+} from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import ImageIcon from "@mui/icons-material/Image";
 
 import { alpha } from "@mui/system";
+import { useCallback, useState } from "react";
+import { useTrieContext } from "../../contexts/TrieContext";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
 
 const SearchContainer = styled(Box)(({ theme }) => ({
   p: "2px 4px",
@@ -19,65 +28,134 @@ const SearchContainer = styled(Box)(({ theme }) => ({
   WebkitBackdropFilter: "blur( 4px )"
 }));
 export default function LargeSearch({
-                                      onChooseImage,
-                                      onSearchText,
-                                      onChooseMic
-                                    }: {
+  onChooseImage,
+  onSearchText,
+  onChooseMic
+}: {
   onChooseImage: (image: string) => void;
   onSearchText: (text: string) => void;
   onChooseMic: () => void;
 }) {
-  return (
-    <SearchContainer>
-      <Box sx={{ p: "10px" }} aria-label="menu">
-        <SearchIcon
-          sx={{
-            color: "grey.500"
-          }}
-        />
-      </Box>
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="Search ACCIO"
-        inputProps={{ "aria-label": "search google maps" }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            onSearchText(e.currentTarget.value);
-          }
+  const [inputValue, setInputValue] = useState("");
+  const [options, setOptions] = useState([]);
+  const { trie } = useTrieContext();
+
+  const handleInputChange = useCallback(
+    (event) => {
+      const newInputValue = event.target.value;
+      setInputValue(newInputValue);
+      if (newInputValue && trie) {
+        const filteredOptions = trie.search(newInputValue.toLowerCase());
+        console.log(`finished search with length ${filteredOptions.length}`);
+        if (filteredOptions.length < 10) {
+          console.log(filteredOptions);
+        }
+        setOptions(filteredOptions);
+      } else {
+        setOptions([]);
+      }
+    },
+    [trie]
+  );
+
+  function renderRow(props: ListChildComponentProps) {
+    const { index, style } = props;
+
+    return (
+      <ListItem
+        style={style}
+        sx={{
+          paddingLeft: "30px"
         }}
-      />
-      <IconButton
-        type="button"
-        sx={{ p: "10px" }}
-        aria-label="search"
-        onClick={onChooseMic}
+        key={options[index]}
+        component="div"
+        disablePadding
       >
-        <MicIcon />
-      </IconButton>
-      <IconButton
-        color="primary"
-        sx={{ p: "10px" }}
-        component="label"
-        role={undefined}
-        tabIndex={-1}
-      >
-        <ImageIcon />
-        <input
-          style={{ display: "none" }}
-          id="upload-photo"
-          name="upload-photo"
-          accept="image/*"
-          type="file"
-          onChange={(e) => {
-            console.log(
-              e.target.files,
-              e.target.files![0],
-              e.target.files![0].path
-            );
-            onChooseImage(e.target.files![0].path);
+        <ListItemButton>
+          <ListItemText primary={`${options[index]}`} />
+        </ListItemButton>
+      </ListItem>
+    );
+  }
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%"
+      }}
+    >
+      <SearchContainer>
+        <Box sx={{ p: "10px" }} aria-label="menu">
+          <SearchIcon
+            sx={{
+              color: "grey.500"
+            }}
+          />
+        </Box>
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search ACCIO"
+          inputProps={{ "aria-label": "search google maps" }}
+          value={inputValue}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onSearchText(e.currentTarget.value);
+            }
           }}
+          onChange={handleInputChange}
         />
-      </IconButton>
-    </SearchContainer>
+        <IconButton
+          type="button"
+          sx={{ p: "10px" }}
+          aria-label="search"
+          onClick={onChooseMic}
+        >
+          <MicIcon />
+        </IconButton>
+        <IconButton
+          color="primary"
+          sx={{ p: "10px" }}
+          component="label"
+          role={undefined}
+          tabIndex={-1}
+        >
+          <ImageIcon />
+          <input
+            style={{ display: "none" }}
+            id="upload-photo"
+            name="upload-photo"
+            accept="image/*"
+            type="file"
+            onChange={(e) => {
+              console.log(
+                e.target.files,
+                e.target.files![0],
+                e.target.files![0].path
+              );
+              onChooseImage(e.target.files![0].path);
+            }}
+          />
+        </IconButton>
+      </SearchContainer>
+      <Box
+        sx={
+          {
+            // bgcolor:"#fff",
+            // color: "#000"
+          }
+        }
+      >
+        <FixedSizeList
+          height={150}
+          itemSize={35}
+          width={"100%"}
+          itemCount={options.length}
+        >
+          {renderRow}
+        </FixedSizeList>
+      </Box>
+    </Box>
   );
 }
