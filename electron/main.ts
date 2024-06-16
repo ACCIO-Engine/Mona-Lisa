@@ -96,6 +96,7 @@ process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
 process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
 process.env.CHROMADB = path.join(__dirname, '../../Octopus')
 process.env.OCTOPUS = path.join(__dirname, '../../Octopus')
+process.env.AUTO_COMPLETE = path.join(__dirname, '../AutoComplete')
 
 // const store = new Store()
 
@@ -129,6 +130,10 @@ function stopShellCommand(child: any): void {
 }
 
 module.exports = { runShellCommand, stopShellCommand };
+
+const runAutoComplete = (): any => {
+  return runShellCommand("npm start", process.env.AUTO_COMPLETE);
+}
 
 // IPC
 const runHedwig = (): any => {
@@ -284,3 +289,5 @@ ipc.on('get-config', (event) => {
   event.sender.send('config', config);
 })
 connectProcess('octopus', runOctopus, stopOctopus)
+
+runAutoComplete();
