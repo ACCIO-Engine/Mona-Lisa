@@ -90,7 +90,20 @@ const lightGlobalStyles = {
     height: "100vh",
     backgroundSize: "100% 100%",
     backgroundPosition: "0px 0px,0px 0px,0px 0px,0px 0px,0px 0px",
-    backgroundImage: "radial-gradient(49% 81% at 45% 47%, #BAEAF8 9%, #073AFF00 100%),radial-gradient(113% 91% at 17% -2%, #FFFFFFFF 0%, #FF000000 2%),radial-gradient(142% 91% at 83% 7%, #E2F8FFFF 2%, #FFF6F600 99%),radial-gradient(142% 91% at -6% 74%, #FFFFFFFF 22%, #DEF7FFFF 87%),radial-gradient(142% 91% at 111% 84%, #FFFFFFFF 0%, #FFFFFF42 100%)"
+    backgroundImage: "radial-gradient(49% 81% at 45% 47%, #BAEAF8 9%, #073AFF00 100%),radial-gradient(113% 91% at 17% -2%, #FFFFFFFF 0%, #FF000000 2%),radial-gradient(142% 91% at 83% 7%, #E2F8FFFF 2%, #FFF6F600 99%),radial-gradient(142% 91% at -6% 74%, #FFFFFFFF 22%, #DEF7FFFF 87%),radial-gradient(142% 91% at 111% 84%, #FFFFFFFF 0%, #FFFFFF42 100%)",
+    scrollbarColor: "#2EBEE3 #FFFFFF",
+    scrollbarWidth: "thin"
+  },
+  "::-webkit-scrollbar": {
+    width: "12px"
+  },
+  "::-webkit-scrollbar-track": {
+    background: "#FFFFFF"
+  },
+  "::-webkit-scrollbar-thumb": {
+    backgroundColor: "#2EBEE3",
+    borderRadius: "10px",
+    border: "3px solid #FFFFFF"
   }
 };
 
@@ -102,6 +115,19 @@ const darkGlobalStyles = {
     backdropFilter: "blur(41px)",
     backgroundSize: "100% 100%",
     backgroundPosition: "0px 0px,0px 0px,0px 0px,0px 0px,0px 0px",
-    backgroundImage: "radial-gradient(49% 81% at 45% 47%, #4379A1FF 9%, #08344FFF 100%),radial-gradient(113% 91% at 17% -2%, #FFFFFFFF 0%, #FF000000 2%),radial-gradient(142% 91% at 83% 7%, #044372FF 2%, #285B81FF 99%),radial-gradient(142% 91% at -6% 74%, #FFFFFFFF 22%, #08344f 87%),radial-gradient(142% 91% at 111% 84%, #FFFFFFFF 0%, #FFFFFF42 100%)"
+    backgroundImage: "radial-gradient(49% 81% at 45% 47%, #4379A1FF 9%, #08344FFF 100%),radial-gradient(113% 91% at 17% -2%, #FFFFFFFF 0%, #FF000000 2%),radial-gradient(142% 91% at 83% 7%, #044372FF 2%, #285B81FF 99%),radial-gradient(142% 91% at -6% 74%, #FFFFFFFF 22%, #08344f 87%),radial-gradient(142% 91% at 111% 84%, #FFFFFFFF 0%, #FFFFFF42 100%)",
+    scrollbarColor: "#2EBEE3 #031F34",
+    scrollbarWidth: "thin"
+  },
+  "::-webkit-scrollbar": {
+    width: "12px"
+  },
+  "::-webkit-scrollbar-track": {
+    background: "#031F34"
+  },
+  "::-webkit-scrollbar-thumb": {
+    backgroundColor: "#2EBEE3",
+    borderRadius: "10px",
+    border: "3px solid #031F34"
   }
 };
