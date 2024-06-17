@@ -14,7 +14,7 @@ export default function IndexButtons(props: IndexButtonsProps) {
   return (
     <Grid container columnSpacing={5} paddingBottom={2} alignItems={"center"}>
       <Grid item xs="auto">
-        <Button variant="contained" onClick={handleAdd}>ِAdd</Button>
+        <Button variant="contained" onClick={handleAdd}>Add</Button>
       </Grid>
       <Grid item xs="auto">
         <Button variant="contained" onClick={handleRemove}>Remove</Button>

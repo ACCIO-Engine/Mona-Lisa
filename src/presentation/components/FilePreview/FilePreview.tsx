@@ -1,21 +1,22 @@
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { IconButton } from "@mui/material";
+import { IconButton, useTheme } from "@mui/material";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { File, FileType } from "../../../application";
 import Logo from "../../assets/imageOnly.svg";
 import FullFilePreview from "../FullFilePreview/FullFilePreview";
-import { useState } from "react";
 import PDFIcon from "../../assets/pdf.svg?react";
 import DOCIcon from "../../assets/doc.svg?react";
 import PPTIcon from "../../assets/ppt.svg?react";
 import TextIcon from "../../assets/txt.svg?react";
 import VideoIcon from "../../assets/video.svg?react";
+import { alpha } from "@mui/system";
 
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
@@ -34,25 +35,15 @@ const PDFFilePreview = ({ file }: { file: File }) => {
 };
 
 const WordFilePreview = ({ file }: { file: File }) => {
-  return (
-    <>
-      <DOCIcon />
-    </>
-  );
+  return <DOCIcon />;
 };
+
 const PowerPointFilePreview = ({ file }: { file: File }) => {
-  return (
-    <>
-      <PPTIcon />
-    </>
-  );
+  return <PPTIcon />;
 };
+
 const TextFilePreview = ({ file }: { file: File }) => {
-  return (
-    <>
-      <TextIcon />
-    </>
-  );
+  return <TextIcon />;
 };
 
 const VideoFilePreview = ({ file }: { file: File }) => {
@@ -72,7 +63,7 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
 
 const FilePreview = ({ file }: { file: File }) => {
   const [openFullPreview, setOpenFullPreview] = useState(false);
-
+  const theme = useTheme();
   const filePreview =
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
@@ -99,8 +90,14 @@ const FilePreview = ({ file }: { file: File }) => {
       />
       <Card
         sx={{
-          p: 1,
-          borderRadius : 3,
+          p: 2,
+          borderRadius: 3,
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: `0 4px 30px ${alpha(theme.palette.primary.dark, 0.2)}`,
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          border: `1px solid ${alpha(theme.palette.common.white, 0.1)}`,
+          backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.common.white, 0.3)} 0%, ${alpha(theme.palette.common.white, 0.1)} 100%`
         }}
       >
         <CardContent
@@ -121,13 +118,14 @@ const FilePreview = ({ file }: { file: File }) => {
             p: 0
           }}
         >
-          <Typography gutterBottom sx={{
-            textAlign: "center",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap"
-
-          }}
+          <Typography
+            gutterBottom
+            sx={{
+              textAlign: "center",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap"
+            }}
           >
             {file.name}
           </Typography>
@@ -137,7 +135,7 @@ const FilePreview = ({ file }: { file: File }) => {
             p: 0,
             width: "100%",
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "center"
           }}
         >
           <IconButton color="primary">
