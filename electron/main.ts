@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow, dialog, ipcMain as ipc } from 'electron'
-import path from 'node:path'
-import { spawn, spawnSync } from 'node:child_process'
-import os from 'node:os'
-import fs from 'fs';
+import { app, BrowserWindow, dialog, ipcMain as ipc } from "electron";
+import path from "node:path";
+import { spawn, spawnSync } from "node:child_process";
+import os from "node:os";
+import fs from "fs";
 // import Store from 'electron-store'
 
 // The built directory structure
@@ -25,7 +25,7 @@ let win: BrowserWindow | null;
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
 function createWindow(): void {
-  console.log('Creating window')
+  console.log("Creating window");
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "icon.png"),
     autoHideMenuBar: true,
@@ -67,11 +67,11 @@ app.on("activate", () => {
   }
 });
 
-app.on('ready', () => {
+app.on("ready", () => {
   // Read the configuration file
   fs.readFile(path.resolve(__dirname, "../../Octopus/config.json"), (err, data) => {
     if (err) {
-      console.error('Error reading configuration file:', err);
+      console.error("Error reading configuration file:", err);
       return;
     }
 
@@ -83,7 +83,7 @@ app.on('ready', () => {
         mainWindow.setSize(config.width, config.height);
       }
     } catch (err) {
-      console.error('Error parsing configuration file:', err);
+      console.error("Error parsing configuration file:", err);
     }
 
     // Create the application window after reading the configuration
@@ -92,14 +92,13 @@ app.on('ready', () => {
 });
 
 
-process.env.HEDWIG = path.join(__dirname, '../../Hedwig')
-process.env.NANOBERT = path.join(__dirname, '../../text-semantic-search')
-process.env.CHROMADB = path.join(__dirname, '../../Octopus')
-process.env.OCTOPUS = path.join(__dirname, '../../Octopus')
-process.env.AUTO_COMPLETE = path.join(__dirname, '../AutoComplete')
+process.env.HEDWIG = path.join(__dirname, "../../Hedwig");
+process.env.NANOBERT = path.join(__dirname, "../../text-semantic-search");
+process.env.CHROMADB = path.join(__dirname, "../../Octopus");
+process.env.OCTOPUS = path.join(__dirname, "../../Octopus");
+process.env.AUTO_COMPLETE = path.join(__dirname, "../AutoComplete");
 
 // const store = new Store()
-
 
 
 function runShellCommand(command: string, cwd: string | undefined): any {
@@ -115,17 +114,16 @@ function runShellCommand(command: string, cwd: string | undefined): any {
 // const test = runShellCommand('python server.py')
 
 function stopShellCommand(child: any): void {
-  console.log('Stopping the command')
+  console.log("Stopping the command");
   if (child != null) {
-    console.log('Killing the child process')
-    if (os.platform() === 'win32' || os.platform() === 'win64') {
-      console.log(`pid = ${child.pid}`)
-      spawnSync('taskkill', ['/pid', child.pid, '/f', '/t'])
+    console.log("Killing the child process");
+    if (os.platform() === "win32" || os.platform() === "win64") {
+      console.log(`pid = ${child.pid}`);
+      spawnSync("taskkill", ["/pid", child.pid, "/f", "/t"]);
+    } else if (os.platform() === "linux") {
+      spawnSync("kill", ["-9", child.pid]);
     }
-    else if (os.platform() === 'linux') {
-      spawnSync('kill', ['-9', child.pid])
-    }
-    child = null
+    child = null;
   }
 }
 
@@ -133,7 +131,7 @@ module.exports = { runShellCommand, stopShellCommand };
 
 const runAutoComplete = (): any => {
   return runShellCommand("npm start", process.env.AUTO_COMPLETE);
-}
+};
 
 // IPC
 const runHedwig = (): any => {
@@ -152,8 +150,8 @@ const runChromaDB = (): any => {
 };
 
 const runOctopus = (): any => {
-  return runShellCommand(' java -jar ./Octopus-0.01.jar', process.env.OCTOPUS)
-}
+  return runShellCommand(" java -jar ./Octopus-0.01.jar", process.env.OCTOPUS);
+};
 
 
 const stopHedwig = (child: any): void => {
@@ -169,8 +167,8 @@ const stopChromaDB = (child: any): void => {
 };
 
 const stopOctopus = (child: any): void => {
-  stopShellCommand(child)
-}
+  stopShellCommand(child);
+};
 
 const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (child: any) => void): void => {
   ipc.on(`${eventName}-start`, (event) => {
@@ -202,44 +200,44 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
 
     app.on("will-quit", () => {
       // Perform tasks such as notifying the user or confirming action
-      console.log("Trying to kill process")
+      console.log("Trying to kill process");
       if (child != null)
-        stopProcess(child)
+        stopProcess(child);
     });
-  })
-}
+  });
+};
 
 connectProcess("hedwig", runHedwig, stopHedwig);
 
 connectProcess("nanobert", runNanoBert, stopNanoBert);
 
-connectProcess('chromadb', runChromaDB, stopChromaDB)
+connectProcess("chromadb", runChromaDB, stopChromaDB);
 
-ipc.on('open-select-dirs-dialog', function (event) {
+ipc.on("open-select-dirs-dialog", function(event) {
   dialog.showOpenDialog(win, {
-    properties: ['openDirectory', 'multiSelections']
+    properties: ["openDirectory", "multiSelections"]
   }).then(result => {
-    event.sender.send('selected-dirs', result.filePaths, result.canceled);
+    event.sender.send("selected-dirs", result.filePaths, result.canceled);
   }).catch(err => {
     console.error(err);
   });
-})
+});
 
-ipc.on('open-select-ignore-dirs-dialog', function (event) {
+ipc.on("open-select-ignore-dirs-dialog", function(event) {
   dialog.showOpenDialog(win, {
-    properties: ['openDirectory', 'multiSelections']
+    properties: ["openDirectory", "multiSelections"]
   }).then(result => {
-    event.sender.send('selected-ignore-dirs', result.filePaths, result.canceled);
+    event.sender.send("selected-ignore-dirs", result.filePaths, result.canceled);
   }).catch(err => {
     console.error(err);
   });
-})
+});
 
-ipc.on('open-select-image-dialog', function (event) {
+ipc.on("open-select-image-dialog", function(event) {
   dialog.showOpenDialog(win, {
-    properties: ['openFile'],
+    properties: ["openFile"],
     filters: [
-      { name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }
+      { name: "Images", extensions: ["jpg", "jpeg", "png", "gif"] }
     ]
   }).then(result => {
     if (!result.canceled && result.filePaths.length > 0) {
@@ -251,26 +249,26 @@ ipc.on('open-select-image-dialog', function (event) {
       // Extract the last part (filename) from the path
       const filename = pathParts[pathParts.length - 1];
 
-      event.sender.send('selected-image-path', filename);
+      event.sender.send("selected-image-path", filename);
     }
   }).catch(err => {
     console.error(err);
   });
-})
+});
 
-ipc.on('select-DBpath', function (event) {
+ipc.on("select-DBpath", function(event) {
   dialog.showOpenDialog(win, {
-    properties: ['openDirectory',]
+    properties: ["openDirectory"]
   }).then(result => {
-    event.sender.send('selected-DBpath', result.filePaths[0], result.canceled);
-    console.log('Selected folder:', result.filePaths[0]);
+    event.sender.send("selected-DBpath", result.filePaths[0], result.canceled);
+    console.log("Selected folder:", result.filePaths[0]);
   }).catch(err => {
     console.error(err);
   });
-})
+});
 
-ipc.on('save', (sender, data) => {
-  console.log(data)
+ipc.on("save", (sender, data) => {
+  console.log(data);
   // save data to json file but first convert crawledPaths and ignoredPaths to list
   data.paths = Array.from(data.paths);
   data.ignoredPaths = Array.from(data.ignoredPaths);
@@ -278,16 +276,25 @@ ipc.on('save', (sender, data) => {
   const filePath = path.join(__dirname, "../../Octopus/config.json");
   fs.writeFileSync(filePath, jsonData);
   console.log("config saved to JSON file:", filePath);
-})
+});
 
 // receive config request from renderer process
-ipc.on('get-config', (event) => {
+ipc.on("get-config", (event) => {
   const filePath = path.join(__dirname, "../../Octopus/config.json");
-  const data = fs.readFileSync(filePath, 'utf8');
+  const data = fs.readFileSync(filePath, "utf8");
   const config = JSON.parse(data);
-  console.log(config)
-  event.sender.send('config', config);
-})
-connectProcess('octopus', runOctopus, stopOctopus)
+  console.log(config);
+  event.sender.send("config", config);
+});
+
+ipc.handle("read-file", async (_event, filePath) => {
+  try {
+    return fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    console.error("Error reading file:", error);
+    return null;
+  }
+});
+connectProcess("octopus", runOctopus, stopOctopus);
 
 runAutoComplete();

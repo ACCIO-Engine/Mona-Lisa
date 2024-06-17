@@ -16,6 +16,7 @@ import DOCIcon from "../../assets/doc.svg?react";
 import PPTIcon from "../../assets/ppt.svg?react";
 import TextIcon from "../../assets/txt.svg?react";
 import VideoIcon from "../../assets/video.svg?react";
+
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
     <CardMedia
@@ -98,9 +99,8 @@ const FilePreview = ({ file }: { file: File }) => {
       />
       <Card
         sx={{
-          height: 250,
-          width: 250,
-          p: 2
+          p: 1,
+          borderRadius : 3,
         }}
       >
         <CardContent
@@ -110,8 +110,8 @@ const FilePreview = ({ file }: { file: File }) => {
             justifyContent: "center",
             alignItems: "center",
             margin: "auto",
-            height: 150,
-            width: 150
+            height: 100,
+            width: 100
           }}
         >
           {filePreview}
@@ -121,14 +121,23 @@ const FilePreview = ({ file }: { file: File }) => {
             p: 0
           }}
         >
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom sx={{
+            textAlign: "center",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap"
+
+          }}
+          >
             {file.name}
           </Typography>
         </CardContent>
         <CardActions
           sx={{
             p: 0,
-            width: "100%"
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <IconButton color="primary">

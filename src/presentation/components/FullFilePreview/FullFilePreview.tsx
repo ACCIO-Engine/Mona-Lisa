@@ -1,19 +1,13 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import {
   AppBar,
-  Box,
-  Button,
   Dialog,
   IconButton,
   Slide,
   Toolbar
 } from "@mui/material";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { File, FileType } from "../../../application";
 import Logo from "../../assets/imageOnly.svg";
@@ -21,6 +15,8 @@ import { GridCloseIcon } from "@mui/x-data-grid";
 import React from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import { FileContainer } from "./FullFilePreview.styled";
+import TextFileViewer from "./TextFIleViewer.tsx";
+
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
     <CardMedia
@@ -67,6 +63,7 @@ const VideoFilePreview = ({ file }: { file: File }) => {
   );
 };
 
+
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
     <>
@@ -83,10 +80,10 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const FullFilePreview = ({
-  open,
-  setOpen,
-  file
-}: {
+                           open,
+                           setOpen,
+                           file
+                         }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   file: File;
@@ -100,6 +97,8 @@ const FullFilePreview = ({
       <WordFilePreview file={file} />
     ) : file.type === FileType.Video ? (
       <VideoFilePreview file={file} />
+    ) : file.type === FileType.Text ? (
+      <TextFileViewer file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );

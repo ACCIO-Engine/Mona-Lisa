@@ -7,9 +7,9 @@ const ResultsGrid = ({ files }: { files: File[] }) => {
   return (
     <Box sx={{ width: "100%" }}>
       {files && (
-        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 1, md: 1 }}>
           {files.map((file: File) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={file.path}>
+            <Grid item xs={12} sm={6} md={4} lg={2} key={file.path}>
               <FilePreview file={file} />
             </Grid>
           ))}
