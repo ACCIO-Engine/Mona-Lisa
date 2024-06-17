@@ -46,7 +46,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             fontSize: "1rem"
           }}
         >
-          <CreateIcon />
+          <CreateIcon sx={{ mr: 1 }} />
           Query Engine: {queryEngine}
         </Button>
         <Menu
