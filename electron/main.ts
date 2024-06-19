@@ -31,9 +31,40 @@ function createWindow(): void {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      webSecurity: false
+      webSecurity: false,
+      spellcheck: true
     }
   });
+  win.removeMenu();
+
+  win.webContents.session.setSpellCheckerLanguages(['en-US'])
+  const { Menu, MenuItem } = require('electron')
+
+  win.webContents.on('context-menu', (event, params) => {
+  const { selectionText, isEditable } = params;
+  if (!isEditable) return;
+  const menu = new Menu()
+
+  // Add each spelling suggestion
+  for (const suggestion of params.dictionarySuggestions) {
+    menu.append(new MenuItem({
+      label: suggestion,
+      click: () => win.webContents.replaceMisspelling(suggestion)
+    }))
+  }
+
+  // Allow users to add the misspelled word to the dictionary
+  if (params.misspelledWord) {
+    menu.append(
+      new MenuItem({
+        label: 'Add to dictionary',
+        click: () => win.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+      })
+    )
+  }
+
+  menu.popup()
+})
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
