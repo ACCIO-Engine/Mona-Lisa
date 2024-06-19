@@ -11,11 +11,11 @@ const Dashboard: React.FC = () => {
       flexDirection: "column",
       gap: 2
     }}>
-      {/*<Processes />*/}
-      <DashboardAccordion title={DashboardEntry.HEDWIG} />
-      <DashboardAccordion title={DashboardEntry.NANO_BERT} />
-      <DashboardAccordion title={DashboardEntry.CHROMA_DB} />
-      <DashboardAccordion title={DashboardEntry.OCTOPUS} />
+      <Processes />
+      {/*<DashboardAccordion title={DashboardEntry.HEDWIG} />*/}
+      {/*<DashboardAccordion title={DashboardEntry.NANO_BERT} />*/}
+      {/*<DashboardAccordion title={DashboardEntry.CHROMA_DB} />*/}
+      {/*<DashboardAccordion title={DashboardEntry.OCTOPUS} />*/}
     </Box>
   );
 };
