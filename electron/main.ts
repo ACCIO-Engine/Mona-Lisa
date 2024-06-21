@@ -26,6 +26,7 @@ process.env.VITE_PUBLIC = app.isPackaged
 // window object and related function and events
 let win: BrowserWindow | null;
 let close: boolean = false;
+let server: any = null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
@@ -50,6 +51,9 @@ function closeWindowHandler(event): void {
     event.preventDefault();
     win!.hide();
   }
+  else{
+    stopServer(server);
+  }
 }
 
 function allWindowsClosedHandler(): void {
@@ -72,7 +76,6 @@ function activateAppHandler(): void {
 function readyAppHandler(): void {
   console.log("App ready event");
   createWindow();
-  runServer();
 }
 
 function createTray(iconPath: string, mainWindow: BrowserWindow): void {
@@ -88,6 +91,7 @@ function createTray(iconPath: string, mainWindow: BrowserWindow): void {
 }
 
 function createWindow(): void {
+  server = runServer();
   console.log("Creating window");
   const iconPath = path.join(process.env.VITE_PUBLIC, "icon.png");
   // create window
