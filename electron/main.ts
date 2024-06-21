@@ -2,7 +2,7 @@
 // imports
 import { app, BrowserWindow, dialog, ipcMain as ipc, Tray, Menu, MenuItem } from "electron";
 import path from "node:path";
-import { spawn, spawnSync } from "node:child_process";
+import { spawn, spawnSync, exec } from "node:child_process";
 import os from "node:os";
 import fs from "fs";
 
@@ -273,6 +273,14 @@ connectProcess("nanobert", runNanoBert, stopNanoBert);
 
 connectProcess("chromadb", runChromaDB, stopChromaDB);
 
+ipc.on('open-folder', (event, folderPath) => {
+  if (process.platform === 'win32') {
+    exec(`start "" "${folderPath}"`);
+  } else if (process.platform === 'linux') {
+    exec(`xdg-open "${folderPath}"`);
+  }
+});
+
 ipc.on("open-select-dirs-dialog", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openDirectory", "multiSelections"]
@@ -358,3 +366,4 @@ ipc.handle("read-file", async (_event, filePath) => {
 connectProcess("octopus", runOctopus, stopOctopus);
 
 runAutoComplete();
+
