@@ -268,10 +268,14 @@ connectProcess("nanobert", runNanoBert, stopNanoBert);
 connectProcess("chromadb", runChromaDB, stopChromaDB);
 
 ipc.on('open-folder', (event, folderPath) => {
+  const pathParts = folderPath.split(/[\\/]/);
+  pathParts.pop(); // Remove the file name
+  const dir = pathParts.join('\\');
+
   if (process.platform === 'win32') {
-    exec(`start "" "${folderPath}"`);
+    exec(`start "" "${dir}"`);
   } else if (process.platform === 'linux') {
-    exec(`xdg-open "${folderPath}"`);
+    exec(`xdg-open "${dir}"`);
   }
 });
 
