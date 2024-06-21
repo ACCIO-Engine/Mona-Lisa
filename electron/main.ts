@@ -4,6 +4,8 @@ import path from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 import os from "node:os";
 import fs from "fs";
+const { exec } = require('child_process');
+
 // import Store from 'electron-store'
 
 // The built directory structure
@@ -265,6 +267,14 @@ connectProcess("nanobert", runNanoBert, stopNanoBert);
 
 connectProcess("chromadb", runChromaDB, stopChromaDB);
 
+ipc.on('open-folder', (event, folderPath) => {
+  if (process.platform === 'win32') {
+    exec(`start "" "${folderPath}"`);
+  } else if (process.platform === 'linux') {
+    exec(`xdg-open "${folderPath}"`);
+  }
+});
+
 ipc.on("open-select-dirs-dialog", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openDirectory", "multiSelections"]
@@ -350,3 +360,4 @@ ipc.handle("read-file", async (_event, filePath) => {
 connectProcess("octopus", runOctopus, stopOctopus);
 
 runAutoComplete();
+

@@ -62,6 +62,7 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
 };
 
 const FilePreview = ({ file }: { file: File }) => {
+  const ipcRenderer = (window as any).ipcRenderer;
   const [openFullPreview, setOpenFullPreview] = useState(false);
   const theme = useTheme();
   const filePreview =
@@ -144,7 +145,7 @@ const FilePreview = ({ file }: { file: File }) => {
           <IconButton color="primary" onClick={() => setOpenFullPreview(true)}>
             <FileOpenIcon />
           </IconButton>
-          <IconButton color="primary">
+          <IconButton color="primary" onClick={()=>ipcRenderer.send('open-folder',file.path)}>
             <FolderOpenIcon />
           </IconButton>
         </CardActions>
