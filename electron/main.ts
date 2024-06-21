@@ -99,28 +99,8 @@ app.on("activate", () => {
 });
 
 app.on("ready", () => {
-  // Read the configuration file
-  fs.readFile(path.resolve(__dirname, "../../Octopus/config.json"), (err, data) => {
-    if (err) {
-      console.error("Error reading configuration file:", err);
-      return;
-    }
-
-    try {
-      const config = JSON.parse(data.toString());
-      // Apply configuration settings here
-      // For example, set window dimensions
-      if (config.width && config.height) {
-        mainWindow.setSize(config.width, config.height);
-      }
-    } catch (err) {
-      console.error("Error parsing configuration file:", err);
-    }
-
-    // Create the application window after reading the configuration
     createWindow();
   });
-});
 
 
 process.env.HEDWIG = path.join(__dirname, "../../Hedwig");
