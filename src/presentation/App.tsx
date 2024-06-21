@@ -14,7 +14,6 @@ import DashboardProvider from "./contexts/DashboardContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import TrieProvider from "./contexts/TrieContext";
-import SearchInput from "./components/SearchInput/SearchInput";
 
 const queryClient = new QueryClient();
 const router = createHashRouter([
