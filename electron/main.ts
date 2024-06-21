@@ -72,6 +72,7 @@ function activateAppHandler(): void {
 function readyAppHandler(): void {
   console.log("App ready event");
   createWindow();
+  runServer();
 }
 
 function createTray(iconPath: string, mainWindow: BrowserWindow): void {
@@ -210,8 +211,14 @@ const runChromaDB = (): any => {
 };
 
 const runOctopus = (): any => {
-  return runShellCommand(" java -jar ./Octopus-0.01.jar", process.env.OCTOPUS);
+  const child = runShellCommand(" java -jar ./indexing.jar", process.env.OCTOPUS);
+  runAutoComplete();
+  return child;
 };
+
+const runServer  = (): any => {
+  return runShellCommand("java -jar ./server.jar", process.env.OCTOPUS);
+}
 
 
 const stopHedwig = (child: any): void => {
@@ -229,6 +236,10 @@ const stopChromaDB = (child: any): void => {
 const stopOctopus = (child: any): void => {
   stopShellCommand(child);
 };
+
+const stopServer = (child: any): void => {
+  stopShellCommand(child);
+}
 
 const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (child: any) => void): void => {
   ipc.on(`${eventName}-start`, (event) => {
@@ -364,6 +375,4 @@ ipc.handle("read-file", async (_event, filePath) => {
   }
 });
 connectProcess("octopus", runOctopus, stopOctopus);
-
-runAutoComplete();
 

@@ -60,7 +60,7 @@ const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }) => {
             ...prev,
             [entry]: {
                 ...prev[entry],
-                logs: prev[entry].logs.length > 100000 ? logs : `${prev[entry].logs}${logs}`,
+                logs: prev[entry].logs.length > 1000 ? logs : `${prev[entry].logs}${logs}`,
             },
         }));
     }, []);
