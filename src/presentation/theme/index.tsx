@@ -40,6 +40,48 @@ const darkTheme = responsiveFontSizes(
             }
           }
         }
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: "rgba(255, 255, 255, 0.1)", // Change the background color of the menu
+            backdropFilter: "blur(10px)", // Apply a blur effect to the content behind the menu
+            WebkitBackdropFilter: "blur(10px)", // For Safari
+            borderRadius: "10px", // Round the corners of the menu
+            color: "#031F34" // Change the text color
+          }
+        }
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 255, 0.2)" // Change the background color when hovering over a menu item
+            },
+            color: "#031F34",
+            fontWeight: "bold"
+          }
+        }
+      },
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            "& .MuiPaper-root": {
+              backgroundColor: "rgba(255, 255, 255, 0.2)", // Change the background color of the modal
+              backdropFilter: "blur(30px)", // Apply a blur effect to the content behind the modal
+              WebkitBackdropFilter: "blur(30px)", // For Safari
+              borderRadius: "10px", // Round the corners of the modal
+              color: "white", // Change the text color
+              padding: "20px" // Add padding
+            },
+            "& .MuiDialogTitle-root": {
+              textAlign: "center" // Center the title
+            }
+          }
+        }
       }
     }
   })
@@ -73,6 +115,49 @@ const lightTheme = responsiveFontSizes(
             backgroundColor: "#031F34", // Add your desired background color
             "&:hover": {
               backgroundColor: "#2390a9" // Add your desired hover color
+            }
+          }
+        }
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: "rgba(255, 255, 255, 0.1)", // Change the background color of the menu
+            backdropFilter: "blur(10px)", // Apply a blur effect to the content behind the menu
+            WebkitBackdropFilter: "blur(10px)", // For Safari
+            borderRadius: "10px", // Round the corners of the menu
+            color: "white" // Change the text color
+          }
+        }
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 255, 0.2)" // Change the background color when hovering over a menu item
+            },
+            color: "#031F34",
+            fontWeight: "bold"
+          }
+        }
+      },
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            "& .MuiPaper-root": {
+              backgroundColor: "rgba(255, 255, 255, 0.1)", // Change the background color of the modal
+              backdropFilter: "blur(30px)", // Apply a blur effect to the content behind the modal
+              WebkitBackdropFilter: "blur(30px)", // For Safari
+              borderRadius: "10px", // Round the corners of the modal
+              color: "white", // Change the text color
+              padding: "20px" // Add padding,
+            },
+
+            "& .MuiDialogTitle-root": {
+              textAlign: "center" // Center the title
             }
           }
         }

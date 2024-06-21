@@ -9,7 +9,7 @@ import {
 import {
   Box, Button
 } from "@mui/material";
-import FilterDialog from "../filters/filters";
+import FilterDialog from "../filters/Filters.tsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 export default function SearchControls() {

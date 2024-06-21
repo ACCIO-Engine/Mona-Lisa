@@ -11,9 +11,10 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
-  FormGroup
+  FormGroup, FormLabel
 } from "@mui/material";
 import { useFiltersContext } from "../../../../application";
+import { StyledCheckbox } from "./Filters.styled.ts";
 
 const FilterDialog = ({ open, onClose, onApply }) => {
   const {
@@ -53,7 +54,12 @@ const FilterDialog = ({ open, onClose, onApply }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+    >
       <DialogTitle>Filter Search</DialogTitle>
       <DialogContent>
         <FormControl fullWidth margin="normal">
@@ -103,13 +109,15 @@ const FilterDialog = ({ open, onClose, onApply }) => {
             ))}
           </Select>
         </FormControl>
-        <FormControl component="fieldset" margin="normal">
-          <FormGroup>
+        <FormControl component="fieldset" margin="normal"
+                     sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <FormLabel component="legend">File Types</FormLabel>
+          <FormGroup row>
             {["Image", "Text", "Video", "Audio"].map((type) => (
               <FormControlLabel
                 key={type}
                 control={
-                  <Checkbox
+                  <StyledCheckbox
                     checked={fileType[type]}
                     onChange={handleFileTypeChange}
                     name={type}
