@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow, dialog, ipcMain as ipc, Tray, Menu } from "electron";
+// imports
+import { app, BrowserWindow, dialog, ipcMain as ipc, Tray, Menu, MenuItem } from "electron";
 import path from "node:path";
-import { spawn, spawnSync } from "node:child_process";
+import { spawn, spawnSync, exec } from "node:child_process";
 import os from "node:os";
 import fs from "fs";
-const { exec } = require('child_process');
-
-// import Store from 'electron-store'
 
 // The built directory structure
 //
@@ -17,40 +15,86 @@ const { exec } = require('child_process');
 // │ │ ├── main.js
 // │ │ └── preload.js
 // │
+
+// Set the environment variables
 process.env.DIST = path.join(__dirname, "../dist");
 process.env.VITE_PUBLIC = app.isPackaged
   ? process.env.DIST
   : path.join(process.env.DIST, "../public");
 
+
+// window object and related function and events
 let win: BrowserWindow | null;
 let close: boolean = false;
+let server: any = null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
+
+// handlers
+function showAppHandler(mainWindow): void {
+  mainWindow.show();
+}
+
+function quitAppHandler(): void {
+  close = true;
+  app.quit();
+  win = null;
+}
+
+function trayDoubleClickHandler(mainWindow): void {
+  mainWindow.show();
+}
+
+function closeWindowHandler(event): void {
+  if (!close) {
+    console.log("Window close event");
+    event.preventDefault();
+    win!.hide();
+  }
+  else{
+    stopServer(server);
+  }
+}
+
+function allWindowsClosedHandler(): void {
+  console.log("Window all closed event");
+  if (process.platform !== "darwin") {
+    app.quit();
+    win = null;
+  }
+}
+
+function activateAppHandler(): void {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  console.log("Activate event");
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+}
+
+function readyAppHandler(): void {
+  console.log("App ready event");
+  createWindow();
+}
 
 function createTray(iconPath: string, mainWindow: BrowserWindow): void {
   const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Show App', click: () => mainWindow.show() },
-    {
-      label: 'Quit', click: () => {
-        console.log("Quit event");
-        close = true;
-        app.quit()
-      }
-    }
+    { label: `Open ${app.getName()}`, click: showAppHandler.bind(null, mainWindow) },
+    { label: `Quit ${app.getName()}`, click: quitAppHandler }
   ]);
-  tray.setToolTip('Accio');
+  tray.setToolTip(app.getName());
   tray.setContextMenu(contextMenu);
 
-  tray.on('double-click', () => {
-    console.log("Tray double-click event");
-    mainWindow.show();
-  });
+  tray.on('double-click', trayDoubleClickHandler.bind(null, mainWindow));
 }
 
 function createWindow(): void {
+  server = runServer();
   console.log("Creating window");
   const iconPath = path.join(process.env.VITE_PUBLIC, "icon.png");
+  // create window
   win = new BrowserWindow({
     icon: iconPath,
     autoHideMenuBar: true,
@@ -60,29 +104,19 @@ function createWindow(): void {
       spellcheck: true
     }
   });
+  // remove the default menu
   win.removeMenu();
 
-  // Create tray
+  // Create tray to make hidden window effect
   createTray(iconPath, win);
-  // add events
-  win.on('close', function (event) {
-    if (!close) {
-      console.log("Window close event");
-      event.preventDefault();
-      win.hide();
-    }
-  });
 
-  win.on('closed', function () {
-    console.log("Window closed event");
-    win = null;
-  });
+  // add events
+  win.on('close', closeWindowHandler);
 
   win.webContents.session.setSpellCheckerLanguages(['en-US'])
-  const { Menu, MenuItem } = require('electron')
 
   win.webContents.on('context-menu', (event, params) => {
-    const { selectionText, isEditable } = params;
+    const { isEditable } = params;
     if (!isEditable) return;
     const menu = new Menu()
 
@@ -115,7 +149,6 @@ function createWindow(): void {
   if (VITE_DEV_SERVER_URL != null) {
     void win.loadURL(VITE_DEV_SERVER_URL);
   } else {
-    // win.loadFile('dist/index.html')
     void win.loadFile(path.join(process.env.DIST, "index.html"));
   }
 }
@@ -124,36 +157,19 @@ function createWindow(): void {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", () => {
-  console.log("Window all closed event");
-  if (process.platform !== "darwin") {
-    app.quit();
-    win = null;
-  }
-});
+app.on("window-all-closed", allWindowsClosedHandler);
 
-app.on("activate", () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  console.log("Activate event");
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
+app.on("activate", activateAppHandler);
 
-app.on("ready", () => {
-    createWindow();
-  });
+app.on("ready", readyAppHandler);
 
 
+// IPC
 process.env.HEDWIG = path.join(__dirname, "../../Hedwig");
 process.env.NANOBERT = path.join(__dirname, "../../text-semantic-search");
-process.env.CHROMADB = path.join(__dirname, "../../Octopus");
+process.env.CHROMADB = path.join(__dirname, "../../Konan");
 process.env.OCTOPUS = path.join(__dirname, "../../Octopus");
 process.env.AUTO_COMPLETE = path.join(__dirname, "../AutoComplete");
-
-// const store = new Store()
-
 
 function runShellCommand(command: string, cwd: string | undefined): any {
   const child = spawn(command, {
@@ -164,8 +180,6 @@ function runShellCommand(command: string, cwd: string | undefined): any {
   });
   return child;
 }
-
-// const test = runShellCommand('python server.py')
 
 function stopShellCommand(child: any): void {
   console.log("Stopping the command");
@@ -181,13 +195,10 @@ function stopShellCommand(child: any): void {
   }
 }
 
-module.exports = { runShellCommand, stopShellCommand };
-
 const runAutoComplete = (): any => {
   return runShellCommand("npm start", process.env.AUTO_COMPLETE);
 };
 
-// IPC
 const runHedwig = (): any => {
   return runShellCommand("python server.py", process.env.HEDWIG);
 };
@@ -198,14 +209,20 @@ const runNanoBert = (): any => {
 
 const runChromaDB = (): any => {
   return runShellCommand(
-    "chroma run --path AccioVecDB --port 8006",
+    "python chroma.py",
     process.env.CHROMADB
   );
 };
 
 const runOctopus = (): any => {
-  return runShellCommand(" java -jar ./Octopus-0.01.jar", process.env.OCTOPUS);
+  const child = runShellCommand(" java -jar ./indexing.jar", process.env.OCTOPUS);
+  runAutoComplete();
+  return child;
 };
+
+const runServer  = (): any => {
+  return runShellCommand("java -jar ./server.jar", process.env.OCTOPUS);
+}
 
 
 const stopHedwig = (child: any): void => {
@@ -223,6 +240,10 @@ const stopChromaDB = (child: any): void => {
 const stopOctopus = (child: any): void => {
   stopShellCommand(child);
 };
+
+const stopServer = (child: any): void => {
+  stopShellCommand(child);
+}
 
 const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (child: any) => void): void => {
   ipc.on(`${eventName}-start`, (event) => {
@@ -362,6 +383,4 @@ ipc.handle("read-file", async (_event, filePath) => {
   }
 });
 connectProcess("octopus", runOctopus, stopOctopus);
-
-runAutoComplete();
 
