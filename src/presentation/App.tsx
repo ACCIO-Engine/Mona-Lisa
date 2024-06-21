@@ -3,7 +3,7 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import React from "react";
 import Index from "./pages/Index/Index";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import Root from "./layouts/Root/Root";
 import Results from "./pages/Results/Results";
 import { useAppState } from "./contexts/AppContext";
@@ -14,10 +14,9 @@ import DashboardProvider from "./contexts/DashboardContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import TrieProvider from "./contexts/TrieContext";
-import SearchInput from "./components/SearchInput/SearchInput";
 
 const queryClient = new QueryClient();
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Root />,

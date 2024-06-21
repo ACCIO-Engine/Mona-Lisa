@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow, dialog, ipcMain as ipc } from "electron";
+import { app, BrowserWindow, dialog, ipcMain as ipc, Tray, Menu } from "electron";
 import path from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 import os from "node:os";
@@ -21,13 +21,36 @@ process.env.VITE_PUBLIC = app.isPackaged
   : path.join(process.env.DIST, "../public");
 
 let win: BrowserWindow | null;
+let close: boolean = false;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
+function createTray(iconPath: string, mainWindow: BrowserWindow): void {
+  const tray = new Tray(iconPath);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show App', click: () => mainWindow.show() },
+    {
+      label: 'Quit', click: () => {
+        console.log("Quit event");
+        close = true;
+        app.quit()
+      }
+    }
+  ]);
+  tray.setToolTip('Accio');
+  tray.setContextMenu(contextMenu);
+
+  tray.on('double-click', () => {
+    console.log("Tray double-click event");
+    mainWindow.show();
+  });
+}
+
 function createWindow(): void {
   console.log("Creating window");
+  const iconPath = path.join(process.env.VITE_PUBLIC, "icon.png");
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "icon.png"),
+    icon: iconPath,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -37,34 +60,50 @@ function createWindow(): void {
   });
   win.removeMenu();
 
+  // Create tray
+  createTray(iconPath, win);
+  // add events
+  win.on('close', function (event) {
+    if (!close) {
+      console.log("Window close event");
+      event.preventDefault();
+      win.hide();
+    }
+  });
+
+  win.on('closed', function () {
+    console.log("Window closed event");
+    win = null;
+  });
+
   win.webContents.session.setSpellCheckerLanguages(['en-US'])
   const { Menu, MenuItem } = require('electron')
 
   win.webContents.on('context-menu', (event, params) => {
-  const { selectionText, isEditable } = params;
-  if (!isEditable) return;
-  const menu = new Menu()
+    const { selectionText, isEditable } = params;
+    if (!isEditable) return;
+    const menu = new Menu()
 
-  // Add each spelling suggestion
-  for (const suggestion of params.dictionarySuggestions) {
-    menu.append(new MenuItem({
-      label: suggestion,
-      click: () => win.webContents.replaceMisspelling(suggestion)
-    }))
-  }
+    // Add each spelling suggestion
+    for (const suggestion of params.dictionarySuggestions) {
+      menu.append(new MenuItem({
+        label: suggestion,
+        click: () => win.webContents.replaceMisspelling(suggestion)
+      }))
+    }
 
-  // Allow users to add the misspelled word to the dictionary
-  if (params.misspelledWord) {
-    menu.append(
-      new MenuItem({
-        label: 'Add to dictionary',
-        click: () => win.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
-      })
-    )
-  }
+    // Allow users to add the misspelled word to the dictionary
+    if (params.misspelledWord) {
+      menu.append(
+        new MenuItem({
+          label: 'Add to dictionary',
+          click: () => win.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+        })
+      )
+    }
 
-  menu.popup()
-})
+    menu.popup()
+  })
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
@@ -84,6 +123,7 @@ function createWindow(): void {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
+  console.log("Window all closed event");
   if (process.platform !== "darwin") {
     app.quit();
     win = null;
@@ -93,6 +133,7 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
+  console.log("Activate event");
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
@@ -224,7 +265,7 @@ connectProcess("nanobert", runNanoBert, stopNanoBert);
 
 connectProcess("chromadb", runChromaDB, stopChromaDB);
 
-ipc.on("open-select-dirs-dialog", function(event) {
+ipc.on("open-select-dirs-dialog", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openDirectory", "multiSelections"]
   }).then(result => {
@@ -234,7 +275,7 @@ ipc.on("open-select-dirs-dialog", function(event) {
   });
 });
 
-ipc.on("open-select-ignore-dirs-dialog", function(event) {
+ipc.on("open-select-ignore-dirs-dialog", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openDirectory", "multiSelections"]
   }).then(result => {
@@ -244,7 +285,7 @@ ipc.on("open-select-ignore-dirs-dialog", function(event) {
   });
 });
 
-ipc.on("open-select-image-dialog", function(event) {
+ipc.on("open-select-image-dialog", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openFile"],
     filters: [
@@ -267,7 +308,7 @@ ipc.on("open-select-image-dialog", function(event) {
   });
 });
 
-ipc.on("select-DBpath", function(event) {
+ipc.on("select-DBpath", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openDirectory"]
   }).then(result => {
