@@ -1,12 +1,17 @@
 {
-  "name": "accio-gui",
+  "name": "Accio",
+  "productName": "Accio",
+  "description": "A fast and light local search engine",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "start": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tsc": "tsc",
+    "package": "npm run build && npm run package-electron",
+    "package-electron": "electron-packager . Accio --platform=win32 --arch=x64 --out=dist --overwrite --icon=assets/icons/app.ico --ignore=node_modules/*"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
