@@ -25,6 +25,9 @@ const ImageFilePreview = ({ file }: { file: File }) => {
       image={`file://${file.path}`}
       width="100%"
       height="100%"
+      sx={{
+        objectFit: "contain"
+      }}
     />
   );
 };
