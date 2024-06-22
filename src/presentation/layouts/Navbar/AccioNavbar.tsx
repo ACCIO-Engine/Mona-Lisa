@@ -8,7 +8,7 @@ import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled"
 import {
   Button,
   Menu,
-  MenuItem
+  MenuItem, useTheme
 } from "@mui/material";
 import { QueryEngines, useSearchContext } from "../../../application";
 import { useState } from "react";
@@ -22,6 +22,7 @@ interface AccioNavbarProps {
 export default function AccioNavbar(props: AccioNavbarProps) {
   const { open, isLightMode, toggleLightMode } = props;
   const { queryEngine, setQueryEngine } = useSearchContext();
+  const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -62,6 +63,9 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               onClick={() => {
                 setQueryEngine(engine);
                 handleClose();
+              }}
+              sx={{
+                color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
               }}
             >
               {engine}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Dialog,
@@ -9,9 +9,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Checkbox,
   FormControlLabel,
-  FormGroup, FormLabel
+  FormGroup, FormLabel, useTheme
 } from "@mui/material";
 import { useFiltersContext } from "../../../../application";
 import { StyledCheckbox } from "./Filters.styled.ts";
@@ -52,6 +51,7 @@ const FilterDialog = ({ open, onClose, onApply }) => {
       All: false
     });
   };
+  const theme = useTheme();
 
   return (
     <Dialog
@@ -63,12 +63,16 @@ const FilterDialog = ({ open, onClose, onApply }) => {
       <DialogTitle>Filter Search</DialogTitle>
       <DialogContent>
         <FormControl fullWidth margin="normal">
-          <InputLabel id="time-modified-label">Time Modified</InputLabel>
+          <InputLabel
+            id="time-modified-label"
+            sx={{ color: theme.palette.common.white }}
+          >Time Modified</InputLabel>
           <Select
             labelId="time-modified-label"
             value={timeModified}
             onChange={(e) => setTimeModified(e.target.value)}
             variant="standard"
+            sx={{ color: theme.palette.common.white }}
           >
             {[
               "today",
@@ -87,12 +91,13 @@ const FilterDialog = ({ open, onClose, onApply }) => {
           </Select>
         </FormControl>
         <FormControl fullWidth margin="normal">
-          <InputLabel id="size-label">Size</InputLabel>
+          <InputLabel id="size-label" sx={{ color: theme.palette.common.white }}>Size</InputLabel>
           <Select
             labelId="size-label"
             value={size}
             onChange={(e) => setSize(e.target.value)}
             variant="standard"
+            sx={{ color: theme.palette.common.white }}
           >
             {[
               "Empty (0 KB)",
@@ -111,7 +116,14 @@ const FilterDialog = ({ open, onClose, onApply }) => {
         </FormControl>
         <FormControl component="fieldset" margin="normal"
                      sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-          <FormLabel component="legend">File Types</FormLabel>
+          <FormLabel component="legend" sx={{
+            color: theme.palette.common.white,
+            "&.Mui-focused": {
+              color: theme.palette.common.white
+            }
+          }}>
+            File Types
+          </FormLabel>
           <FormGroup row>
             {["Image", "Text", "Video", "Audio"].map((type) => (
               <FormControlLabel

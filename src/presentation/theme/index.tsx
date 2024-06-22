@@ -58,7 +58,7 @@ const darkTheme = responsiveFontSizes(
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.2)" // Change the background color when hovering over a menu item
             },
-            color: "#031F34",
+            color: "white",
             fontWeight: "bold"
           }
         }
@@ -66,11 +66,11 @@ const darkTheme = responsiveFontSizes(
       MuiModal: {
         styleOverrides: {
           root: {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            // display: "flex",
+            // alignItems: "center",
+            // justifyContent: "center",
             "& .MuiPaper-root": {
-              backgroundColor: "rgba(255, 255, 255, 0.2)", // Change the background color of the modal
+              backgroundColor: "rgba(0, 0, 0, 0.5)", // Change the background color of the modal
               backdropFilter: "blur(30px)", // Apply a blur effect to the content behind the modal
               WebkitBackdropFilter: "blur(30px)", // For Safari
               borderRadius: "10px", // Round the corners of the modal
@@ -136,7 +136,7 @@ const lightTheme = responsiveFontSizes(
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.2)" // Change the background color when hovering over a menu item
             },
-            color: "#031F34",
+            color: "white",
             fontWeight: "bold"
           }
         }
@@ -144,9 +144,9 @@ const lightTheme = responsiveFontSizes(
       MuiModal: {
         styleOverrides: {
           root: {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            // display: "flex",
+            // alignItems: "center",
+            // justifyContent: "center",
             "& .MuiPaper-root": {
               backgroundColor: "rgba(255, 255, 255, 0.1)", // Change the background color of the modal
               backdropFilter: "blur(30px)", // Apply a blur effect to the content behind the modal
