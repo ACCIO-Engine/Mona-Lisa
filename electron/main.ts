@@ -300,6 +300,14 @@ ipc.on('open-folder', (event, folderPath) => {
   }
 });
 
+ipc.on('open-office', (event, path) => {
+  if (process.platform === 'win32') {
+    exec(`start "" "${path}"`);
+  } else if (process.platform === 'linux') {
+    exec(`xdg-open "${path}"`);
+  }
+});
+
 ipc.on("open-select-dirs-dialog", function (event) {
   dialog.showOpenDialog(win, {
     properties: ["openDirectory", "multiSelections"]

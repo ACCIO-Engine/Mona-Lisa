@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -16,6 +16,8 @@ import DOCIcon from "../../assets/doc.svg?react";
 import PPTIcon from "../../assets/ppt.svg?react";
 import TextIcon from "../../assets/txt.svg?react";
 import VideoIcon from "../../assets/video.svg?react";
+import copyTextToClipboard from "../../utils/copy";
+import { useSnackbar } from "../../contexts/SnackbarContext";
 import { alpha } from "@mui/system";
 
 const ImageFilePreview = ({ file }: { file: File }) => {
@@ -65,6 +67,7 @@ const FilePreview = ({ file }: { file: File }) => {
   const ipcRenderer = (window as any).ipcRenderer;
   const [openFullPreview, setOpenFullPreview] = useState(false);
   const theme = useTheme();
+
   const filePreview =
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
@@ -81,6 +84,30 @@ const FilePreview = ({ file }: { file: File }) => {
     ) : (
       <DefaultFilePreview file={file} />
     );
+
+  const { openSnackbar } = useSnackbar();
+
+  const handleCopyPath = (path:string) => {
+    const pathParts = path.split(/[\\/]/);
+    pathParts.pop(); // Remove the file name
+    const dir = pathParts.join('\\');
+    copyTextToClipboard([dir]).then((success) => {
+      if (success) {
+        openSnackbar("Path copied to clipboard successfully", "success");
+      } else {
+        openSnackbar("Failed to copy path to clipboard", "error");
+      }
+    });
+  };
+
+  const handleFilePreview = (type: FileType) => {
+    if (type === FileType.Word || type === FileType.PowerPoint)
+      ipcRenderer.send('open-office', file.path)
+    else
+    {
+      setOpenFullPreview(true);
+    }
+  };
 
   return (
     <>
@@ -139,13 +166,13 @@ const FilePreview = ({ file }: { file: File }) => {
             justifyContent: "center"
           }}
         >
-          <IconButton color="primary">
+          <IconButton color="primary" onClick={() => handleCopyPath(file.path)}>
             <ContentCopyIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => setOpenFullPreview(true)}>
+          <IconButton color="primary" onClick={() => handleFilePreview(file.type)}>
             <FileOpenIcon />
           </IconButton>
-          <IconButton color="primary" onClick={()=>ipcRenderer.send('open-folder',file.path)}>
+          <IconButton color="primary" onClick={() => ipcRenderer.send('open-folder', file.path)}>
             <FolderOpenIcon />
           </IconButton>
         </CardActions>
