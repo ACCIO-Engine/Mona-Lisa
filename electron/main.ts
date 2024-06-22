@@ -288,6 +288,8 @@ connectProcess("nanobert", runNanoBert, stopNanoBert);
 
 connectProcess("chromadb", runChromaDB, stopChromaDB);
 
+connectProcess("octopus", runOctopus, stopOctopus);
+
 ipc.on('open-folder', (event, folderPath) => {
   const pathParts = folderPath.split(/[\\/]/);
   pathParts.pop(); // Remove the file name
@@ -382,5 +384,4 @@ ipc.handle("read-file", async (_event, filePath) => {
     return null;
   }
 });
-connectProcess("octopus", runOctopus, stopOctopus);
 
