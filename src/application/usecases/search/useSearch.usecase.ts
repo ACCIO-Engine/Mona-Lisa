@@ -41,7 +41,7 @@ export default function useSearch() {
           searchType: SearchType.IMAGE,
           fileTypes: fileTypes,
           pageSize: pageSize,
-          page: page
+          page: page - 1
         });
       } else if (searchType === SearchType.TEXT) {
         return searchService({
@@ -50,7 +50,7 @@ export default function useSearch() {
           searchType: SearchType.TEXT,
           fileTypes: fileTypes,
           pageSize: pageSize,
-          page: page
+          page: page - 1
         });
       }
     },

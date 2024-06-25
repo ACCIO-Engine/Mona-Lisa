@@ -2,13 +2,14 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import FilePreview from "../../components/FilePreview/FilePreview";
 import { File, useSearchContext } from "../../../application";
-import { MenuItem, Pagination, Typography } from "@mui/material";
+import { MenuItem, Pagination, useTheme } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React from "react";
 
 const ResultsGrid = ({ files }: { files: File[] }) => {
+  const theme = useTheme();
   const { pageSize, setPageSize, page, setPage } = useSearchContext();
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -28,18 +29,11 @@ const ResultsGrid = ({ files }: { files: File[] }) => {
           width: "100%"
 
         }}>
-          <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 1, md: 2 }}>
-            {files.map((file: File) => (
-              <Grid item xs={12} sm={6} md={4} lg={2} key={file.path}>
-                <FilePreview file={file} />
-              </Grid>
-            ))}
-          </Grid>
           <Box sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: "2rem"
+            marginBottom: "1rem"
           }}>
             <FormControl size="small" sx={{
               minWidth: 80
@@ -51,10 +45,16 @@ const ResultsGrid = ({ files }: { files: File[] }) => {
                 label="Page Size"
                 onChange={handlePageSizeChange}
               >
-                <MenuItem value={5}>5</MenuItem>
-                <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={20}>20</MenuItem>
-                <MenuItem value={30}>30</MenuItem>
+                {
+                  [5, 10, 15, 20].map((size) => (
+                    <MenuItem
+                      sx={{
+                        color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+                      }}
+                      key={size}
+                      value={size}>{size}</MenuItem>
+                  ))
+                }
               </Select>
             </FormControl>
             <Pagination
@@ -65,6 +65,13 @@ const ResultsGrid = ({ files }: { files: File[] }) => {
               onChange={handlePageChange}
             />
           </Box>
+          <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 1, md: 2 }}>
+            {files.map((file: File) => (
+              <Grid item xs={12} sm={6} md={4} lg={2} key={file.path}>
+                <FilePreview file={file} />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       )}
     </Box>
