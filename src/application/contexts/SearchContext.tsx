@@ -11,19 +11,25 @@ interface SearchContextProps {
   setEnableSearch: (enableSearch: boolean) => void;
   queryEngine: QueryEngines;
   setQueryEngine: (queryEngine: QueryEngines) => void;
+  pageSize: number;
+  setPageSize: (pageSize: number) => void;
+  page: number;
+  setPage: (page: number) => void;
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
-  children
-}) => {
+                                                                          children
+                                                                        }) => {
   const [searchString, setSearchString] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TEXT);
   const [enableSearch, setEnableSearch] = useState<boolean>(false);
   const [queryEngine, setQueryEngine] = useState<QueryEngines>(
     QueryEngines.TFIDF
   );
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
   return (
     <SearchContext.Provider
       value={{
@@ -34,7 +40,11 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
         enableSearch,
         setEnableSearch,
         queryEngine,
-        setQueryEngine
+        setQueryEngine,
+        pageSize,
+        setPageSize,
+        page,
+        setPage
       }}
     >
       {children}

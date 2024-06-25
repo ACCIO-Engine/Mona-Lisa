@@ -15,7 +15,9 @@ export default function useSearch() {
     setSearchType,
     enableSearch,
     setEnableSearch,
-    queryEngine
+    queryEngine,
+    pageSize,
+    page
   } = useSearchContext();
   const { timeModified, size, fileType } = useFiltersContext();
   const {
@@ -26,7 +28,7 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType, queryEngine, fileType],
+    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page],
     queryFn: () => {
       const fileTypes: string[] = (Object.keys(fileType) as (keyof FileTypes)[])
         .filter((key) => fileType[key])
@@ -37,14 +39,18 @@ export default function useSearch() {
           query: searchString,
           queryEngine: queryEngine,
           searchType: SearchType.IMAGE,
-          fileTypes: fileTypes
+          fileTypes: fileTypes,
+          pageSize: pageSize,
+          page: page
         });
       } else if (searchType === SearchType.TEXT) {
         return searchService({
           query: searchString,
           queryEngine: queryEngine,
           searchType: SearchType.TEXT,
-          fileTypes: fileTypes
+          fileTypes: fileTypes,
+          pageSize: pageSize,
+          page: page
         });
       }
     },
