@@ -17,7 +17,8 @@ export default function useSearch() {
     setEnableSearch,
     queryEngine,
     pageSize,
-    page
+    page,
+    setPage
   } = useSearchContext();
   const { timeModified, size, fileType } = useFiltersContext();
   const {
@@ -63,6 +64,7 @@ export default function useSearch() {
     staleTime: Infinity
   });
   const search = (query: string, searchType: SearchType) => {
+    setPage(1);
     setSearchString(query);
     setSearchType(searchType);
     setEnableSearch(true);
@@ -70,7 +72,7 @@ export default function useSearch() {
   console.log("files", files);
   return {
     search,
-    files: files?.map(
+    files: files?.results.map(
       (file: { path: string; score: number; pages: number[] }) => ({
         path: file.path,
         score: file.score,
@@ -79,6 +81,9 @@ export default function useSearch() {
         type: getFileType(file.path)
       })
     ),
+    totalPages: files?.totalPages,
+    totalResults: files?.totalResults,
+    currentPage: files?.currentPage,
     enableSearch,
     isError,
     isLoading,

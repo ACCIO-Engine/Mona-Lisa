@@ -11,7 +11,16 @@ import { SnackbarProvider } from "../../contexts/SnackbarContext";
 
 
 const Results: React.FC = () => {
-  const { files, isError, isLoading, isSuccess, error, status } = useSearch();
+  const {
+    files,
+    isError,
+    isLoading,
+    isSuccess,
+    error,
+    status,
+    totalResults,
+    totalPages
+  } = useSearch();
   console.log(files, isError, isLoading, isSuccess, error, status);
   //   const tempFiles: File[] = [
   //   {
@@ -25,22 +34,23 @@ const Results: React.FC = () => {
   return (
     <SnackbarProvider>
 
-    <Container>
-      {!(isSuccess && files && files.length > 0) && (
-        <MessageAlerts>
-          {isLoading && <LoadingAlert message="Searching for files..." />}
-          {isError && error && <ErrorAlert message={error.message} />}
-          {files && files.length === 0 && (
-            <InfoAlert message="No files found." />
-          )}
-          {!files && !isError && !isLoading && !isSuccess && (
-            <InfoAlert message="Search for files using the search bar above." />
-          )}
-        </MessageAlerts>
-      )}
-      {isSuccess && files && files.length > 0 && <ResultsGrid files={files} />}
-    </Container>
-      </SnackbarProvider>
+      <Container>
+        {!(isSuccess && files && files.length > 0) && (
+          <MessageAlerts>
+            {isLoading && <LoadingAlert message="Searching for files..." />}
+            {isError && error && <ErrorAlert message={error.message} />}
+            {files && files.length === 0 && (
+              <InfoAlert message="No files found." />
+            )}
+            {!files && !isError && !isLoading && !isSuccess && (
+              <InfoAlert message="Search for files using the search bar above." />
+            )}
+          </MessageAlerts>
+        )}
+        {isSuccess && files && files.length > 0 &&
+          <ResultsGrid files={files} totalPages={totalPages} totalResults={totalResults} />}
+      </Container>
+    </SnackbarProvider>
   );
 };
 // {/* <ResultsGrid /> */}

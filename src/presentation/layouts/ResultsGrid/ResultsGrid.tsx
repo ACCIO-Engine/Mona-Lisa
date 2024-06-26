@@ -8,7 +8,11 @@ import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React from "react";
 
-const ResultsGrid = ({ files }: { files: File[] }) => {
+const ResultsGrid = ({ files, totalResults, totalPages }: {
+  files: File[],
+  totalResults: number,
+  totalPages: number
+}) => {
   const theme = useTheme();
   const { pageSize, setPageSize, page, setPage } = useSearchContext();
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -58,7 +62,7 @@ const ResultsGrid = ({ files }: { files: File[] }) => {
               </Select>
             </FormControl>
             <Pagination
-              count={Math.ceil(files.length / pageSize)}
+              count={Math.ceil(totalPages)}
               page={page}
               variant="outlined"
               shape="rounded"
