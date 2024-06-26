@@ -105,8 +105,9 @@ const FilePreview = ({ file }: { file: File }) => {
       ipcRenderer.send('open-office', file.path)
     else
     {
-      setOpenFullPreview(true);
+      // setOpenFullPreview(true);
     }
+    setOpenFullPreview(true);
   };
 
   return (

@@ -95,12 +95,14 @@ const FullFilePreview = ({
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
     ) : file.type === FileType.PDF ? (
-      <PDFFilePreview file={file} />
+      <TextFileViewer file={file} />
     ) : file.type === FileType.Word ? (
-      <WordFilePreview file={file} />
+      <TextFileViewer file={file} />
     ) : file.type === FileType.Video ? (
-      <VideoFilePreview file={file} />
+      <TextFileViewer file={file} />
     ) : file.type === FileType.Text ? (
+      <TextFileViewer file={file} />
+    ) : file.type === FileType.PowerPoint ? (
       <TextFileViewer file={file} />
     ) : (
       <DefaultFilePreview file={file} />
@@ -116,6 +118,9 @@ const FullFilePreview = ({
       open={open}
       onClose={handleClose}
       TransitionComponent={Transition}
+      sx={{
+        height: "100vh"
+      }}
     >
       <AppBar sx={{ position: "relative" }}>
         <Toolbar>

@@ -56,14 +56,8 @@ const TextFileViewer = ({ file }: { file: File }) => {
 
 
   return (
-    <Box>
+    <div >
       {
-        isLoading && <Typography>Loading...</Typography>
-      }{
-      isError && <Typography>Error loading content</Typography>
-    }{
-      isSuccess && <Typography>Success</Typography>
-    }{
       !isLoading &&
       <Typography
         variant="body1"
@@ -77,7 +71,7 @@ const TextFileViewer = ({ file }: { file: File }) => {
         {renderHighlightedContent()}
       </Typography>
     }
-    </Box>
+    </div>
   )
     ;
 };
