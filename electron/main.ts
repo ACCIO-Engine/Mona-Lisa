@@ -51,7 +51,7 @@ function closeWindowHandler(event): void {
     event.preventDefault();
     win!.hide();
   }
-  else{
+  else {
     stopServer(server);
   }
 }
@@ -220,7 +220,7 @@ const runOctopus = (): any => {
   return child;
 };
 
-const runServer  = (): any => {
+const runServer = (): any => {
   return runShellCommand("java -jar ./server.jar", process.env.OCTOPUS);
 }
 
@@ -291,13 +291,15 @@ connectProcess("chromadb", runChromaDB, stopChromaDB);
 connectProcess("octopus", runOctopus, stopOctopus);
 
 ipc.on('open-folder', (event, folderPath) => {
-  const pathParts = folderPath.split(/[\\/]/);
-  pathParts.pop(); // Remove the file name
-  const dir = pathParts.join('\\');
-
   if (process.platform === 'win32') {
+    const pathParts = folderPath.split(/[\\/]/);
+    pathParts.pop(); // Remove the file name
+    const dir = pathParts.join('\\');
     exec(`start "" "${dir}"`);
   } else if (process.platform === 'linux') {
+    const pathParts = folderPath.split('/');
+    pathParts.pop(); // Remove the file name
+    const dir = pathParts.join('/');
     exec(`xdg-open "${dir}"`);
   }
 });
