@@ -3,19 +3,36 @@ import React, { createContext, useContext, useState } from "react";
 interface FiltersContextProps {
   timeModified: string;
   setTimeModified: (timeModified: string) => void;
-  size: string;
-  setSize: (size: string) => void;
+  size: {
+    Empty: boolean;
+    Tiny: boolean;
+    Small: boolean;
+    Medium: boolean;
+    Large: boolean;
+    Huge: boolean;
+    Gigantic: boolean;
+
+  };
+  setSize: (size: {
+    Empty: boolean;
+    Tiny: boolean;
+    Small: boolean;
+    Medium: boolean;
+    Large: boolean;
+    Huge: boolean;
+    Gigantic: boolean;
+  }) => void;
   fileType: {
     Image: boolean;
-    Document: boolean;
+    Text: boolean;
     Video: boolean;
-    All: boolean;
+    Audio: boolean;
   };
   setFileType: (fileType: {
     Image: boolean;
-    Document: boolean;
+    Text: boolean;
     Video: boolean;
-    All: boolean;
+    Audio: boolean;
   }) => void;
 }
 
@@ -24,15 +41,23 @@ const FiltersContext = createContext<FiltersContextProps | undefined>(
 );
 
 export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({
-  children
-}) => {
+                                                                           children
+                                                                         }) => {
   const [timeModified, setTimeModified] = useState("");
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState({
+    Empty: true,
+    Tiny: true,
+    Small: true,
+    Medium: true,
+    Large: true,
+    Huge: true,
+    Gigantic: true
+  });
   const [fileType, setFileType] = useState({
-    Image: false,
-    Document: false,
-    Video: false,
-    All: false
+    Image: true,
+    Text: true,
+    Video: true,
+    Audio: true
   });
   return (
     <FiltersContext.Provider

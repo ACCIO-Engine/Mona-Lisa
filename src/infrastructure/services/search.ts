@@ -1,32 +1,29 @@
 import { QueryEngines, SearchType } from "../../application";
 import { BASE_URL } from "../api/api";
 
-// Define the types for the optional parameters
-type FileSizes = "SMALL" | "MEDIUM" | "LARGE"; // Replace with actual file size types
-
 interface SearchParams {
   query: string;
   queryEngine: QueryEngines;
   searchType: SearchType;
   pageSize?: number;
   page?: number;
-  fileSizes?: FileSizes[];
+  fileSizes?: string[];
   fileTypes?: string[];
   modifiedTimeStart?: Date;
   modifiedTimeEnd?: Date;
 }
 
 export const search = async ({
-  query,
-  queryEngine,
-  searchType,
-  fileTypes = [],
-  pageSize = 10,
-  page = 0,
-  fileSizes = [],
-  modifiedTimeStart,
-  modifiedTimeEnd
-}: SearchParams) => {
+                               query,
+                               queryEngine,
+                               searchType,
+                               fileTypes = [],
+                               pageSize = 10,
+                               page = 0,
+                               fileSizes = [],
+                               modifiedTimeStart,
+                               modifiedTimeEnd
+                             }: SearchParams) => {
   const params = new URLSearchParams({
     query,
     engine: queryEngine,
@@ -34,15 +31,9 @@ export const search = async ({
     pageSize: pageSize.toString(),
     page: page.toString()
   });
-
-  console.log(
-    "params before = ",
-    params.toString(),
-    query
-  );
-
   fileTypes.forEach((type) => params.append("fileTypes", type));
-  console.log("params = ", params.toString());
+  fileSizes.forEach((size) => params.append("fileSizes", size));
+
 
   if (modifiedTimeStart) {
     params.append("modifiedTimeStart", modifiedTimeStart.toISOString());

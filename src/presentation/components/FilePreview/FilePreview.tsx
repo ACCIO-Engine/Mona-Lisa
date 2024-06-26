@@ -101,12 +101,13 @@ const FilePreview = ({ file }: { file: File }) => {
   };
 
   const handleFilePreview = (type: FileType) => {
-    if (type === FileType.Word || type === FileType.PowerPoint)
-      ipcRenderer.send('open-office', file.path)
-    else
-    {
-      setOpenFullPreview(true);
-    }
+    // if (type === FileType.Word || type === FileType.PowerPoint)
+    //   ipcRenderer.send('open-office', file.path)
+    // else
+    // {
+    //   setOpenFullPreview(true);
+    // }
+    setOpenFullPreview(true);
   };
 
   return (
