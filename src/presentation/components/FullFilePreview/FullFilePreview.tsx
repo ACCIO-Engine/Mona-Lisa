@@ -117,7 +117,7 @@ const FullFilePreview = ({
       fullScreen
       open={open}
       onClose={handleClose}
-      TransitionComponent={Transition}
+      TransitionComponent={Slide}
       sx={{
         height: "100vh"
       }}
