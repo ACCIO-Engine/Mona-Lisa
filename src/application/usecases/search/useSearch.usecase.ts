@@ -5,7 +5,7 @@ import SearchType from "../../types/SearchType.enum";
 import { useSearchContext } from "../../contexts/SearchContext";
 import getFileType from "../../utils/getFileType";
 import { useFiltersContext } from "../../contexts/FiltersContext";
-import { FileTypes } from "../../types/SearchOptions";
+import { FileTypes, FileSizes } from "../../types/SearchOptions";
 
 export default function useSearch() {
   const {
@@ -28,18 +28,22 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page],
+    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size],
     queryFn: () => {
       const fileTypes: string[] = (Object.keys(fileType) as (keyof FileTypes)[])
         .filter((key) => fileType[key])
         .map((key) => key.toUpperCase());
-      console.log("query", searchString, queryEngine, fileTypes, fileTypes);
+      const fileSizes: string[] = (Object.keys(size) as (keyof FileSizes)[])
+        .filter((key) => size[key])
+        .map((key) => key.toUpperCase());
+      console.log("query", searchString, queryEngine, fileTypes, fileSizes);
       if (searchType === SearchType.IMAGE) {
         return searchService({
           query: searchString,
           queryEngine: queryEngine,
           searchType: SearchType.IMAGE,
           fileTypes: fileTypes,
+          fileSizes: fileSizes,
           pageSize: pageSize,
           page: page - 1
         });
@@ -49,6 +53,7 @@ export default function useSearch() {
           queryEngine: queryEngine,
           searchType: SearchType.TEXT,
           fileTypes: fileTypes,
+          fileSizes: fileSizes,
           pageSize: pageSize,
           page: page - 1
         });

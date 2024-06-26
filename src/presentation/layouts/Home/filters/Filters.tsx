@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Dialog,
@@ -9,11 +8,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormControlLabel,
-  FormGroup, FormLabel, useTheme
+  useTheme
 } from "@mui/material";
 import { useFiltersContext } from "../../../../application";
-import { StyledCheckbox } from "./Filters.styled.ts";
+import MultipleSelectChip from "../../../components/MultipleSelect/MultipleSelect.tsx";
 
 const FilterDialog = ({ open, onClose, onApply }) => {
   const {
@@ -24,13 +22,6 @@ const FilterDialog = ({ open, onClose, onApply }) => {
     fileType,
     setFileType
   } = useFiltersContext();
-
-  const handleFileTypeChange = (event) => {
-    setFileType({
-      ...fileType,
-      [event.target.name]: event.target.checked
-    });
-  };
 
   const handleApply = () => {
     onApply({
@@ -49,6 +40,25 @@ const FilterDialog = ({ open, onClose, onApply }) => {
       Document: false,
       Video: false,
       All: false
+    });
+  };
+  const onFileSizeChange = (selectedValues: string[]) => {
+    setSize({
+      Empty: selectedValues.includes("Empty"),
+      Tiny: selectedValues.includes("Tiny"),
+      Small: selectedValues.includes("Small"),
+      Medium: selectedValues.includes("Medium"),
+      Large: selectedValues.includes("Large"),
+      Huge: selectedValues.includes("Huge"),
+      Gigantic: selectedValues.includes("Gigantic")
+    });
+  };
+  const onFileTypeChange = (selectedValues: string[]) => {
+    setFileType({
+      Image: selectedValues.includes("Image"),
+      Text: selectedValues.includes("Text"),
+      Video: selectedValues.includes("Video"),
+      Audio: selectedValues.includes("Audio")
     });
   };
   const theme = useTheme();
@@ -90,56 +100,8 @@ const FilterDialog = ({ open, onClose, onApply }) => {
             ))}
           </Select>
         </FormControl>
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="size-label" sx={{ color: theme.palette.common.white }}>Size</InputLabel>
-          <Select
-            labelId="size-label"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            variant="standard"
-            sx={{ color: theme.palette.common.white }}
-          >
-            {[
-              "Empty (0 KB)",
-              "Tiny (0 - 16 KB)",
-              "Small (16 KB - 1 MB)",
-              "Medium (1 - 128 MB)",
-              "Large (128 MB - 1 GB)",
-              "Huge (1 - 4 GB)",
-              "Giantic (>4 GB)"
-            ].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl component="fieldset" margin="normal"
-                     sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-          <FormLabel component="legend" sx={{
-            color: theme.palette.common.white,
-            "&.Mui-focused": {
-              color: theme.palette.common.white
-            }
-          }}>
-            File Types
-          </FormLabel>
-          <FormGroup row>
-            {["Image", "Text", "Video", "Audio"].map((type) => (
-              <FormControlLabel
-                key={type}
-                control={
-                  <StyledCheckbox
-                    checked={fileType[type]}
-                    onChange={handleFileTypeChange}
-                    name={type}
-                  />
-                }
-                label={type}
-              />
-            ))}
-          </FormGroup>
-        </FormControl>
+        <MultipleSelectChip values={size} onChange={onFileSizeChange} label={"File Size"} />
+        <MultipleSelectChip values={fileType} onChange={onFileTypeChange} label={"File Type"} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleReset} color="secondary">

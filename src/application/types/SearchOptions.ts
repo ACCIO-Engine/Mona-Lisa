@@ -1,8 +1,18 @@
 interface FileTypes {
   Image: boolean;
-  Document: boolean;
+  Text: boolean;
   Video: boolean;
-  All: boolean;
+  Audio: boolean;
 }
 
-export { FileTypes };
+interface FileSizes {
+  Empty: boolean;
+  Tiny: boolean;
+  Small: boolean;
+  Medium: boolean;
+  Large: boolean;
+  Huge: boolean;
+  Gigantic: boolean;
+}
+
+export type { FileTypes, FileSizes };
