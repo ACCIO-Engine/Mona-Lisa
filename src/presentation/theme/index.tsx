@@ -82,6 +82,19 @@ const darkTheme = responsiveFontSizes(
             }
           }
         }
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            color: "black",
+            "& .MuiTouchRipple-root": {
+              backgroundColor: "rgba(3,31,52,0.26)"
+            },
+            "& .MuiChip-label": {
+              color: "black"
+            }
+          }
+        }
       }
     }
   })

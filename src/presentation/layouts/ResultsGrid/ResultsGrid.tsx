@@ -21,6 +21,7 @@ const ResultsGrid = ({ files, totalResults, totalPages }: {
 
   const handlePageSizeChange = (event: SelectChangeEvent<string>) => {
     setPageSize(parseInt(event.target.value));
+    setPage(1);
   };
   return (
     <Box sx={{ width: "100%" }}>
