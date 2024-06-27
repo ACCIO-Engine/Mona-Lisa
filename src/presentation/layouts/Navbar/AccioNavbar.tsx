@@ -34,7 +34,9 @@ export default function AccioNavbar(props: AccioNavbarProps) {
     setAnchorEl(null);
   };
   return (
-    <CustomAppBar position="fixed" open={open}>
+    <CustomAppBar position="fixed" open={open} sx={{
+      zIndex: "999"
+    }}>
       <Toolbar>
         <Button
           aria-controls="simple-menu"

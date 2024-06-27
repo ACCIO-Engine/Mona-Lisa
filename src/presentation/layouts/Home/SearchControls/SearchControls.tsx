@@ -11,8 +11,12 @@ import {
 } from "@mui/material";
 import FilterDialog from "../filters/Filters.tsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function SearchControls() {
+export default function SearchControls({ searchCallback, clearResults }: {
+  searchCallback: () => void,
+  clearResults: () => void
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [currentControl, setCurrentControl] = useState<"text" | "mic">("text");
@@ -21,11 +25,13 @@ export default function SearchControls() {
   const { search } = useSearch();
   const onChooseImage = (image: string) => {
     search(image, SearchType.IMAGE);
-    navigate("/search");
+    searchCallback();
+    // navigate("/search");
   };
   const onSearchText = (text: string) => {
     search(text, SearchType.TEXT);
-    navigate("/search");
+    searchCallback();
+    // navigate("/search");
   };
   const onChooseMic = () => {
     console.log("Choose Mic");
@@ -61,8 +67,8 @@ export default function SearchControls() {
           flexDirection: "row",
           alignItems: "start",
           justifyContent: "center",
-          width: "100%",
-          minHeight: "9rem"
+          width: "100%"
+          // minHeight: "9rem"
         }}
       >
         {currentControl === "text" && (
@@ -72,21 +78,6 @@ export default function SearchControls() {
             onChooseMic={onChooseMic}
           />
         )}
-        {/*<FormControl sx={{ m: 1, width: "10rem" }}>*/}
-        {/*  <InputLabel id="demo-simple-select-helper-label">*/}
-        {/*    Query Engine*/}
-        {/*  </InputLabel>*/}
-        {/*  <Select*/}
-        {/*    value={localQueryEngine}*/}
-        {/*    label="Query Engine"*/}
-        {/*    onChange={handleEngineChange}*/}
-        {/*    variant="standard"*/}
-        {/*  >*/}
-        {/*    {Object.values(QueryEngines).map((engine) => (*/}
-        {/*      <MenuItem value={engine}>{engine}</MenuItem>*/}
-        {/*    ))}*/}
-        {/*  </Select>*/}
-        {/*</FormControl>*/}
         <Button variant="contained" onClick={handleDialogOpen} sx={{
           padding: "0.6rem 0.7rem",
           textTransform: "none",
@@ -96,6 +87,19 @@ export default function SearchControls() {
         }}>
           <FilterAltIcon />
           <span>Filter</span>
+        </Button>
+        <Button
+          variant="contained"
+          onClick={clearResults}
+          sx={{
+            padding: "0.6rem 0.7rem",
+            textTransform: "none",
+            letterSpacing: "0.05rem",
+            fontSize: "1rem",
+            marginLeft: "0.5rem"
+          }}>
+          <DeleteIcon />
+          <span>Clear</span>
         </Button>
       </Box>
     </FieldContainer>

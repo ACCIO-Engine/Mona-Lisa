@@ -28,10 +28,10 @@ const SearchContainer = styled(Box)(({ theme }) => ({
   WebkitBackdropFilter: "blur( 4px )"
 }));
 export default function LargeSearch({
-  onChooseImage,
-  onSearchText,
-  onChooseMic
-}: {
+                                      onChooseImage,
+                                      onSearchText,
+                                      onChooseMic
+                                    }: {
   onChooseImage: (image: string) => void;
   onSearchText: (text: string) => void;
   onChooseMic: () => void;
@@ -44,8 +44,8 @@ export default function LargeSearch({
     (event) => {
       const newInputValue = event.target.value;
       setInputValue(newInputValue);
-      const tokens = newInputValue.split(' ');
-      const lastToken = tokens[tokens.length-1];
+      const tokens = newInputValue.split(" ");
+      const lastToken = tokens[tokens.length - 1];
       if (lastToken && trie) {
         const filteredOptions = trie.search(lastToken.toLowerCase());
         console.log(`finished search with length ${filteredOptions.length}`);
@@ -62,11 +62,12 @@ export default function LargeSearch({
 
   const handleOptionClick = (index, e) => {
     console.log(index);
-    const tokens = inputValue.split(' ');
-    tokens[tokens.length-1] = options[index];
-    setInputValue(tokens.join(' '));
+    const tokens = inputValue.split(" ");
+    tokens[tokens.length - 1] = options[index];
+    setInputValue(tokens.join(" "));
     setOptions([]);
-  }
+  };
+
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
 
@@ -92,7 +93,8 @@ export default function LargeSearch({
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "100%"
+        width: "100%",
+        position: "relative"
       }}
     >
       <SearchContainer>
@@ -149,16 +151,24 @@ export default function LargeSearch({
           />
         </IconButton>
       </SearchContainer>
-      <Box>
-        <FixedSizeList
-          height={150}
-          itemSize={35}
-          width={"100%"}
-          itemCount={options.length}
-        >
-          {renderRow}
-        </FixedSizeList>
-      </Box>
+      {
+        options.length !== 0 &&
+        (
+          <Box>
+            <FixedSizeList
+              height={150}
+              itemSize={35}
+              width={"100%"}
+              itemCount={options.length}
+              style={{
+                position: "absolute"
+              }}
+            >
+              {renderRow}
+            </FixedSizeList>
+          </Box>
+        )
+      }
     </Box>
   );
 }

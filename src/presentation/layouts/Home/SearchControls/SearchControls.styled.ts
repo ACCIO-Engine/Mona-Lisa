@@ -6,11 +6,11 @@ export const FieldContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   flexDirection: "column",
   marginTop: "20px",
-  width: "100%",
-  [theme.breakpoints.up("md")]: {
-    width: "70%",
-  },
-  [theme.breakpoints.up("lg")]: {
-    width: "50%",
-  },
+  // width: "100%",
+  // [theme.breakpoints.up("md")]: {
+  //   width: "70%",
+  // },
+  // [theme.breakpoints.up("lg")]: {
+  //   width: "50%",
+  // },
 }));

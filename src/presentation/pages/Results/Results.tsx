@@ -33,7 +33,6 @@ const Results: React.FC = () => {
   // console.log("tempFiles = ", tempFiles);
   return (
     <SnackbarProvider>
-
       <Container>
         {!(isSuccess && files && files.length > 0) && (
           <MessageAlerts>
