@@ -99,7 +99,7 @@ const FullFilePreview = ({
     ) : file.type === FileType.Word ? (
       <TextFileViewer file={file} />
     ) : file.type === FileType.Video ? (
-      <TextFileViewer file={file} />
+      <VideoFilePreview file={file} />
     ) : file.type === FileType.Text ? (
       <TextFileViewer file={file} />
     ) : file.type === FileType.PowerPoint ? (
