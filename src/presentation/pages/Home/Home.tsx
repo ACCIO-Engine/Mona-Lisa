@@ -47,7 +47,8 @@ export default function Home() {
           classNames="search-controls"
         >
 
-          <SearchControls searchCallback={searchCallback} clearResults={clearResults} />
+          <SearchControls searchCallback={searchCallback} clearResults={clearResults}
+                          canClear={hasResults} />
         </CSSTransition>
       </SearchControlsContainer>
 

@@ -13,9 +13,11 @@ import FilterDialog from "../filters/Filters.tsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function SearchControls({ searchCallback, clearResults }: {
+export default function SearchControls({ searchCallback, clearResults,
+                                       canClear}: {
   searchCallback: () => void,
-  clearResults: () => void
+  clearResults: () => void,
+  canClear: boolean
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -91,6 +93,7 @@ export default function SearchControls({ searchCallback, clearResults }: {
         <Button
           variant="contained"
           onClick={clearResults}
+          disabled={!canClear}
           sx={{
             padding: "0.6rem 0.7rem",
             textTransform: "none",
