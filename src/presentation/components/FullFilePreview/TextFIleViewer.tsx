@@ -1,8 +1,18 @@
-import { File } from "../../../application";
-import { useEffect, useState } from "react";
+import { File, FileType } from "../../../application";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import useHighlights from "../../../application/usecases/highlights/useHighlights.usecase.ts";
 
+const PDFFilePreview = ({ file }: { file: File }) => {
+  return (
+    <iframe
+      title={file.name}
+      src={`file://${file.path}#page=1`}
+      width="100%"
+      height="100%"
+    />
+  );
+};
 const TextFileViewer = ({ file }: { file: File }) => {
   const [content, setContent] = useState("");
   const { getHighlights, highlights, isError, isLoading, isSuccess } = useHighlights();
@@ -56,22 +66,28 @@ const TextFileViewer = ({ file }: { file: File }) => {
 
 
   return (
-    <div >
+    <>
       {
-      !isLoading &&
-      <Typography
-        variant="body1"
-        sx={{
-          whiteSpace: "pre-wrap",
-          wordBreak: "break-word",
-          fontSize: "1.1rem",
-          lineHeight: "1.5rem"
-        }}
-      >
-        {renderHighlightedContent()}
-      </Typography>
-    }
-    </div>
+        file.type === FileType.PDF && highlights && !highlights.content &&
+        <PDFFilePreview file={file} />
+      }
+      <div>
+        {
+          !isLoading &&
+          <Typography
+            variant="body1"
+            sx={{
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              fontSize: "1.1rem",
+              lineHeight: "1.5rem"
+            }}
+          >
+            {renderHighlightedContent()}
+          </Typography>
+        }
+      </div>
+    </>
   )
     ;
 };
