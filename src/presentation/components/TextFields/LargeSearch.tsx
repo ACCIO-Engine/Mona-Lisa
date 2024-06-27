@@ -114,6 +114,7 @@ export default function LargeSearch({
             }
           }}
           onChange={handleInputChange}
+          autoFocus={true}
         />
         <IconButton
           type="button"

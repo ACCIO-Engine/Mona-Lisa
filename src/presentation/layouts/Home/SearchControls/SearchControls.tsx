@@ -4,7 +4,7 @@ import { FieldContainer } from "./SearchControls.styled";
 import { useNavigate } from "react-router-dom";
 import {
   SearchType,
-  useSearch, useSearchContext
+  useSearch
 } from "../../../../application";
 import {
   Box, Button
