@@ -32,6 +32,7 @@ export default function SearchControls({
   } = useFiltersContext();
   const navigate = useNavigate();
   const { search } = useSearch();
+  const { setPage } = useSearchContext();
   const onChooseImage = (image: string) => {
     search(image, SearchType.IMAGE);
     searchCallback();
@@ -79,7 +80,8 @@ export default function SearchControls({
     setSize(filters.size);
     setFileType(filters.fileType);
     setSearchByFileName(filters.searchByFileName);
-  }
+    setPage(1);
+  };
   return (
     <FieldContainer>
       <FilterDialog
