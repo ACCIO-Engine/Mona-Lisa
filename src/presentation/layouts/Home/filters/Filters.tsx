@@ -8,38 +8,57 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  useTheme
+  useTheme, FormControlLabel, Checkbox
 } from "@mui/material";
 import { useFiltersContext } from "../../../../application";
 import MultipleSelectChip from "../../../components/MultipleSelect/MultipleSelect.tsx";
+import { useState } from "react";
 
 const FilterDialog = ({ open, onClose, onApply }) => {
   const {
     timeModified,
-    setTimeModified,
     size,
-    setSize,
     fileType,
-    setFileType
+    searchByFileName
   } = useFiltersContext();
+  const [localSearchByFileName, setSearchByFileName] = useState(searchByFileName);
+  const [localTimeModified, setTimeModified] = useState(timeModified);
+  const [localSize, setSize] = useState(size);
+  const [localFileType, setFileType] = useState(fileType);
 
   const handleApply = () => {
+    console.log({
+      timeModified: localTimeModified,
+      size: localSize,
+      fileType: localFileType,
+      searchByFileName: localSearchByFileName
+    })
     onApply({
-      timeModified,
-      size,
-      fileType: Object.keys(fileType).filter((key) => fileType[key])
+      timeModified: localTimeModified,
+      size: localSize,
+      fileType: localFileType,
+      searchByFileName: localSearchByFileName
     });
     onClose();
   };
 
   const handleReset = () => {
     setTimeModified("");
-    setSize("");
+    setSize({
+      Empty: true,
+      Tiny: true,
+      Small: true,
+      Medium: true,
+      Large: true,
+      Huge: true,
+      Gigantic: true
+    });
+    setSearchByFileName(false);
     setFileType({
-      Image: false,
-      Document: false,
-      Video: false,
-      All: false
+      Image: true,
+      Text: true,
+      Video: true,
+      Audio: true
     });
   };
   const onFileSizeChange = (selectedValues: string[]) => {
@@ -72,6 +91,11 @@ const FilterDialog = ({ open, onClose, onApply }) => {
     >
       <DialogTitle>Filter Search</DialogTitle>
       <DialogContent>
+        <FormControlLabel control={<Checkbox
+          checked={localSearchByFileName}
+          onChange={(e) => setSearchByFileName(e.target.checked)}
+        />} label="Search By File Name" />
+
         <FormControl fullWidth margin="normal">
           <InputLabel
             id="time-modified-label"
@@ -100,8 +124,8 @@ const FilterDialog = ({ open, onClose, onApply }) => {
             ))}
           </Select>
         </FormControl>
-        <MultipleSelectChip values={size} onChange={onFileSizeChange} label={"File Size"} />
-        <MultipleSelectChip values={fileType} onChange={onFileTypeChange} label={"File Type"} />
+        <MultipleSelectChip values={localSize} onChange={onFileSizeChange} label={"File Size"} />
+        <MultipleSelectChip values={localFileType} onChange={onFileTypeChange} label={"File Type"} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleReset} color="secondary">

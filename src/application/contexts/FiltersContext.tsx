@@ -34,6 +34,8 @@ interface FiltersContextProps {
     Video: boolean;
     Audio: boolean;
   }) => void;
+  searchByFileName: boolean;
+  setSearchByFileName: (searchByFileName: boolean) => void;
 }
 
 const FiltersContext = createContext<FiltersContextProps | undefined>(
@@ -59,6 +61,7 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({
     Video: true,
     Audio: true
   });
+  const [searchByFileName, setSearchByFileName] = useState(false);
   return (
     <FiltersContext.Provider
       value={{
@@ -67,7 +70,9 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({
         size,
         setSize,
         fileType,
-        setFileType
+        setFileType,
+        searchByFileName,
+        setSearchByFileName
       }}
     >
       {children}

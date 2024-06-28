@@ -22,7 +22,7 @@ export default function useSearch() {
     showResults,
     setShowResults
   } = useSearchContext();
-  const { timeModified, size, fileType } = useFiltersContext();
+  const { timeModified, size, fileType, searchByFileName } = useFiltersContext();
   const {
     data: files,
     isError,
@@ -31,7 +31,7 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size],
+    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size, searchByFileName],
     queryFn: () => {
       const fileTypes: string[] = (Object.keys(fileType) as (keyof FileTypes)[])
         .filter((key) => fileType[key])
@@ -48,7 +48,8 @@ export default function useSearch() {
           fileTypes: fileTypes,
           fileSizes: fileSizes,
           pageSize: pageSize,
-          page: page - 1
+          page: page - 1,
+          searchByFileName: searchByFileName
         });
       } else if (searchType === SearchType.TEXT) {
         return searchService({
@@ -58,7 +59,8 @@ export default function useSearch() {
           fileTypes: fileTypes,
           fileSizes: fileSizes,
           pageSize: pageSize,
-          page: page - 1
+          page: page - 1,
+          searchByFileName: searchByFileName
         });
       }
     },

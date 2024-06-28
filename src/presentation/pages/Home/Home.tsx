@@ -1,5 +1,4 @@
 import { Typography, useTheme } from "@mui/material";
-import { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { HomeContainer, LogoContainer, SearchControlsContainer } from "./Home.styled";
 import LightNameOnlyLogo from "../../assets/name-only-logo.svg?react";

@@ -3,8 +3,8 @@ import LargeSearch from "../../../components/TextFields/LargeSearch";
 import { FieldContainer } from "./SearchControls.styled";
 import { useNavigate } from "react-router-dom";
 import {
-  SearchType,
-  useSearch
+  SearchType, useFiltersContext,
+  useSearch, useSearchContext
 } from "../../../../application";
 import {
   Box, Button
@@ -13,8 +13,10 @@ import FilterDialog from "../filters/Filters.tsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function SearchControls({ searchCallback, clearResults,
-                                       canClear}: {
+export default function SearchControls({
+                                         searchCallback, clearResults,
+                                         canClear
+                                       }: {
   searchCallback: () => void,
   clearResults: () => void,
   canClear: boolean
@@ -22,7 +24,12 @@ export default function SearchControls({ searchCallback, clearResults,
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [currentControl, setCurrentControl] = useState<"text" | "mic">("text");
-
+  const {
+    setSearchByFileName,
+    setFileType,
+    setSize,
+    setTimeModified
+  } = useFiltersContext();
   const navigate = useNavigate();
   const { search } = useSearch();
   const onChooseImage = (image: string) => {
@@ -50,12 +57,29 @@ export default function SearchControls({ searchCallback, clearResults,
 
   const handleApplyFilters = (filters: {
     timeModified: string,
-    size: string,
-    fileType: string[]
+    size: {
+      Empty: boolean,
+      Tiny: boolean,
+      Small: boolean,
+      Medium: boolean,
+      Large: boolean,
+      Huge: boolean,
+      Gigantic: boolean
+    },
+    fileType: {
+      Image: boolean,
+      Text: boolean,
+      Video: boolean,
+      Audio: boolean
+    },
+    searchByFileName: boolean
   }) => {
-    console.log("Applied Filters:", filters);
-    // You can handle the applied filters here
-  };
+    console.log("Filters", filters);
+    setTimeModified(filters.timeModified);
+    setSize(filters.size);
+    setFileType(filters.fileType);
+    setSearchByFileName(filters.searchByFileName);
+  }
   return (
     <FieldContainer>
       <FilterDialog
