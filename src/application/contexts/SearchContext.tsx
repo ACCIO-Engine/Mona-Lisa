@@ -15,6 +15,8 @@ interface SearchContextProps {
   setPageSize: (pageSize: number) => void;
   page: number;
   setPage: (page: number) => void;
+  showResults: boolean;
+  setShowResults: (showResults: boolean) => void;
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
@@ -30,6 +32,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   );
   const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
+  const [showResults, setShowResults] = useState<boolean>(false);
   return (
     <SearchContext.Provider
       value={{
@@ -44,7 +47,9 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
         pageSize,
         setPageSize,
         page,
-        setPage
+        setPage,
+        showResults,
+        setShowResults
       }}
     >
       {children}

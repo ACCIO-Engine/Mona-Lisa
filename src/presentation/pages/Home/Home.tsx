@@ -8,22 +8,23 @@ import SearchControls from "../../layouts/Home/SearchControls/SearchControls";
 import { SLOGAN } from "../../Constants.ts";
 import "./Home.css";
 import Results from "../Results/Results.tsx";
+import { useSearch } from "../../../application";
 
 export default function Home() {
   const theme = useTheme();
-  const [hasResults, setHasResults] = useState(false);
+  const { showResults,setShowResults } = useSearch();
   const searchCallback = () => {
-    setHasResults(true);
+    setShowResults(true);
   };
 
   const clearResults = () => {
-    setHasResults(false);
+    setShowResults(false);
   };
 
   return (
     <HomeContainer>
       <CSSTransition
-        in={!hasResults}
+        in={!showResults}
         timeout={300}
         classNames="logo"
         unmountOnExit
@@ -40,21 +41,21 @@ export default function Home() {
         </LogoContainer>
       </CSSTransition>
       <SearchControlsContainer
-        className={`search-controls-wrapper ${hasResults ? "fixed" : ""}`}>
+        className={`search-controls-wrapper ${showResults ? "fixed" : ""}`}>
         <CSSTransition
-          in={hasResults}
+          in={showResults}
           timeout={300}
           classNames="search-controls"
         >
 
           <SearchControls searchCallback={searchCallback} clearResults={clearResults}
-                          canClear={hasResults} />
+                          canClear={showResults} />
         </CSSTransition>
       </SearchControlsContainer>
 
       {/*<Button onClick={() => setHasResults(false)}>Back</Button>*/}
 
-      {hasResults && <Results />}
+      {showResults && <Results />}
     </HomeContainer>
   );
 }

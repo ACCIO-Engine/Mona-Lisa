@@ -18,7 +18,9 @@ export default function useSearch() {
     queryEngine,
     pageSize,
     page,
-    setPage
+    setPage,
+    showResults,
+    setShowResults
   } = useSearchContext();
   const { timeModified, size, fileType } = useFiltersContext();
   const {
@@ -84,6 +86,8 @@ export default function useSearch() {
     totalPages: files?.totalPages,
     totalResults: files?.totalResults,
     currentPage: files?.currentPage,
+    showResults,
+    setShowResults,
     enableSearch,
     isError,
     isLoading,
