@@ -2,6 +2,7 @@ import { File, FileType } from "../../../application";
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import useHighlights from "../../../application/usecases/highlights/useHighlights.usecase.ts";
+import { HourGlassLoader } from "../Loader/Loader.tsx";
 
 const PDFFilePreview = ({ file }: { file: File }) => {
   return (
@@ -67,6 +68,17 @@ const TextFileViewer = ({ file }: { file: File }) => {
 
   return (
     <>
+      {
+        isLoading &&
+        <Box sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%"
+        }}>
+          <HourGlassLoader />
+        </Box>
+      }
       {
         file.type === FileType.PDF && highlights && !highlights.content &&
         <PDFFilePreview file={file} />
