@@ -16,6 +16,7 @@ import DOCIcon from "../../assets/doc.svg?react";
 import PPTIcon from "../../assets/ppt.svg?react";
 import TextIcon from "../../assets/txt.svg?react";
 import VideoIcon from "../../assets/video.svg?react";
+import AudioIcon from "../../assets/audio.svg?react";
 import copyTextToClipboard from "../../utils/copy";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { alpha } from "@mui/system";
@@ -51,6 +52,9 @@ const TextFilePreview = ({ file }: { file: File }) => {
 const VideoFilePreview = ({ file }: { file: File }) => {
   return <VideoIcon />;
 };
+const AudioFilePreview = ({ file }: { file: File }) => {
+  return <AudioIcon />;
+};
 
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
@@ -81,16 +85,18 @@ const FilePreview = ({ file }: { file: File }) => {
       <TextFilePreview file={file} />
     ) : file.type === FileType.Video ? (
       <VideoFilePreview file={file} />
+    ) : file.type === FileType.Audio ? (
+      <AudioFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );
 
   const { openSnackbar } = useSnackbar();
 
-  const handleCopyPath = (path:string) => {
+  const handleCopyPath = (path: string) => {
     const pathParts = path.split(/[\\/]/);
     pathParts.pop(); // Remove the file name
-    const dir = pathParts.join('\\');
+    const dir = pathParts.join("\\");
     copyTextToClipboard([dir]).then((success) => {
       if (success) {
         openSnackbar("Path copied to clipboard successfully", "success");
@@ -173,7 +179,7 @@ const FilePreview = ({ file }: { file: File }) => {
           <IconButton color="primary" onClick={() => handleFilePreview(file.type)}>
             <FileOpenIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => ipcRenderer.send('open-folder', file.path)}>
+          <IconButton color="primary" onClick={() => ipcRenderer.send("open-folder", file.path)}>
             <FolderOpenIcon />
           </IconButton>
         </CardActions>

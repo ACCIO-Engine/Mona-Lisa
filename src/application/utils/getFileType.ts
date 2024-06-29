@@ -13,6 +13,13 @@ const VIDEO_EXTENSIONS = [
   ".ogv"
 ];
 
+const AUDIO_EXTENSIONS = [
+  ".mp3",
+  ".wav",
+  ".flac",
+  ".ogg"
+];
+
 export default function getFileType(filePath: string): FileType | undefined {
   const fileExtension = filePath.split(".").pop()?.toLowerCase();
   if (fileExtension) {
@@ -28,6 +35,8 @@ export default function getFileType(filePath: string): FileType | undefined {
       return FileType.Text;
     } else if (VIDEO_EXTENSIONS.includes(`.${fileExtension}`)) {
       return FileType.Video;
+    } else if (AUDIO_EXTENSIONS.includes(`.${fileExtension}`)) {
+      return FileType.Audio;
     }
   }
   return undefined; // File type not supported or file path is invalid

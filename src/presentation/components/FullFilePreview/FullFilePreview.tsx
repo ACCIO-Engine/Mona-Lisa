@@ -1,7 +1,7 @@
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import {
-  AppBar,
+  AppBar, Box,
   Dialog,
   IconButton,
   Slide,
@@ -66,6 +66,26 @@ const VideoFilePreview = ({ file }: { file: File }) => {
   );
 };
 
+const AudioFilePreview = ({ file }: { file: File }) => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <audio controls>
+        <source src={`file://${file.path}`} type="audio/mp3" />
+        Your browser does not support the audio tag.
+      </audio>
+    </Box>
+  );
+
+};
+
 
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
@@ -74,14 +94,7 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
     </>
   );
 };
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+
 const FullFilePreview = ({
                            open,
                            setOpen,
@@ -104,6 +117,8 @@ const FullFilePreview = ({
       <TextFileViewer file={file} />
     ) : file.type === FileType.PowerPoint ? (
       <TextFileViewer file={file} />
+    ) : file.type === FileType.Audio ? (
+      <AudioFilePreview file={file} />
     ) : (
       <DefaultFilePreview file={file} />
     );
