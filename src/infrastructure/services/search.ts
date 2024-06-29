@@ -32,7 +32,7 @@ export const search = async ({
     searchType,
     pageSize: pageSize.toString(),
     page: page.toString(),
-    withFileNames: searchByFileName ? "true" : "false"
+    withFileNames: searchByFileName ? "true" : "false",
   });
   fileTypes.forEach((type) => params.append("fileTypes", type));
   fileSizes.forEach((size) => params.append("fileSizes", size));

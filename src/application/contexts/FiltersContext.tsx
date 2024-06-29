@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 
 interface FiltersContextProps {
   timeModified: string;
@@ -36,6 +37,10 @@ interface FiltersContextProps {
   }) => void;
   searchByFileName: boolean;
   setSearchByFileName: (searchByFileName: boolean) => void;
+  startDate: Dayjs | null;
+  setStartDate: (startDate: Dayjs | null) => void;
+  endDate: Dayjs | null;
+  setEndDate: (endDate: Dayjs | null) => void;
 }
 
 const FiltersContext = createContext<FiltersContextProps | undefined>(
@@ -62,6 +67,8 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({
     Audio: true
   });
   const [searchByFileName, setSearchByFileName] = useState(false);
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs("2019-09-24"));
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs("2024-07-16"));
   return (
     <FiltersContext.Provider
       value={{
@@ -72,7 +79,11 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({
         fileType,
         setFileType,
         searchByFileName,
-        setSearchByFileName
+        setSearchByFileName,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate
       }}
     >
       {children}

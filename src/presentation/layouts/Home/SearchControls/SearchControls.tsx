@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LargeSearch from "../../../components/TextFields/LargeSearch";
 import { FieldContainer } from "./SearchControls.styled";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import {
   SearchType, useFiltersContext,
   useSearch, useSearchContext
@@ -12,6 +12,7 @@ import {
 import FilterDialog from "../filters/Filters.tsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Dayjs } from "dayjs";
 
 export default function SearchControls({
                                          searchCallback, clearResults,
@@ -28,9 +29,11 @@ export default function SearchControls({
     setSearchByFileName,
     setFileType,
     setSize,
-    setTimeModified
+    setTimeModified,
+    setEndDate,
+    setStartDate
   } = useFiltersContext();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { search } = useSearch();
   const { setPage } = useSearchContext();
   const onChooseImage = (image: string) => {
@@ -73,7 +76,9 @@ export default function SearchControls({
       Video: boolean,
       Audio: boolean
     },
-    searchByFileName: boolean
+    searchByFileName: boolean,
+    startDate: Dayjs,
+    endDate: Dayjs
   }) => {
     console.log("Filters", filters);
     setTimeModified(filters.timeModified);
@@ -81,6 +86,8 @@ export default function SearchControls({
     setFileType(filters.fileType);
     setSearchByFileName(filters.searchByFileName);
     setPage(1);
+    setStartDate(filters.startDate);
+    setEndDate(filters.endDate);
   };
   return (
     <FieldContainer>

@@ -4,40 +4,46 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  useTheme, FormControlLabel, Checkbox
+  FormControlLabel,
+  Checkbox,
+  Box
 } from "@mui/material";
 import { useFiltersContext } from "../../../../application";
 import MultipleSelectChip from "../../../components/MultipleSelect/MultipleSelect.tsx";
 import { useState } from "react";
+import DatePicker from "../../../components/Date/Date.tsx";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { Dayjs } from "dayjs";
 
 const FilterDialog = ({ open, onClose, onApply }) => {
   const {
     timeModified,
     size,
     fileType,
-    searchByFileName
+    searchByFileName,
+    startDate,
+    endDate
   } = useFiltersContext();
   const [localSearchByFileName, setSearchByFileName] = useState(searchByFileName);
   const [localTimeModified, setTimeModified] = useState(timeModified);
   const [localSize, setSize] = useState(size);
   const [localFileType, setFileType] = useState(fileType);
-
+  const [localStartDate, setStartDate] = useState<Dayjs | null>(startDate);
+  const [localEndDate, setEndDate] = useState<Dayjs | null>(endDate);
   const handleApply = () => {
     console.log({
       timeModified: localTimeModified,
       size: localSize,
       fileType: localFileType,
       searchByFileName: localSearchByFileName
-    })
+    });
     onApply({
       timeModified: localTimeModified,
       size: localSize,
       fileType: localFileType,
-      searchByFileName: localSearchByFileName
+      searchByFileName: localSearchByFileName,
+      startDate: localStartDate,
+      endDate: localEndDate
     });
     onClose();
   };
@@ -80,8 +86,12 @@ const FilterDialog = ({ open, onClose, onApply }) => {
       Audio: selectedValues.includes("Audio")
     });
   };
-  const theme = useTheme();
-
+  const onStartDateChange = (date: Dayjs | null) => {
+    setStartDate(date);
+  };
+  const onEndDateChange = (date: Dayjs | null) => {
+    setEndDate(date);
+  };
   return (
     <Dialog
       open={open}
@@ -91,41 +101,62 @@ const FilterDialog = ({ open, onClose, onApply }) => {
     >
       <DialogTitle>Filter Search</DialogTitle>
       <DialogContent>
-        <FormControlLabel control={<Checkbox
-          checked={localSearchByFileName}
-          onChange={(e) => setSearchByFileName(e.target.checked)}
-        />} label="Search By File Name" />
-
-        <FormControl fullWidth margin="normal">
-          <InputLabel
-            id="time-modified-label"
-            sx={{ color: theme.palette.common.white }}
-          >Time Modified</InputLabel>
-          <Select
-            labelId="time-modified-label"
-            value={timeModified}
-            onChange={(e) => setTimeModified(e.target.value)}
-            variant="standard"
-            sx={{ color: theme.palette.common.white }}
-          >
-            {[
-              "today",
-              "yesterday",
-              "this week",
-              "last week",
-              "this month",
-              "last month",
-              "last year",
-              "this year"
-            ].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={localSearchByFileName}
+                onChange={(e) => setSearchByFileName(e.target.checked)}
+              />
+            }
+            label="Search By File Name"
+          />
+        </Box>
+        <DemoContainer
+          components={["DatePicker", "DatePicker"]}
+          sx={{
+            marginBottom: "1rem"
+          }}
+        >
+          <DatePicker label={"Start Date"} value={localStartDate} onChange={onStartDateChange} />
+          <DatePicker label={"End Date"} value={localEndDate} onChange={onEndDateChange} />
+        </DemoContainer>
+        {/*<FormControl fullWidth margin="normal">*/}
+        {/*  <InputLabel*/}
+        {/*    id="time-modified-label"*/}
+        {/*    sx={{ color: theme.palette.common.white }}*/}
+        {/*  >Time Modified</InputLabel>*/}
+        {/*  <Select*/}
+        {/*    labelId="time-modified-label"*/}
+        {/*    value={timeModified}*/}
+        {/*    onChange={(e) => setTimeModified(e.target.value)}*/}
+        {/*    variant="standard"*/}
+        {/*    sx={{ color: theme.palette.common.white }}*/}
+        {/*  >*/}
+        {/*    {[*/}
+        {/*      "today",*/}
+        {/*      "yesterday",*/}
+        {/*      "this week",*/}
+        {/*      "last week",*/}
+        {/*      "this month",*/}
+        {/*      "last month",*/}
+        {/*      "last year",*/}
+        {/*      "this year"*/}
+        {/*    ].map((option) => (*/}
+        {/*      <MenuItem key={option} value={option}>*/}
+        {/*        {option}*/}
+        {/*      </MenuItem>*/}
+        {/*    ))}*/}
+        {/*  </Select>*/}
+        {/*</FormControl>*/}
         <MultipleSelectChip values={localSize} onChange={onFileSizeChange} label={"File Size"} />
-        <MultipleSelectChip values={localFileType} onChange={onFileTypeChange} label={"File Type"} />
+        <MultipleSelectChip values={localFileType} onChange={onFileTypeChange}
+                            label={"File Type"} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleReset} color="secondary">
