@@ -8,6 +8,7 @@ import {
 } from "../../components/Alert/Alert";
 import { Container, MessageAlerts } from "./Results.styled";
 import { SnackbarProvider } from "../../contexts/SnackbarContext";
+import { BookLoader, MagnifyingGlassLoader } from "../../components/Loader/Loader.tsx";
 
 
 const Results: React.FC = () => {
@@ -33,18 +34,24 @@ const Results: React.FC = () => {
   // console.log("tempFiles = ", tempFiles);
   return (
     <SnackbarProvider>
+      {
+        !(isSuccess && files && files.length > 0) && isLoading &&
+        (<MagnifyingGlassLoader />)
+      }
+
       <Container>
         {!(isSuccess && files && files.length > 0) && (
-          <MessageAlerts>
-            {isLoading && <LoadingAlert message="Searching for files..." />}
-            {isError && error && <ErrorAlert message={error.message} />}
-            {files && files.length === 0 && (
-              <InfoAlert message="No files found." />
-            )}
-            {!files && !isError && !isLoading && !isSuccess && (
-              <InfoAlert message="Search for files using the search bar above." />
-            )}
-          </MessageAlerts>
+          <>
+            <MessageAlerts>
+              {isError && error && <ErrorAlert message={error.message} />}
+              {files && files.length === 0 && (
+                <InfoAlert message="No files found." />
+              )}
+              {!files && !isError && !isLoading && !isSuccess && (
+                <InfoAlert message="Search for files using the search bar above." />
+              )}
+            </MessageAlerts>
+          </>
         )}
         {isSuccess && files && files.length > 0 &&
           <ResultsGrid files={files} totalPages={totalPages} totalResults={totalResults} />}

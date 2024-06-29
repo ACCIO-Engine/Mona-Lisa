@@ -15,6 +15,7 @@ import { alpha } from "@mui/system";
 import { useCallback, useState } from "react";
 import { useTrieContext } from "../../contexts/TrieContext";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
+import { useSearchContext } from "../../../application";
 
 const SearchContainer = styled(Box)(({ theme }) => ({
   p: "2px 4px",
@@ -36,7 +37,8 @@ export default function LargeSearch({
   onSearchText: (text: string) => void;
   onChooseMic: () => void;
 }) {
-  const [inputValue, setInputValue] = useState("");
+  const { searchString } = useSearchContext();
+  const [inputValue, setInputValue] = useState(searchString);
   const [options, setOptions] = useState([]);
   const { trie } = useTrieContext();
 

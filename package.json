@@ -27,6 +27,7 @@
     "mui-nested-menu": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^6.22.3",
     "react-transition-group": "^4.4.5",
     "react-window": "^1.8.10"
