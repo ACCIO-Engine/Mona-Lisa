@@ -14,7 +14,7 @@ export const MagnifyingGlassLoader = () => {
         wrapperStyle={{}}
         wrapperClass="magnifying-glass-wrapper"
         glassColor={`${alpha(theme.palette.primary.light, 0.5)}`}
-        color={theme.palette.primary.main}
+        color={`${alpha(theme.palette.primary.main, 0.8)}`}
       />
     </>
   );

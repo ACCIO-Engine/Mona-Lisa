@@ -3,12 +3,11 @@ import ResultsGrid from "../../layouts/ResultsGrid/ResultsGrid";
 import { useSearch } from "../../../application";
 import {
   ErrorAlert,
-  InfoAlert,
-  LoadingAlert
+  InfoAlert
 } from "../../components/Alert/Alert";
 import { Container, MessageAlerts } from "./Results.styled";
 import { SnackbarProvider } from "../../contexts/SnackbarContext";
-import { BookLoader, MagnifyingGlassLoader } from "../../components/Loader/Loader.tsx";
+import { MagnifyingGlassLoader } from "../../components/Loader/Loader.tsx";
 
 
 const Results: React.FC = () => {
@@ -38,7 +37,6 @@ const Results: React.FC = () => {
         !(isSuccess && files && files.length > 0) && isLoading &&
         (<MagnifyingGlassLoader />)
       }
-
       <Container>
         {!(isSuccess && files && files.length > 0) && (
           <>
