@@ -1,7 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { testFile as testFileService } from "../../../infrastructure/services/testFiles.ts";
+import { useState } from "react";
 
 export default function useTestFiles() {
+  const [file, setFile] = useState<{
+    path: string;
+    type: string;
+  }>({
+    path: "",
+    type: ""
+  });
   const {
     data: result,
     isError,
@@ -10,14 +18,15 @@ export default function useTestFiles() {
     error,
     status
   } = useQuery({
-    queryKey: ["testFiles"],
+    queryKey: ["testFiles", file],
     queryFn: () => {
+      return testFileService({ path: file.path, type: file.type });
     },
-    enabled: true,
+    enabled: file.path !== "" && file.type !== "",
     staleTime: Infinity
   });
-  const testFile = (path: string) => {
-    testFileService({ path });
+  const testFile = (path: string, type: string) => {
+    setFile({ path, type });
   };
   return {
     testFile,
