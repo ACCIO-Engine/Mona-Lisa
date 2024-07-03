@@ -24,6 +24,7 @@ export const ResultContainer = styled("div")(({ theme }) => ({
   height: "65vh",
   borderRadius: "1rem",
   margin: "1rem",
+  overflow: "auto"
 }));
 
 export const UploadButton = styled(Button)(({ theme }) => ({
