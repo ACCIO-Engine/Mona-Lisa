@@ -4,5 +4,6 @@ const routes = {
   index: "/index",
   settings: "/settings",
   dashboard: "/dashboard",
+  testFiles: "/test-files",
 };
 export default routes;

@@ -14,6 +14,8 @@ import DashboardProvider from "./contexts/DashboardContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import TrieProvider from "./contexts/TrieContext";
+import { TestFiles } from "./pages/TestFiles/TestFiles.tsx";
+import routes from "./routes/routes.ts";
 
 const queryClient = new QueryClient();
 const router = createHashRouter([
@@ -26,16 +28,17 @@ const router = createHashRouter([
         path: "/",
         element: <Home />
       },
-      { path: "search", element: <Results /> },
+      { path: routes.search, element: <Results /> },
       {
-        path: "index",
+        path: routes.index,
         element: (
           <SnackbarProvider>
             <Index />
           </SnackbarProvider>
         )
       },
-      { path: "dashboard", element: <Dashboard /> }
+      { path: routes.dashboard, element: <Dashboard /> },
+      { path: routes.testFiles, element: <TestFiles /> }
     ]
   }
 ]);

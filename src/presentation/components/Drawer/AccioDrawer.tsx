@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import routes from "../../routes/routes";
 import { List } from "@mui/material";
-
+import BiotechRoundedIcon from '@mui/icons-material/BiotechRounded';
 interface AccioDrawerProps {
   open: boolean;
   handleDrawerOpen: () => void;
@@ -96,6 +96,12 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
           icon={<DocumentScannerIcon color={"primary"} />}
           text="Indexing"
           buttonProps={buttonProps(3)}
+        />
+        <NavLinkItem
+          to={routes.testFiles}
+          icon={<BiotechRoundedIcon color={"primary"} />}
+          text="Test Files"
+          buttonProps={buttonProps(2)}
         />
       </List>
     </CustomDrawer>
