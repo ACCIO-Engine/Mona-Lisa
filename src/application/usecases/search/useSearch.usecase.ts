@@ -20,7 +20,8 @@ export default function useSearch() {
     page,
     setPage,
     showResults,
-    setShowResults
+    setShowResults,
+    rerank
   } = useSearchContext();
   const { startDate, endDate, size, fileType, searchByFileName } = useFiltersContext();
   const {
@@ -31,7 +32,7 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size, searchByFileName, startDate, endDate],
+    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size, searchByFileName, startDate, endDate, rerank],
     queryFn: () => {
       const fileTypes: string[] = (Object.keys(fileType) as (keyof FileTypes)[])
         .filter((key) => fileType[key])
@@ -51,7 +52,8 @@ export default function useSearch() {
           page: page - 1,
           searchByFileName: searchByFileName,
           modifiedTimeStart: startDate?.toDate(),
-          modifiedTimeEnd: endDate?.toDate()
+          modifiedTimeEnd: endDate?.toDate(),
+          rerank: rerank
         });
       } else if (searchType === SearchType.TEXT) {
         return searchService({
@@ -64,7 +66,8 @@ export default function useSearch() {
           page: page - 1,
           searchByFileName: searchByFileName,
           modifiedTimeStart: startDate?.toDate(),
-          modifiedTimeEnd: endDate?.toDate()
+          modifiedTimeEnd: endDate?.toDate(),
+          rerank: rerank
         });
       }
     },

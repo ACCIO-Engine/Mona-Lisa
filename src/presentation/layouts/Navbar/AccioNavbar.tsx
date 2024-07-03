@@ -4,14 +4,20 @@ import CreateIcon from "@mui/icons-material/Create";
 import {
   CustomAppBar
 } from "./AccioNavbar.styled";
-import MaterialUISwitch from "../../components/ToggleButton/ToggleButton.styled";
 import {
-  Button,
+  MaterialUISwitch,
+  RerankContainer,
+  RerankSwitch
+} from "../../components/ToggleButton/ToggleButton.styled";
+import {
+  Button, FormControlLabel, IconButton,
   Menu,
-  MenuItem, useTheme
+  MenuItem, Tooltip, Typography,
+  useTheme
 } from "@mui/material";
 import { QueryEngines, useSearchContext } from "../../../application";
-import { useState } from "react";
+import React, { useState } from "react";
+import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
 interface AccioNavbarProps {
   open: boolean;
@@ -21,7 +27,7 @@ interface AccioNavbarProps {
 
 export default function AccioNavbar(props: AccioNavbarProps) {
   const { open, isLightMode, toggleLightMode } = props;
-  const { queryEngine, setQueryEngine } = useSearchContext();
+  const { queryEngine, setQueryEngine, rerank, setRerank } = useSearchContext();
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -32,6 +38,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleRerank = () => {
+    setRerank((rerank: boolean) => !rerank);
   };
   return (
     <CustomAppBar position="fixed" open={open} sx={{
@@ -76,11 +86,46 @@ export default function AccioNavbar(props: AccioNavbarProps) {
         </Menu>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { md: "flex" } }}>
-          <MaterialUISwitch
-            sx={{ m: 1 }}
-            onChange={toggleLightMode}
-            checked={!isLightMode}
+          <FormControlLabel
+            value="bottom"
+            control={
+              <RerankSwitch
+                onChange={handleRerank}
+                checked={!rerank}
+              />
+            }
+            label={
+              <Box>
+                Rerank
+                <Tooltip
+                  title={<Typography>If enabled, the search results will be re-ranked to enhance
+                    ranking. but it may take longer to get the results.</Typography>}
+                >
+                  <IconButton sx={{ p: 0 }}>
+                    <InfoRoundedIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            }
+            labelPlacement="top"
+            sx={{
+              color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+            }}
           />
+          <FormControlLabel
+            value="bottom"
+            control={
+              <MaterialUISwitch
+                onChange={toggleLightMode}
+                checked={!isLightMode}
+              />}
+            label="Theme"
+            labelPlacement="top"
+            sx={{
+              color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+            }}
+          />
+
         </Box>
       </Toolbar>
     </CustomAppBar>

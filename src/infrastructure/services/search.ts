@@ -12,6 +12,7 @@ interface SearchParams {
   modifiedTimeStart?: Date;
   modifiedTimeEnd?: Date;
   searchByFileName?: boolean;
+  rerank?: boolean;
 }
 
 export const search = async ({
@@ -24,7 +25,8 @@ export const search = async ({
                                fileSizes = [],
                                modifiedTimeStart,
                                modifiedTimeEnd,
-                               searchByFileName
+                               searchByFileName,
+                               rerank
                              }: SearchParams) => {
   const params = new URLSearchParams({
     query,
@@ -33,6 +35,7 @@ export const search = async ({
     pageSize: pageSize.toString(),
     page: page.toString(),
     withFileNames: searchByFileName ? "true" : "false",
+    rerank: rerank ? "true" : "false"
   });
   fileTypes.forEach((type) => params.append("fileTypes", type));
   fileSizes.forEach((size) => params.append("fileSizes", size));

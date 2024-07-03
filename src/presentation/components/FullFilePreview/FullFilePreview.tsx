@@ -12,8 +12,6 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { File, FileType } from "../../../application";
 import Logo from "../../assets/imageOnly.svg";
 import { GridCloseIcon } from "@mui/x-data-grid";
-import React from "react";
-import { TransitionProps } from "@mui/material/transitions";
 import { FileContainer } from "./FullFilePreview.styled";
 import TextFileViewer from "./TextFIleViewer.tsx";
 
