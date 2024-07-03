@@ -9,24 +9,141 @@ import {
 import ImageRoundedIcon from "@mui/icons-material/ImageRounded";
 import MovieRoundedIcon from "@mui/icons-material/MovieRounded";
 import HeadsetRoundedIcon from "@mui/icons-material/HeadsetRounded";
-import FormatAlignLeftRoundedIcon from "@mui/icons-material/FormatAlignLeftRounded";
 import React from "react";
 import useTestFiles from "../../../application/usecases/testFiles/useTestFiles.usecase.ts";
 
+const ShowImageResult = ({
+  caption,
+  ocr
+}: {
+  caption: string;
+  ocr: string;
+}) => {
+  return (
+    <Box
+      sx={{
+        padding: "1rem"
+      }}
+    >
+      <Typography
+        sx={{
+          whiteSpace: "pre-wrap",
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+          display: "block"
+        }}
+      >
+        Caption: {caption}
+      </Typography>
+      <Typography
+        sx={{
+          whiteSpace: "pre-wrap",
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+          display: "block"
+        }}
+      >
+        OCR: {ocr}
+      </Typography>
+    </Box>
+  );
+};
+
+const ShowAudioResult = ({ transcript }: { transcript: string }) => {
+  return (
+    <Box
+      sx={{
+        padding: "1rem"
+      }}
+    >
+      <Typography
+        sx={{
+          whiteSpace: "pre-wrap",
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+          display: "block"
+        }}
+      >
+        Transcript: {transcript}
+      </Typography>
+    </Box>
+  );
+};
+
+const ShowVideoResult = ({
+  keyframes,
+  transcript
+}: {
+  keyframes: { caption: string; ocr: string }[];
+  transcript: string;
+}) => {
+  return (
+    <Box
+      sx={{
+        padding: "1rem"
+      }}
+    >
+      <Typography
+        sx={{
+          whiteSpace: "pre-wrap",
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+          display: "block"
+        }}
+      >
+        Transcript: {transcript}
+      </Typography>
+      {keyframes.map((keyframe, index) => (
+        <Box
+          key={index}
+          sx={{
+            padding: "1rem"
+          }}
+        >
+          <Typography
+            sx={{
+              whiteSpace: "pre-wrap",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              display: "block"
+            }}
+          >
+            Caption: {keyframe.caption}
+          </Typography>
+          <Typography
+            sx={{
+              whiteSpace: "pre-wrap",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              display: "block"
+            }}
+          >
+            OCR: {keyframe.ocr}
+          </Typography>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
 export const TestFiles: React.FC = () => {
-  const { testFile, isError, isLoading, isSuccess } = useTestFiles();
+  const { testFile, isError, isLoading, isSuccess, result, type } =
+    useTestFiles();
   const handleUpload = (path: string, type: string) => {
-    testFile(path,type);
+    testFile(path, type);
   };
+  console.log(result);
   return (
     <Box>
       <Title>Check How Accio Understands Your Files</Title>
       <Container>
-        <UploadButton
-          component="label"
-          role={undefined}
-          tabIndex={-1}
-        >
+        <UploadButton component="label" role={undefined} tabIndex={-1}>
           <ImageRoundedIcon sx={{ fontSize: "3rem" }} />
           <input
             style={{ display: "none" }}
@@ -44,11 +161,7 @@ export const TestFiles: React.FC = () => {
             }}
           />
         </UploadButton>
-        <UploadButton
-          component="label"
-          role={undefined}
-          tabIndex={-1}
-        >
+        <UploadButton component="label" role={undefined} tabIndex={-1}>
           <MovieRoundedIcon sx={{ fontSize: "3rem" }} />
           <input
             style={{ display: "none" }}
@@ -66,11 +179,7 @@ export const TestFiles: React.FC = () => {
             }}
           />
         </UploadButton>
-        <UploadButton
-          component="label"
-          role={undefined}
-          tabIndex={-1}
-        >
+        <UploadButton component="label" role={undefined} tabIndex={-1}>
           <HeadsetRoundedIcon sx={{ fontSize: "3rem" }} />
           <input
             style={{ display: "none" }}
@@ -113,18 +222,27 @@ export const TestFiles: React.FC = () => {
         {/*</UploadButton>*/}
       </Container>
       <ResultContainer>
-        {
-          !isLoading && !isError && !isSuccess && (
-            <TextMessage>
-              Upload a file to see how Accio understands it
-            </TextMessage>
-          )
-        }
+        {!isLoading && !isError && !isSuccess && (
+          <TextMessage>
+            Upload a file to see how Accio understands it
+          </TextMessage>
+        )}
         {isLoading && <TextMessage>Processing...</TextMessage>}
         {isError && <TextMessage>Error</TextMessage>}
         {isSuccess && (
           <Container>
-            <Typography>{testFile}</Typography>
+            {type === "image" && (
+              <ShowImageResult caption={result.caption} ocr={result.ocr} />
+            )}
+            {type === "audio" && (
+              <ShowAudioResult transcript={result.transcript} />
+            )}
+            {type === "video" && (
+              <ShowVideoResult
+                keyframes={result.keyframes}
+                transcript={result.transcript}
+              />
+            )}
           </Container>
         )}
       </ResultContainer>

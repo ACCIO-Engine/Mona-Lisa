@@ -31,6 +31,7 @@ export default function useTestFiles() {
   return {
     testFile,
     result,
+    type: file.type,
     isError,
     isLoading,
     isSuccess,
