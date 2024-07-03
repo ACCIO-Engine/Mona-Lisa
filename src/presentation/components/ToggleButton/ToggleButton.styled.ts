@@ -1,5 +1,4 @@
-import { styled } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
+import { styled, Switch } from "@mui/material";
 
 export const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -63,6 +62,22 @@ export const RerankSwitch = styled(Switch)(({ theme }) => ({
       "& + .MuiSwitch-track": {
         opacity: 1,
         backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be"
+      },
+      "& .MuiSwitch-thumb": {
+        backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+        "&::before": {
+          content: "'✓'",
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          left: 0,
+          top: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 24,
+          color: "white"
+        }
       }
     }
   },
@@ -71,26 +86,23 @@ export const RerankSwitch = styled(Switch)(({ theme }) => ({
     width: 32,
     height: 32,
     "&::before": {
-      content: "''",
+      content: "'✗'",
       position: "absolute",
       width: "100%",
       height: "100%",
       left: 0,
       top: 0,
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: 24,
+      color: "white"
     }
   },
   "& .MuiSwitch-track": {
-    opacity: 1,
-    backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+    opacity: 0.7,
     borderRadius: 20 / 2
   }
 }));
 
-export const RerankContainer = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
 

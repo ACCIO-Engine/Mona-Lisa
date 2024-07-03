@@ -6,7 +6,6 @@ import {
 } from "./AccioNavbar.styled";
 import {
   MaterialUISwitch,
-  RerankContainer,
   RerankSwitch
 } from "../../components/ToggleButton/ToggleButton.styled";
 import {
@@ -31,7 +30,6 @@ export default function AccioNavbar(props: AccioNavbarProps) {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -91,7 +89,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             control={
               <RerankSwitch
                 onChange={handleRerank}
-                checked={!rerank}
+                checked={rerank}
               />
             }
             label={
@@ -102,7 +100,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                     ranking. but it may take longer to get the results.</Typography>}
                 >
                   <IconButton sx={{ p: 0 }}>
-                    <InfoRoundedIcon />
+                    <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
                   </IconButton>
                 </Tooltip>
               </Box>
