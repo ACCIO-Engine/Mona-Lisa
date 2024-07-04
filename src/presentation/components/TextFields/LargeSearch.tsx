@@ -109,7 +109,7 @@ export default function LargeSearch({
         </Box>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="Search ACCIO"
+          placeholder="Search Accio Or Ask your Files"
           inputProps={{ "aria-label": "search google maps" }}
           value={inputValue}
           onKeyDown={(e) => {

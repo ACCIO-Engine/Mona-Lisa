@@ -12,6 +12,7 @@ export async function getHighlights(query: string, path: string, queryEngine: Qu
 
   try {
     const response = await fetch(url);
+    console.log("Response: ", response);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
