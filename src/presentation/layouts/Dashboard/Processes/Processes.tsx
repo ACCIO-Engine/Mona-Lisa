@@ -35,7 +35,7 @@ const steps = [
   },
   {
     label: DashboardEntry.OCTOPUS,
-    description: `Is responsible for search logic.`
+    description: `Start indexing`
   }
 ];
 

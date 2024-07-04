@@ -2,13 +2,14 @@ import { BASE_URL } from "../api/api";
 
 interface Params {
   path: string;
+  type: string;
 }
 
-export const testFile = async ({ path }: Params) => {
+export const testFile = async ({ path, type }: Params) => {
   const params = new URLSearchParams({
     path
   });
-  const url = `${BASE_URL}/search?${params.toString()}`;
+  const url = `${BASE_URL}/${type}?${params.toString()}`;
 
   try {
     const response = await fetch(url);
