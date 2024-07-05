@@ -204,7 +204,7 @@ const runHedwig = (): any => {
 };
 
 const runNanoBert = (): any => {
-  return runShellCommand("python server.py", process.env.NANOBERT);
+  return runShellCommand("python server2.py", process.env.NANOBERT);
 };
 
 const runChromaDB = (): any => {
