@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -20,6 +20,9 @@ import AudioIcon from "../../assets/audio.svg?react";
 import copyTextToClipboard from "../../utils/copy";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { alpha } from "@mui/system";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import FileTesting from "../FileTesting/FileTesting.tsx";
+import useTestFiles from "../../../application/usecases/testFiles/useTestFiles.usecase.ts";
 
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
@@ -70,8 +73,10 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
 const FilePreview = ({ file }: { file: File }) => {
   const ipcRenderer = (window as any).ipcRenderer;
   const [openFullPreview, setOpenFullPreview] = useState(false);
+  const [openTestingFile, setOpenTestingFile] = useState(false);
   const theme = useTheme();
-
+  const { testFile, isError, isLoading, isSuccess, result, type } =
+    useTestFiles();
   const filePreview =
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
@@ -116,6 +121,12 @@ const FilePreview = ({ file }: { file: File }) => {
     setOpenFullPreview(true);
   };
 
+  const handleFileTesting = (file: File) => {
+    testFile(file.path, file.type === FileType.Image ? "image" : file.type === FileType.Audio ? "audio" : "video");
+
+    setOpenTestingFile(true);
+  };
+
   return (
     <>
       <FullFilePreview
@@ -123,6 +134,11 @@ const FilePreview = ({ file }: { file: File }) => {
         open={openFullPreview}
         setOpen={setOpenFullPreview}
       />
+      {openTestingFile &&
+        <FileTesting file={file} open={openTestingFile} setOpen={setOpenTestingFile}
+                     isError={isError} isLoading={isLoading} isSuccess={isSuccess} result={result}
+                     type={type}
+        />}
       <Card
         sx={{
           p: 2,
@@ -182,6 +198,14 @@ const FilePreview = ({ file }: { file: File }) => {
           <IconButton color="primary" onClick={() => ipcRenderer.send("open-folder", file.path)}>
             <FolderOpenIcon />
           </IconButton>
+          {
+            (file.type === FileType.Video || file.type === FileType.Audio || file.type === FileType.Image) && (
+              <IconButton color="primary"
+                          onClick={() => handleFileTesting(file)}>
+                <HelpOutlineIcon />
+              </IconButton>
+            )
+          }
         </CardActions>
       </Card>
     </>
