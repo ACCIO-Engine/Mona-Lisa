@@ -128,6 +128,9 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               key={engine}
               onClick={() => {
                 setCBIREngine(engine);
+                if (engine !== CBIREngines.NONE) {
+                  setQueryEngine(QueryEngines.SEMANTIC);
+                }
                 handleCloseCBIR();
               }}
               sx={{
