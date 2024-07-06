@@ -1,7 +1,5 @@
 import React from "react";
-import DashboardAccordion from "../../components/DashboardAccordion/DashboardAccordion";
 import { Box } from "@mui/material";
-import DashboardEntry from "../../../application/types/DashboardEntry.enum";
 import Processes from "../../layouts/Dashboard/Processes/Processes.tsx";
 
 const Dashboard: React.FC = () => {

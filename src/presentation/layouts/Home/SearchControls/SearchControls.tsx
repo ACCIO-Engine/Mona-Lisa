@@ -13,11 +13,14 @@ import FilterDialog from "../filters/Filters.tsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Dayjs } from "dayjs";
+import { CBIREngines } from "../../../../application/types/QueryEngines.enum.ts";
+import ImageIcon from "@mui/icons-material/Image";
+
 
 export default function SearchControls({
-                                         searchCallback, clearResults,
-                                         canClear
-                                       }: {
+  searchCallback, clearResults,
+  canClear
+}: {
   searchCallback: () => void,
   clearResults: () => void,
   canClear: boolean
@@ -89,6 +92,9 @@ export default function SearchControls({
     setStartDate(filters.startDate);
     setEndDate(filters.endDate);
   };
+
+  const { cbirEngine } = useSearchContext();
+  const ipcRenderer = (window as any).ipcRenderer
   return (
     <FieldContainer>
       <FilterDialog
@@ -106,12 +112,33 @@ export default function SearchControls({
           // minHeight: "9rem"
         }}
       >
-        {currentControl === "text" && (
+        {currentControl === "text" && cbirEngine === CBIREngines.NONE && (
           <LargeSearch
             onChooseImage={onChooseImage}
             onSearchText={onSearchText}
             onChooseMic={onChooseMic}
           />
+        )}
+        {cbirEngine !== CBIREngines.NONE && (
+          <Button
+            variant="contained"
+            onClick={() => {
+              ipcRenderer.send("open-select-image-dialog");
+              ipcRenderer.on("selected-image-path", (event: any, path: string) => {
+                onChooseImage(path);
+              });
+            }}
+            disabled={canClear}
+            sx={{
+              padding: "0.6rem 0.7rem",
+              textTransform: "none",
+              letterSpacing: "0.05rem",
+              fontSize: "1rem",
+              marginLeft: "0.5rem"
+            }}>
+            <ImageIcon />
+            <span>select image</span>
+          </Button>
         )}
         <Button variant="contained" onClick={handleDialogOpen} sx={{
           padding: "0.6rem 0.7rem",
@@ -138,6 +165,6 @@ export default function SearchControls({
           <span>Clear</span>
         </Button>
       </Box>
-    </FieldContainer>
+    </FieldContainer >
   );
 }

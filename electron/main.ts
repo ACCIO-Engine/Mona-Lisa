@@ -340,15 +340,7 @@ ipc.on("open-select-image-dialog", function (event) {
     ]
   }).then(result => {
     if (!result.canceled && result.filePaths.length > 0) {
-      const imagePath = result.filePaths[0];
-
-      // Split the path string by the directory separator
-      const pathParts = imagePath.split("\\");
-
-      // Extract the last part (filename) from the path
-      const filename = pathParts[pathParts.length - 1];
-
-      event.sender.send("selected-image-path", filename);
+      event.sender.send("selected-image-path", result.filePaths[0]);
     }
   }).catch(err => {
     console.error(err);
