@@ -1,9 +1,11 @@
 import { QueryEngines, SearchType } from "../../application";
+import { CBIREngines } from "../../application/types/QueryEngines.enum";
 import { BASE_URL } from "../api/api";
 
 interface SearchParams {
   query: string;
   queryEngine: QueryEngines;
+  cbirEngine: CBIREngines;
   searchType: SearchType;
   pageSize?: number;
   page?: number;
@@ -18,6 +20,7 @@ interface SearchParams {
 export const search = async ({
                                query,
                                queryEngine,
+                               cbirEngine,
                                searchType,
                                fileTypes = [],
                                pageSize = 10,
@@ -31,6 +34,7 @@ export const search = async ({
   const params = new URLSearchParams({
     query,
     engine: queryEngine,
+    cbir: cbirEngine,
     searchType,
     pageSize: pageSize.toString(),
     page: page.toString(),

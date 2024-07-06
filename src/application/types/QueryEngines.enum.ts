@@ -4,4 +4,10 @@ enum QueryEngines {
   SEMANTIC = "SEMANTIC"
 }
 
+export enum CBIREngines {
+  CLASSICAL = "CLASSICAL",
+  DEEP = "DEEP",
+  NONE = "NONE"
+}
+
 export default QueryEngines;

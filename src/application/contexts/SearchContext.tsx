@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import SearchType from "../types/SearchType.enum";
-import QueryEngines from "../types/QueryEngines.enum";
+import QueryEngines, { CBIREngines } from "../types/QueryEngines.enum";
 
 interface SearchContextProps {
   searchString: string;
@@ -11,6 +11,8 @@ interface SearchContextProps {
   setEnableSearch: (enableSearch: boolean) => void;
   queryEngine: QueryEngines;
   setQueryEngine: (queryEngine: QueryEngines) => void;
+  cbirEngine: CBIREngines;
+  setCBIREngine: (cbirEngine: CBIREngines) => void;
   pageSize: number;
   setPageSize: (pageSize: number) => void;
   page: number;
@@ -32,6 +34,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   const [queryEngine, setQueryEngine] = useState<QueryEngines>(
     QueryEngines.TFIDF
   );
+  const [cbirEngine, setCBIREngine] = useState<CBIREngines>(CBIREngines.NONE);
   const [pageSize, setPageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [showResults, setShowResults] = useState<boolean>(false);
@@ -47,6 +50,8 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
         setEnableSearch,
         queryEngine,
         setQueryEngine,
+        cbirEngine,
+        setCBIREngine,
         pageSize,
         setPageSize,
         page,

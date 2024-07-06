@@ -17,6 +17,7 @@ import {
 import { QueryEngines, useSearchContext } from "../../../application";
 import React, { useState } from "react";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+import { CBIREngines } from "../../../application/types/QueryEngines.enum";
 
 interface AccioNavbarProps {
   open: boolean;
@@ -26,10 +27,12 @@ interface AccioNavbarProps {
 
 export default function AccioNavbar(props: AccioNavbarProps) {
   const { open, isLightMode, toggleLightMode } = props;
-  const { queryEngine, setQueryEngine, rerank, setRerank } = useSearchContext();
+  const { queryEngine, setQueryEngine, cbirEngine, setCBIREngine, rerank, setRerank } = useSearchContext();
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [cbirAnchorEl, setCBIRAnchorEl] = useState<null | HTMLElement>(null);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,6 +40,14 @@ export default function AccioNavbar(props: AccioNavbarProps) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleCBIRClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setCBIRAnchorEl(event.currentTarget);
+  }
+
+  const handleCloseCBIR = () => {
+    setCBIRAnchorEl(null);
+  }
 
   const handleRerank = () => {
     setRerank((rerank: boolean) => !rerank);
@@ -47,6 +58,8 @@ export default function AccioNavbar(props: AccioNavbarProps) {
     }}>
       <Toolbar>
         <Button
+          id="query-engine-button"
+          disabled={cbirEngine !== CBIREngines.NONE}
           aria-controls="simple-menu"
           aria-haspopup="true"
           onClick={handleClick}
@@ -54,7 +67,8 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             m: 1,
             marginLeft: open ? 0 : "5rem",
             transition: "margin 0.3s ease-in-out",
-            fontSize: "1rem"
+            fontSize: "1rem",
+            backgroundColor: cbirEngine !== CBIREngines.NONE ? theme.palette.primary.light : theme.palette.primary.dark,
           }}
         >
           <CreateIcon sx={{ mr: 1 }} />
@@ -73,6 +87,48 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               onClick={() => {
                 setQueryEngine(engine);
                 handleClose();
+              }}
+              sx={{
+                color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+              }}
+            >
+              {engine}
+            </MenuItem>
+          ))}
+        </Menu>
+
+        <Button
+          aria-controls="cbir-menu"
+          aria-haspopup="true"
+          onClick={handleCBIRClick}
+          sx={{
+            m: 1,
+            marginLeft: open ? 0 : "1rem",
+            transition: "margin 0.3s ease-in-out",
+            fontSize: "1rem",
+          }}
+        >
+          <CreateIcon sx={{ mr: 1 }} />
+          CBIR Engine: {cbirEngine}
+        </Button>
+        <Tooltip title={<Typography>CBIR (reverse image search) disabled text query and return images similar to you image"</Typography>}>
+          <IconButton sx={{ p: 0 }}>
+            <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          id="cbir-menu"
+          anchorEl={cbirAnchorEl}
+          keepMounted
+          open={Boolean(cbirAnchorEl)}
+          onClose={handleCloseCBIR}
+        >
+          {Object.values(CBIREngines).map((engine) => (
+            <MenuItem
+              key={engine}
+              onClick={() => {
+                setCBIREngine(engine);
+                handleCloseCBIR();
               }}
               sx={{
                 color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark

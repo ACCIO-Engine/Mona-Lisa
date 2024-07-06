@@ -7,7 +7,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { CustomDrawer } from "./AccioDrawer.styled";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import SearchIcon from "@mui/icons-material/Search";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import FullLogo from "../../assets/full.svg?react";
 import LightLogo from "../../assets/LightACCIO.svg";
@@ -85,12 +84,6 @@ const AccioDrawer: React.FC<AccioDrawerProps> = (props: AccioDrawerProps) => {
           text="Dashboard"
           buttonProps={buttonProps(0)}
         />
-        {/*<NavLinkItem*/}
-        {/*  to={routes.search}*/}
-        {/*  icon={<SearchIcon color={"primary"} />}*/}
-        {/*  text="Search"*/}
-        {/*  buttonProps={buttonProps(2)}*/}
-        {/*/>*/}
         <NavLinkItem
           to={routes.index}
           icon={<DocumentScannerIcon color={"primary"} />}
