@@ -135,8 +135,9 @@ export default function SearchControls({
               letterSpacing: "0.05rem",
               fontSize: "1rem",
               marginLeft: "0.5rem"
-            }}>
-            <ImageIcon />
+            }}
+            startIcon={<ImageIcon />}
+          >
             <span>select image</span>
           </Button>
         )}

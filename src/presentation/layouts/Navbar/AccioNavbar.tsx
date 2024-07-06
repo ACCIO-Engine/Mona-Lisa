@@ -70,8 +70,8 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             fontSize: "1rem",
             backgroundColor: cbirEngine !== CBIREngines.NONE ? theme.palette.primary.light : theme.palette.primary.dark,
           }}
+          startIcon={<CreateIcon sx={{ ml: 1 }} />}
         >
-          <CreateIcon sx={{ mr: 1 }} />
           Query Engine: {queryEngine}
         </Button>
         <Menu
@@ -107,8 +107,8 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             transition: "margin 0.3s ease-in-out",
             fontSize: "1rem",
           }}
+          startIcon={<CreateIcon sx={{ ml: 1 }} />}
         >
-          <CreateIcon sx={{ mr: 1 }} />
           CBIR Engine: {cbirEngine}
         </Button>
         <Tooltip title={<Typography>CBIR (reverse image search) disabled text query and return images similar to you image"</Typography>}>
