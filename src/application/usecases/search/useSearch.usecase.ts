@@ -6,6 +6,7 @@ import { useSearchContext } from "../../contexts/SearchContext";
 import getFileType from "../../utils/getFileType";
 import { useFiltersContext } from "../../contexts/FiltersContext";
 import { FileTypes, FileSizes } from "../../types/SearchOptions";
+import { CBIREngines } from "../../types/QueryEngines.enum";
 
 export default function useSearch() {
   const {
@@ -21,7 +22,9 @@ export default function useSearch() {
     setPage,
     showResults,
     setShowResults,
-    rerank
+    rerank,
+    cbirEngine,
+    setCBIREngine,
   } = useSearchContext();
   const { startDate, endDate, size, fileType, searchByFileName } = useFiltersContext();
   const {
@@ -40,11 +43,12 @@ export default function useSearch() {
       const fileSizes: string[] = (Object.keys(size) as (keyof FileSizes)[])
         .filter((key) => size[key])
         .map((key) => key.toUpperCase());
-      console.log("query", searchString, queryEngine, fileTypes, fileSizes);
+      console.log("query", searchString, searchType, queryEngine, fileTypes, fileSizes);
       if (searchType === SearchType.IMAGE) {
         return searchService({
           query: searchString,
           queryEngine: queryEngine,
+          cbirEngine: cbirEngine,
           searchType: SearchType.IMAGE,
           fileTypes: fileTypes,
           fileSizes: fileSizes,
@@ -59,6 +63,7 @@ export default function useSearch() {
         return searchService({
           query: searchString,
           queryEngine: queryEngine,
+          cbirEngine: cbirEngine,
           searchType: SearchType.TEXT,
           fileTypes: fileTypes,
           fileSizes: fileSizes,
@@ -74,11 +79,12 @@ export default function useSearch() {
     enabled: enableSearch,
     staleTime: Infinity
   });
-  const search = (query: string, searchType: SearchType) => {
+  const search = (query: string, searchType: SearchType, cbirEngine: CBIREngines = CBIREngines.NONE) => {
     setPage(1);
     setSearchString(query);
     setSearchType(searchType);
     setEnableSearch(true);
+    setCBIREngine(cbirEngine);
   };
   console.log("files", files);
   return {

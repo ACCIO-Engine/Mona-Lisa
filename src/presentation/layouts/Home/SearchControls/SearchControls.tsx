@@ -39,8 +39,8 @@ export default function SearchControls({
   // const navigate = useNavigate();
   const { search } = useSearch();
   const { setPage } = useSearchContext();
-  const onChooseImage = (image: string) => {
-    search(image, SearchType.IMAGE);
+  const onChooseImage = (image: string, cbirEngine: CBIREngines = CBIREngines.NONE) => {
+    search(image, SearchType.IMAGE, cbirEngine);
     searchCallback();
     // navigate("/search");
   };
@@ -125,7 +125,7 @@ export default function SearchControls({
             onClick={() => {
               ipcRenderer.send("open-select-image-dialog");
               ipcRenderer.on("selected-image-path", (event: any, path: string) => {
-                onChooseImage(path);
+                onChooseImage(path,cbirEngine);
               });
             }}
             disabled={canClear}

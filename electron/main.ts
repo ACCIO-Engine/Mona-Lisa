@@ -101,11 +101,13 @@ function createWindow(): void {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       webSecurity: false,
-      spellcheck: true
+      spellcheck: true,
+      devTools: true,
     }
   });
   // remove the default menu
   win.removeMenu();
+  win.webContents.openDevTools();
 
   // Create tray to make hidden window effect
   createTray(iconPath, win);
