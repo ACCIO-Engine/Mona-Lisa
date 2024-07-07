@@ -209,6 +209,10 @@ const runNanoBert = (): any => {
   return runShellCommand("python server2.py", process.env.NANOBERT);
 };
 
+const runKeywords = (): any => {
+  return runShellCommand("python server.py", process.env.NANOBERT);
+};
+
 const runChromaDB = (): any => {
   return runShellCommand(
     "python chroma.py",
@@ -232,6 +236,10 @@ const stopHedwig = (child: any): void => {
 };
 
 const stopNanoBert = (child: any): void => {
+  stopShellCommand(child);
+};
+
+const stopKeywords = (child: any): void => {
   stopShellCommand(child);
 };
 
@@ -287,6 +295,8 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
 connectProcess("hedwig", runHedwig, stopHedwig);
 
 connectProcess("nanobert", runNanoBert, stopNanoBert);
+
+connectProcess("keywords",runKeywords,stopKeywords);
 
 connectProcess("chromadb", runChromaDB, stopChromaDB);
 
