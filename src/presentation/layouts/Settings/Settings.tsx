@@ -8,7 +8,6 @@ import SearchMode from '../../../application/types/SearchMode.enum'
 import ImageModels from '../../../application/types/ImageModels.enum'
 // import VideoModels from '../../../application/types/VideoModels.enum'
 import SearchApproaches from '../../../application/types/SearchApproaches.enum'
-import { useTheme } from '@mui/material'
 
 interface SettingsProps {
   mode: string
@@ -26,7 +25,6 @@ interface SettingsProps {
 }
 
 export default function Settings(props: SettingsProps) {
-  const theme = useTheme()
   return (
     <Box
       sx={{ flexGrow: 1 }}
