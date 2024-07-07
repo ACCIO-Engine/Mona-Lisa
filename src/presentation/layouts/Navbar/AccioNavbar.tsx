@@ -18,6 +18,7 @@ import { QueryEngines, useSearchContext } from "../../../application";
 import React, { useState } from "react";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import { CBIREngines } from "../../../application/types/QueryEngines.enum";
+import { styled } from "@mui/material/styles";
 
 interface AccioNavbarProps {
   open: boolean;
@@ -25,11 +26,27 @@ interface AccioNavbarProps {
   toggleLightMode: () => void;
 }
 
+const EnginesContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "showVertical"
+})<{ showVertical: boolean }>(({ theme, showVertical }) => ({
+  display: "flex",
+  flexDirection: showVertical ? "column" : "row",
+  transition: "all 0.3s ease-in-out"
+}));
+
 export default function AccioNavbar(props: AccioNavbarProps) {
   const { open, isLightMode, toggleLightMode } = props;
-  const { queryEngine, setQueryEngine, cbirEngine, setCBIREngine, rerank, setRerank } = useSearchContext();
+  const {
+    queryEngine,
+    setQueryEngine,
+    cbirEngine,
+    setCBIREngine,
+    rerank,
+    setRerank,
+    showResults
+  } = useSearchContext();
   const theme = useTheme();
-
+  console.log("showResultsshowResults", showResults);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [cbirAnchorEl, setCBIRAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -43,11 +60,11 @@ export default function AccioNavbar(props: AccioNavbarProps) {
 
   const handleCBIRClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setCBIRAnchorEl(event.currentTarget);
-  }
+  };
 
   const handleCloseCBIR = () => {
     setCBIRAnchorEl(null);
-  }
+  };
 
   const handleRerank = () => {
     setRerank((rerank: boolean) => !rerank);
@@ -57,88 +74,95 @@ export default function AccioNavbar(props: AccioNavbarProps) {
       zIndex: "999"
     }}>
       <Toolbar>
-        <Button
-          id="query-engine-button"
-          disabled={cbirEngine !== CBIREngines.NONE}
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-          sx={{
-            m: 1,
-            marginLeft: open ? 0 : "5rem",
-            transition: "margin 0.3s ease-in-out",
-            fontSize: "1rem",
-          }}
-          startIcon={<CreateIcon sx={{ ml: 1 }} />}
-        >
-          Query Engine: {queryEngine}
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          {Object.values(QueryEngines).map((engine) => (
-            <MenuItem
-              key={engine}
-              onClick={() => {
-                setQueryEngine(engine);
-                handleClose();
-              }}
-              sx={{
-                color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
-              }}
-            >
-              {engine}
-            </MenuItem>
-          ))}
-        </Menu>
+        <EnginesContainer showVertical={showResults}>
 
-        <Button
-          aria-controls="cbir-menu"
-          aria-haspopup="true"
-          onClick={handleCBIRClick}
-          sx={{
-            m: 1,
-            transition: "margin 0.3s ease-in-out",
-            fontSize: "1rem",
-          }}
-          startIcon={<CreateIcon sx={{ ml: 1 }} />}
-        >
-          CBIR Engine: {cbirEngine}
-        </Button>
-        <Tooltip title={<Typography>CBIR (reverse image search) disabled text query and return images similar to you image"</Typography>}>
-          <IconButton sx={{ p: 0 }}>
-            <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          id="cbir-menu"
-          anchorEl={cbirAnchorEl}
-          keepMounted
-          open={Boolean(cbirAnchorEl)}
-          onClose={handleCloseCBIR}
-        >
-          {Object.values(CBIREngines).map((engine) => (
-            <MenuItem
-              key={engine}
-              onClick={() => {
-                setCBIREngine(engine);
-                if (engine !== CBIREngines.NONE) {
-                  setQueryEngine(QueryEngines.SEMANTIC);
-                }
-                handleCloseCBIR();
-              }}
+          <Button
+            id="query-engine-button"
+            disabled={cbirEngine !== CBIREngines.NONE}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+            sx={{
+              m: 1,
+              marginLeft: open ? 0 : "5rem",
+              transition: "margin 0.3s ease-in-out",
+              fontSize: "1rem"
+            }}
+            startIcon={<CreateIcon sx={{ ml: 1 }} />}
+          >
+            Query Engine: {queryEngine}
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {Object.values(QueryEngines).map((engine) => (
+              <MenuItem
+                key={engine}
+                onClick={() => {
+                  setQueryEngine(engine);
+                  handleClose();
+                }}
+                sx={{
+                  color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+                }}
+              >
+                {engine}
+              </MenuItem>
+            ))}
+          </Menu>
+          <Box>
+            <Button
+              aria-controls="cbir-menu"
+              aria-haspopup="true"
+              onClick={handleCBIRClick}
               sx={{
-                color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+                m: 1,
+                transition: "margin 0.3s ease-in-out",
+                fontSize: "1rem",
+                marginLeft: showResults ? "5rem" : 0
               }}
+              startIcon={<CreateIcon sx={{ ml: 1 }} />}
             >
-              {engine}
-            </MenuItem>
-          ))}
-        </Menu>
+              CBIR Engine: {cbirEngine}
+            </Button>
+            <Tooltip
+              title={<Typography>CBIR (reverse image search) disabled text query and return images
+                similar to you image"</Typography>}>
+              <IconButton sx={{ p: 0 }}>
+                <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              id="cbir-menu"
+              anchorEl={cbirAnchorEl}
+              keepMounted
+              open={Boolean(cbirAnchorEl)}
+              onClose={handleCloseCBIR}
+            >
+              {Object.values(CBIREngines).map((engine) => (
+                <MenuItem
+                  key={engine}
+                  onClick={() => {
+                    setCBIREngine(engine);
+                    if (engine !== CBIREngines.NONE) {
+                      setQueryEngine(QueryEngines.SEMANTIC);
+                    }
+                    handleCloseCBIR();
+                  }}
+                  sx={{
+                    color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+                  }}
+                >
+                  {engine}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </EnginesContainer>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { md: "flex" } }}>
           <FormControlLabel
@@ -184,5 +208,6 @@ export default function AccioNavbar(props: AccioNavbarProps) {
         </Box>
       </Toolbar>
     </CustomAppBar>
-  );
+  )
+    ;
 }

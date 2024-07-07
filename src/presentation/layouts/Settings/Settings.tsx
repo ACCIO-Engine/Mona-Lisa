@@ -83,17 +83,17 @@ export default function Settings(props: SettingsProps) {
             setSelectedValue={props.setVideoModel}
           ></CustomSelect>
         </Grid> */}
-        <Grid item xs={3}>
-          <Typography>Default search approach</Typography>
-        </Grid>
-        <Grid item xs={7}>
-          <CustomSelect
-            label="Default search approach"
-            choices={Object.values(SearchApproaches)}
-            selectedValue={props.defaultSearchApproach}
-            setSelectedValue={props.setDefaultSearchApproach}
-          ></CustomSelect>
-        </Grid>
+        {/*<Grid item xs={3}>*/}
+        {/*  <Typography>Default search approach</Typography>*/}
+        {/*</Grid>*/}
+        {/*<Grid item xs={7}>*/}
+        {/*  <CustomSelect*/}
+        {/*    label="Default search approach"*/}
+        {/*    choices={Object.values(SearchApproaches)}*/}
+        {/*    selectedValue={props.defaultSearchApproach}*/}
+        {/*    setSelectedValue={props.setDefaultSearchApproach}*/}
+        {/*  ></CustomSelect>*/}
+        {/*</Grid>*/}
       </Grid>
     </Box>
   )
