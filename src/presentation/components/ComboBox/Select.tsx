@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useTheme } from "@mui/material/styles";
 
 interface CustomSelectProps {
   choices: string[];
@@ -12,6 +13,7 @@ interface CustomSelectProps {
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({ selectedValue, setSelectedValue, choices, label }) => {
+  const theme = useTheme();
   return (
     <FormControl fullWidth sx={{ display: "flex" }}>
       <InputLabel id="select-label">{label}</InputLabel>
@@ -23,7 +25,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ selectedValue, setSelectedV
         onChange={(event: SelectChangeEvent) => setSelectedValue(event.target.value as string)}
       >
         {choices.map((choice, index) => (
-          <MenuItem key={index} value={choice}>
+          <MenuItem key={index} value={choice} sx={{
+            color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+          }}>
             {choice}
           </MenuItem>
         ))}

@@ -8,6 +8,11 @@ import { useSnackbar } from "../../contexts/SnackbarContext";
 import copyTextToClipboard from "../../utils/copy";
 import Settings from "../../layouts/Settings/Settings";
 import { Button } from "@mui/material";
+import SearchMode from "../../../application/types/ModeSearchType.enum";
+import TextModels from "../../../application/types/TextModels.enum";
+import ImageModels from "../../../application/types/ImageModels.enum";
+import VideoModels from "../../../application/types/VideoModels.enum";
+import SearchApproaches from "../../../application/types/SearchApproaches.enum";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,9 +50,9 @@ function a11yProps(index: number) {
 export default function BasicTabs() {
   const [selectedMode, setSelectedMode] = React.useState<string>("");
   const [DBPath, setDBPath] = React.useState<string>("");
-  const [selectedTextModel, setSelectedTextModel] = React.useState<string>("");
+  // const [selectedTextModel, setSelectedTextModel] = React.useState<string>("");
   const [selectedImageModel, setSelectedImageModel] = React.useState<string>("");
-  const [selectedVideoModel, setSelectedVideoModel] = React.useState<string>("");
+  // const [selectedVideoModel, setSelectedVideoModel] = React.useState<string>("");
   const [selectedSearchApproach, setSelectedSearchApproach] = React.useState<string>("");
 
   const [selectedPaths, setSelectedPaths] = React.useState<Set<string>>(new Set<string>());
@@ -60,28 +65,26 @@ export default function BasicTabs() {
   const ipcRenderer = (window as any).ipcRenderer;
 
   const handleSelectedDirs = React.useCallback((event: any, dirs: string[]) => {
-    console.log("AAAAAAAAAAAAAAAAAAAA");
     const uniqueDirs = new Set(dirs);
     setCrawledPaths((prevCrawledPaths) => new Set([...prevCrawledPaths, ...uniqueDirs]));
   }, [setCrawledPaths]);
 
   const handleSelectedIgnoreDirs = React.useCallback((event: any, dirs: string[]) => {
-    console.log("AAAAAAAAAAAAAAAAAAAA");
     const uniqueDirs = new Set(dirs);
     setIgnoredPaths((prevIgnoredPaths) => new Set([...prevIgnoredPaths, ...uniqueDirs]));
   }, [setIgnoredPaths]);
 
   // receive config data from main process
   const handleLoadConfig = React.useCallback((event: any, config: any) => {
-    setSelectedMode(config.mode);
-    setDBPath(config.vectorDBPath);
-    setSelectedTextModel(config.embedders);
-    setSelectedImageModel(config.imageCaptioners);
-    setSelectedVideoModel(config.videoCaptioners);
-    setSelectedSearchApproach(config.searchAppraoch);
+    setSelectedMode(config.mode || SearchMode.CLASSICAL);
+    setDBPath(config.vectorDBPath || "./data");
+    // setSelectedTextModel(config.embedders || TextModels.NANOBERT);
+    setSelectedImageModel(config.imageCaptioners || ImageModels.VIT_GPT2);
+    // setSelectedVideoModel(config.videoCaptioners || VideoModels.MODEL1);
+    setSelectedSearchApproach(config.searchAppraoch || SearchApproaches.BOTH);
     setCrawledPaths(new Set(config.paths));
     setIgnoredPaths(new Set(config.ignoredPaths));
-  }, [setSelectedMode, setDBPath, setSelectedTextModel, setSelectedImageModel, setSelectedVideoModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
+  }, [setSelectedMode, setDBPath, setSelectedImageModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
 
   React.useEffect(() => {
     ipcRenderer.send("get-config");
@@ -194,30 +197,30 @@ export default function BasicTabs() {
             }} {...a11yProps(2)} />
           </Tabs>
           <Button variant="contained"
-                  sx={{ margin: "0 1rem 1rem 0" }}
-                  onClick={() =>
-                    ipcRenderer.send("save",
-                      {
-                        "Mode": selectedMode,
-                        "vectorDBPath": DBPath,
-                        "embedders": selectedTextModel,
-                        "imageCaptioners": selectedImageModel,
-                        "videoCaptioners": selectedVideoModel,
-                        "searchAppraoch": selectedSearchApproach,
-                        "paths": crawledPaths,
-                        "ignoredPaths": ignoredPaths
-                      })}>
+            sx={{ margin: "0 1rem 1rem 0" }}
+            onClick={() =>
+              ipcRenderer.send("save",
+                {
+                  "mode": selectedMode,
+                  "vectorDBPath": DBPath,
+                  // "embedders": selectedTextModel,
+                  "imageCaptioners": selectedImageModel,
+                  // "videoCaptioners": selectedVideoModel,
+                  "searchAppraoch": selectedSearchApproach,
+                  "paths": crawledPaths,
+                  "ignoredPaths": ignoredPaths
+                })}>
             save
           </Button>
         </Box>
         <CustomTabPanel value={value} index={0}>
           <IndexButtons handleSwap={handleSwapIndex2Ignore} handleAdd={handleAddDirs}
-                        handleCopy={handleCopy} handleRemove={handleRemoveDir} />
+            handleCopy={handleCopy} handleRemove={handleRemoveDir} />
           <PathsGrid paths={crawledPaths} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <IndexButtons handleSwap={handleSwapIgnore2Index} handleAdd={handleAddIgnoreDirs}
-                        handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
+            handleCopy={handleCopy} handleRemove={handleRemoveIgnoreDir} />
           <PathsGrid paths={ignoredPaths} setSelectedPaths={setSelectedPaths} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
@@ -226,12 +229,12 @@ export default function BasicTabs() {
             setMode={setSelectedMode}
             storageDBPath={DBPath}
             setStorageDBPath={setDBPath}
-            textModel={selectedTextModel}
-            setTextModel={setSelectedTextModel}
+            // textModel={selectedTextModel}
+            // setTextModel={setSelectedTextModel}
             imageModel={selectedImageModel}
             setImageModel={setSelectedImageModel}
-            videoModel={selectedVideoModel}
-            setVideoModel={setSelectedVideoModel}
+            // videoModel={selectedVideoModel}
+            // setVideoModel={setSelectedVideoModel}
             defaultSearchApproach={selectedSearchApproach}
             setDefaultSearchApproach={setSelectedSearchApproach}
           />

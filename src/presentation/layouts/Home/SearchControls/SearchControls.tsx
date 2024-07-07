@@ -95,12 +95,14 @@ export default function SearchControls({
 
   const { cbirEngine } = useSearchContext();
   const ipcRenderer = (window as any).ipcRenderer
+
   return (
     <FieldContainer>
       <FilterDialog
         open={dialogOpen}
         onClose={handleDialogClose}
         onApply={handleApplyFilters}
+        cbirEngine
       />
       <Box
         sx={{
@@ -119,28 +121,29 @@ export default function SearchControls({
             onChooseMic={onChooseMic}
           />
         )}
-        {cbirEngine !== CBIREngines.NONE && (
-          <Button
-            variant="contained"
-            onClick={() => {
-              ipcRenderer.send("open-select-image-dialog");
-              ipcRenderer.on("selected-image-path", (event: any, path: string) => {
-                onChooseImage(path,cbirEngine);
-              });
-            }}
-            disabled={canClear}
-            sx={{
-              padding: "0.6rem 0.7rem",
-              textTransform: "none",
-              letterSpacing: "0.05rem",
-              fontSize: "1rem",
-              marginLeft: "0.5rem"
-            }}
-            startIcon={<ImageIcon />}
-          >
-            <span>select image</span>
-          </Button>
-        )}
+        {cbirEngine !== CBIREngines.NONE &&
+          (
+            <Button
+              variant="contained"
+              onClick={() => {
+                ipcRenderer.send("open-select-image-dialog");
+                ipcRenderer.on("selected-image-path", (event: any, path: string) => {
+                  onChooseImage(path, cbirEngine);
+                });
+              }}
+              disabled={canClear}
+              sx={{
+                padding: "0.6rem 0.7rem",
+                textTransform: "none",
+                letterSpacing: "0.05rem",
+                fontSize: "1rem",
+                marginLeft: "0.5rem"
+              }}
+              startIcon={<ImageIcon />}
+            >
+              <span>select image</span>
+            </Button>
+          )}
         <Button variant="contained" onClick={handleDialogOpen} sx={{
           padding: "0.6rem 0.7rem",
           textTransform: "none",

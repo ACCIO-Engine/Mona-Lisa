@@ -15,7 +15,7 @@ import DatePicker from "../../../components/Date/Date.tsx";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { Dayjs } from "dayjs";
 
-const FilterDialog = ({ open, onClose, onApply }) => {
+const FilterDialog = ({ open, onClose, onApply,cbirEngine }) => {
   const {
     timeModified,
     size,
@@ -156,7 +156,7 @@ const FilterDialog = ({ open, onClose, onApply }) => {
         {/*</FormControl>*/}
         <MultipleSelectChip values={localSize} onChange={onFileSizeChange} label={"File Size"} />
         <MultipleSelectChip values={localFileType} onChange={onFileTypeChange}
-                            label={"File Type"} />
+                            label={"File Type"} cbirEngine/>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleReset} color="secondary">

@@ -1,6 +1,7 @@
 enum SearchMode {
   CLASSICAL = "Classical",
-  DEEP = "Deep",
+  SEMANTIC_KEYWORDS = "Semantic Keywords",
+  SEMANTIC_PASSAGE_EMBEDDINGS = "Semantic Passage Embeddings",
   MIXED = "Mixed"
 }
 

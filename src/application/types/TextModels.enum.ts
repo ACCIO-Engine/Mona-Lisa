@@ -1,6 +1,7 @@
+// after last update we now don't need it
 enum TextModels {
     NANOBERT = "nanobert",
-    MODEL2 = "Model2",
+    KEYWORDS = "keywords",
 }
 
 export default TextModels;

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
 import { Typography } from "@mui/material";
+import { CBIREngines } from "../../../application/types/QueryEngines.enum";
 
 function getStyles(name: string, selectedValues: readonly string[], theme: Theme) {
   return {
@@ -18,22 +19,25 @@ interface MultipleSelectChipProps {
   values: { [key: string]: boolean };
   onChange: (selectedValues: string[]) => void;
   label?: string;
-
+  cbirEngine?: CBIREngines;
   [key: string]: any;
 }
 
 const MultipleSelectChip: React.FC<MultipleSelectChipProps> = ({
-                                                                 values,
-                                                                 onChange,
-                                                                 label = "Select",
-                                                                 ...props
-                                                               }) => {
+  values,
+  onChange,
+  label = "Select",
+  ...props
+}) => {
   const theme = useTheme();
   const [selectedValues, setSelectedValues] = React.useState<string[]>(
     Object.keys(values).filter((name) => values[name])
   );
   console.log(Object.keys(values));
   const handleToggle = (value: string) => {
+    if (props.cbirEngine !== CBIREngines.NONE && value === "Image" && label === "File Type") {
+      return;
+    }
     const currentIndex = selectedValues.indexOf(value);
     const newSelectedValues = [...selectedValues];
 
@@ -62,6 +66,7 @@ const MultipleSelectChip: React.FC<MultipleSelectChipProps> = ({
       >
         {Object.keys(values).map((name) => (
           <Chip
+            disabled={props.cbirEngine !== CBIREngines.NONE && name !== "Image" && label === "File Type"}
             key={name}
             label={name}
             onClick={() => handleToggle(name)}
