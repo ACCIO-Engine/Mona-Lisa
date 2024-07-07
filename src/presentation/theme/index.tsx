@@ -107,6 +107,10 @@ const lightTheme = responsiveFontSizes(
     },
     palette: {
       mode: "light",
+      action: {
+        disabled: "rgba(255,255,255,0.62)",
+        disabledBackground: "rgba(46,190,227,0.52)"
+      },
       primary: {
         main: "#031F34",
         light: "#2EBEE3",
@@ -129,6 +133,10 @@ const lightTheme = responsiveFontSizes(
             "&:hover": {
               backgroundColor: "#2390a9" // Add your desired hover color
             }
+          },
+          disabled: {
+            color: "white",
+            backgroundColor: "rgba(46,190,227,0.52)"
           }
         }
       },

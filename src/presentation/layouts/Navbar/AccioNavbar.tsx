@@ -68,7 +68,6 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             marginLeft: open ? 0 : "5rem",
             transition: "margin 0.3s ease-in-out",
             fontSize: "1rem",
-            backgroundColor: cbirEngine !== CBIREngines.NONE ? theme.palette.primary.light : theme.palette.primary.dark,
           }}
           startIcon={<CreateIcon sx={{ ml: 1 }} />}
         >
@@ -103,7 +102,6 @@ export default function AccioNavbar(props: AccioNavbarProps) {
           onClick={handleCBIRClick}
           sx={{
             m: 1,
-            marginLeft: open ? 0 : "1rem",
             transition: "margin 0.3s ease-in-out",
             fontSize: "1rem",
           }}
