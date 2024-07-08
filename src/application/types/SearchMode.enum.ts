@@ -1,8 +1,8 @@
 enum SearchMode {
-  CLASSICAL = "Classical",
-  SEMANTIC_KEYWORDS = "Semantic Keywords",
-  SEMANTIC_PASSAGE_EMBEDDINGS = "Semantic Passage Embeddings",
-  MIXED = "Mixed"
+  CLASSICAL = "classical",
+  SEMANTIC_KEYWORDS = "semantic keywords",
+  SEMANTIC_PASSAGE_EMBEDDINGS = "semantic passage embeddings",
+  MIXED = "mixed"
 }
 
 export default SearchMode;

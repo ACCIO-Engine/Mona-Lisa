@@ -1,7 +1,7 @@
 enum CBIR_MODES {
-    CLASSICAL = "Classical",
-    DEEP = "Deep",
-    NONE = "None"
+    CLASSICAL = "classical",
+    DEEP = "deep",
+    NONE = "none"
 }
 
 export default CBIR_MODES;
