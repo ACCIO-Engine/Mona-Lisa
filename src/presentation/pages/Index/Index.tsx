@@ -9,10 +9,11 @@ import copyTextToClipboard from "../../utils/copy";
 import Settings from "../../layouts/Settings/Settings";
 import { Button } from "@mui/material";
 import SearchMode from "../../../application/types/ModeSearchType.enum";
-import TextModels from "../../../application/types/TextModels.enum";
+// import TextModels from "../../../application/types/TextModels.enum";
 import ImageModels from "../../../application/types/ImageModels.enum";
-import VideoModels from "../../../application/types/VideoModels.enum";
-import SearchApproaches from "../../../application/types/SearchApproaches.enum";
+import CBIR_MODES from "../../../application/types/CBIRMode.enum";
+// import VideoModels from "../../../application/types/VideoModels.enum";
+// import SearchApproaches from "../../../application/types/SearchApproaches.enum";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -53,7 +54,8 @@ export default function BasicTabs() {
   // const [selectedTextModel, setSelectedTextModel] = React.useState<string>("");
   const [selectedImageModel, setSelectedImageModel] = React.useState<string>("");
   // const [selectedVideoModel, setSelectedVideoModel] = React.useState<string>("");
-  const [selectedSearchApproach, setSelectedSearchApproach] = React.useState<string>("");
+  // const [selectedSearchApproach, setSelectedSearchApproach] = React.useState<string>("");
+  const [selectedCbirMode, setCbirMode] = React.useState<string>("");
 
   const [selectedPaths, setSelectedPaths] = React.useState<Set<string>>(new Set<string>());
   const [ignoredPaths, setIgnoredPaths] = React.useState<Set<string>>(new Set<string>());
@@ -77,14 +79,15 @@ export default function BasicTabs() {
   // receive config data from main process
   const handleLoadConfig = React.useCallback((event: any, config: any) => {
     setSelectedMode(config.mode || SearchMode.CLASSICAL);
+    setCbirMode(config.cbir || CBIR_MODES.NONE)
     setDBPath(config.vectorDBPath || "./data");
-    // setSelectedTextModel(config.embedders || TextModels.NANOBERT);
     setSelectedImageModel(config.imageCaptioners || ImageModels.VIT_GPT2);
+    // setSelectedTextModel(config.embedders || TextModels.NANOBERT);
     // setSelectedVideoModel(config.videoCaptioners || VideoModels.MODEL1);
-    setSelectedSearchApproach(config.searchAppraoch || SearchApproaches.BOTH);
+    // setSelectedSearchApproach(config.searchAppraoch || SearchApproaches.BOTH);
     setCrawledPaths(new Set(config.paths));
     setIgnoredPaths(new Set(config.ignoredPaths));
-  }, [setSelectedMode, setDBPath, setSelectedImageModel, setSelectedSearchApproach, setCrawledPaths, setIgnoredPaths]);
+  }, [setSelectedMode, setCbirMode, setDBPath, setSelectedImageModel, setCrawledPaths, setIgnoredPaths]);
 
   React.useEffect(() => {
     ipcRenderer.send("get-config");
@@ -202,11 +205,12 @@ export default function BasicTabs() {
               ipcRenderer.send("save",
                 {
                   "mode": selectedMode,
+                  "cbir": selectedCbirMode,
                   "vectorDBPath": DBPath,
                   // "embedders": selectedTextModel,
                   "imageCaptioners": selectedImageModel,
                   // "videoCaptioners": selectedVideoModel,
-                  "searchAppraoch": selectedSearchApproach,
+                  // "searchAppraoch": selectedSearchApproach,
                   "paths": crawledPaths,
                   "ignoredPaths": ignoredPaths
                 })}>
@@ -227,16 +231,18 @@ export default function BasicTabs() {
           <Settings
             mode={selectedMode}
             setMode={setSelectedMode}
+            cbirMode={selectedCbirMode}
+            setCbirMode={setCbirMode}
             storageDBPath={DBPath}
             setStorageDBPath={setDBPath}
             // textModel={selectedTextModel}
             // setTextModel={setSelectedTextModel}
             imageModel={selectedImageModel}
             setImageModel={setSelectedImageModel}
-            // videoModel={selectedVideoModel}
-            // setVideoModel={setSelectedVideoModel}
-            defaultSearchApproach={selectedSearchApproach}
-            setDefaultSearchApproach={setSelectedSearchApproach}
+          // videoModel={selectedVideoModel}
+          // setVideoModel={setSelectedVideoModel}
+          // defaultSearchApproach={selectedSearchApproach}
+          // setDefaultSearchApproach={setSelectedSearchApproach}
           />
         </CustomTabPanel>
       </Box>

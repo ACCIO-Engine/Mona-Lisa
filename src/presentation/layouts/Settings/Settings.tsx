@@ -6,22 +6,26 @@ import InputDirectory from '../../components/InputDirectory/InputDirectory'
 import SearchMode from '../../../application/types/SearchMode.enum'
 // import TextModels from '../../../application/types/TextModels.enum'
 import ImageModels from '../../../application/types/ImageModels.enum'
+import CBIR_MODES from '../../../application/types/CBIRMode.enum'
 // import VideoModels from '../../../application/types/VideoModels.enum'
-import SearchApproaches from '../../../application/types/SearchApproaches.enum'
+// import SearchApproaches from '../../../application/types/SearchApproaches.enum'
 
 interface SettingsProps {
   mode: string
   setMode: (mode: string) => void
+  cbirMode: string
+  setCbirMode: (mode: string) => void
   storageDBPath: string
   setStorageDBPath: (path: string) => void
   // textModel: string
   // setTextModel: (model: string) => void
   imageModel: string
   setImageModel: (model: string) => void
+
   // videoModel: string
   // setVideoModel: (model: string) => void
-  defaultSearchApproach: string
-  setDefaultSearchApproach: (approach: string) => void
+  // defaultSearchApproach: string
+  // setDefaultSearchApproach: (approach: string) => void
 }
 
 export default function Settings(props: SettingsProps) {
@@ -42,6 +46,17 @@ export default function Settings(props: SettingsProps) {
             choices={Object.values(SearchMode)}
             selectedValue={props.mode}
             setSelectedValue={props.setMode}
+          ></CustomSelect>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography>Select cbir mode</Typography>
+        </Grid>
+        <Grid item xs={7}>
+          <CustomSelect
+            label="CBIR mode"
+            choices={Object.values(CBIR_MODES)}
+            selectedValue={props.cbirMode}
+            setSelectedValue={props.setCbirMode}
           ></CustomSelect>
         </Grid>
         <Grid item xs={3}>
