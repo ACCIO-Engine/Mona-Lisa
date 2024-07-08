@@ -133,11 +133,12 @@ const lightTheme = responsiveFontSizes(
             "&:hover": {
               backgroundColor: "#2390a9" // Add your desired hover color
             }
-          },
-          disabled: {
+          ,
+          "&.Mui-disabled": {
             color: "white",
             backgroundColor: "rgba(46,190,227,0.52)"
           }
+        }
         }
       },
       MuiMenu: {

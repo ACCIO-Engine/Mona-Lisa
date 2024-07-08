@@ -143,8 +143,8 @@ export default function Processes() {
   return (
     <Box>
       <Stepper orientation="vertical" connector={<></>}>
-        {steps.map((step) => (
-          <CustomStep title={step.label} description={step.description} />
+        {steps.map((step,index) => (
+          <CustomStep key={index} title={step.label} description={step.description} />
         ))}
       </Stepper>
     </Box>

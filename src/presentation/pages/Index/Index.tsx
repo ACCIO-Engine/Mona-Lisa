@@ -171,7 +171,6 @@ export default function BasicTabs() {
     });
   };
 
-
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -201,7 +200,8 @@ export default function BasicTabs() {
           </Tabs>
           <Button variant="contained"
             sx={{ margin: "0 1rem 1rem 0" }}
-            onClick={() =>
+            onClick={() => {
+
               ipcRenderer.send("save",
                 {
                   "mode": selectedMode,
@@ -213,7 +213,10 @@ export default function BasicTabs() {
                   // "searchAppraoch": selectedSearchApproach,
                   "paths": crawledPaths,
                   "ignoredPaths": ignoredPaths
-                })}>
+                })
+              openSnackbar("config file saved successfully", "success");
+            }
+            }>
             save
           </Button>
         </Box>
