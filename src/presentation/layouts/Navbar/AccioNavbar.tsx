@@ -132,7 +132,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             </Button>
             <Tooltip
               title={<Typography>CBIR (reverse image search) disabled text query and return images
-                similar to you image"</Typography>}>
+                similar to you image</Typography>}>
               <IconButton sx={{ p: 0 }}>
                 <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
               </IconButton>
