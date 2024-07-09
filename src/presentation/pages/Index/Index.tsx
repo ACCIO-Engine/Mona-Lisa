@@ -66,15 +66,23 @@ export default function BasicTabs() {
 
   const ipcRenderer = (window as any).ipcRenderer;
 
-  const handleSelectedDirs = React.useCallback((event: any, dirs: string[]) => {
+  const handleSelectedDirs = React.useCallback((event: any, dirs: string[],isCancelled:boolean) => {
+    if (isCancelled) {
+      return;
+    }
     const uniqueDirs = new Set(dirs);
     setCrawledPaths((prevCrawledPaths) => new Set([...prevCrawledPaths, ...uniqueDirs]));
-  }, [setCrawledPaths]);
+    openSnackbar("Directories added successfully", "success");
+  }, [setCrawledPaths, openSnackbar]);
 
-  const handleSelectedIgnoreDirs = React.useCallback((event: any, dirs: string[]) => {
+  const handleSelectedIgnoreDirs = React.useCallback((event: any, dirs: string[],isCancelled:boolean) => {
+    if (isCancelled) {
+      return;
+    }
     const uniqueDirs = new Set(dirs);
     setIgnoredPaths((prevIgnoredPaths) => new Set([...prevIgnoredPaths, ...uniqueDirs]));
-  }, [setIgnoredPaths]);
+    openSnackbar("Directories added to ignore list successfully", "success");
+  }, [setIgnoredPaths, openSnackbar]);
 
   // receive config data from main process
   const handleLoadConfig = React.useCallback((event: any, config: any) => {
@@ -115,7 +123,7 @@ export default function BasicTabs() {
       newCrawledPaths.delete(path);
     });
     setCrawledPaths(newCrawledPaths);
-
+    openSnackbar("Directories removed successfully", "success");
   };
 
   const handleRemoveIgnoreDir = () => {
@@ -124,7 +132,7 @@ export default function BasicTabs() {
       newIgnoredPaths.delete(path);
     });
     setIgnoredPaths(newIgnoredPaths);
-
+    openSnackbar("Directories removed from ignore list successfully", "success");
   };
 
   const handleSwapIndex2Ignore = () => {
@@ -137,6 +145,7 @@ export default function BasicTabs() {
     // Update the state with the new sets
     setCrawledPaths(newCrawledPaths);
     setIgnoredPaths(newIgnoredPaths);
+    openSnackbar("Directories moved to ignore list successfully", "success");
   };
 
   const handleSwapIgnore2Index = () => {
@@ -149,6 +158,7 @@ export default function BasicTabs() {
     // Update the state with the new sets
     setCrawledPaths(newCrawledPaths);
     setIgnoredPaths(newIgnoredPaths);
+    openSnackbar("Directories moved to indexed list successfully", "success");
   };
 
 
