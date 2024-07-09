@@ -14,7 +14,7 @@ import {
   MenuItem, Tooltip, Typography,
   useTheme
 } from "@mui/material";
-import { QueryEngines, useSearchContext } from "../../../application";
+import { FileType, QueryEngines, useFiltersContext, useSearchContext } from "../../../application";
 import React, { useState } from "react";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import { CBIREngines } from "../../../application/types/QueryEngines.enum";
@@ -35,6 +35,7 @@ const EnginesContainer = styled(Box, {
 }));
 
 export default function AccioNavbar(props: AccioNavbarProps) {
+  const { setFileType } = useFiltersContext();
   const { open, isLightMode, toggleLightMode } = props;
   const {
     queryEngine,
@@ -150,6 +151,12 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                     setCBIREngine(engine);
                     if (engine !== CBIREngines.NONE) {
                       setQueryEngine(QueryEngines.SEMANTIC);
+                      setFileType({
+                        Image: true,
+                        Text: false,
+                        Video: false,
+                        Audio: false
+                      })
                     }
                     handleCloseCBIR();
                   }}

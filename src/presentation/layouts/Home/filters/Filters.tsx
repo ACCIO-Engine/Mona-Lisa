@@ -37,6 +37,7 @@ const FilterDialog = ({ open, onClose, onApply, cbirEngine }: FilterDialogProps)
   const [localFileType, setFileType] = useState(fileType);
   const [localStartDate, setStartDate] = useState<Dayjs | null>(startDate);
   const [localEndDate, setEndDate] = useState<Dayjs | null>(endDate);
+  
   const handleApply = () => {
     console.log({
       timeModified: localTimeModified,
@@ -67,12 +68,14 @@ const FilterDialog = ({ open, onClose, onApply, cbirEngine }: FilterDialogProps)
       Gigantic: true
     });
     setSearchByFileName(false);
-    setFileType({
-      Image: true,
-      Text: true,
-      Video: true,
-      Audio: true
-    });
+    if (cbirEngine === CBIREngines.NONE) {
+      setFileType({
+        Image: true,
+        Text: true,
+        Video: true,
+        Audio: true
+      });
+    }
   };
   const onFileSizeChange = (selectedValues: string[]) => {
     setSize({
@@ -163,7 +166,7 @@ const FilterDialog = ({ open, onClose, onApply, cbirEngine }: FilterDialogProps)
         {/*</FormControl>*/}
         <MultipleSelectChip values={localSize} onChange={onFileSizeChange} label={"File Size"} />
         <MultipleSelectChip values={localFileType} onChange={onFileTypeChange}
-                            label={"File Type"} cbirEngine={cbirEngine}/>
+          label={"File Type"} cbirEngine={cbirEngine} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleReset} color="secondary">
