@@ -39,6 +39,7 @@ export default function SearchControls({
   // const navigate = useNavigate();
   const { search } = useSearch();
   const { setPage } = useSearchContext();
+  
   const onChooseImage = (image: string, cbirEngine: CBIREngines = CBIREngines.NONE) => {
     search(image, SearchType.IMAGE, cbirEngine);
     searchCallback();
@@ -94,7 +95,7 @@ export default function SearchControls({
   };
 
   const { cbirEngine } = useSearchContext();
-  const ipcRenderer = (window as any).ipcRenderer
+=  const ipcRenderer = (window as any).ipcRenderer
 
   return (
     <FieldContainer>
@@ -102,7 +103,7 @@ export default function SearchControls({
         open={dialogOpen}
         onClose={handleDialogClose}
         onApply={handleApplyFilters}
-        cbirEngine
+        cbirEngine={cbirEngine}
       />
       <Box
         sx={{

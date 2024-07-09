@@ -14,8 +14,15 @@ import { useState } from "react";
 import DatePicker from "../../../components/Date/Date.tsx";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { Dayjs } from "dayjs";
+import { CBIREngines } from "../../../../application/types/QueryEngines.enum.ts";
 
-const FilterDialog = ({ open, onClose, onApply,cbirEngine }) => {
+interface FilterDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onApply: (filters: any) => void;
+  cbirEngine: CBIREngines;
+}
+const FilterDialog = ({ open, onClose, onApply, cbirEngine }: FilterDialogProps) => {
   const {
     timeModified,
     size,
@@ -156,7 +163,7 @@ const FilterDialog = ({ open, onClose, onApply,cbirEngine }) => {
         {/*</FormControl>*/}
         <MultipleSelectChip values={localSize} onChange={onFileSizeChange} label={"File Size"} />
         <MultipleSelectChip values={localFileType} onChange={onFileTypeChange}
-                            label={"File Type"} cbirEngine/>
+                            label={"File Type"} cbirEngine={cbirEngine}/>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleReset} color="secondary">
