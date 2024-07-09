@@ -95,7 +95,7 @@ export default function SearchControls({
   };
 
   const { cbirEngine } = useSearchContext();
-=  const ipcRenderer = (window as any).ipcRenderer
+  const ipcRenderer = (window as any).ipcRenderer
 
   return (
     <FieldContainer>
