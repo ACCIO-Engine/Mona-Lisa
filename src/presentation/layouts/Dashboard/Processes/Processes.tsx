@@ -25,6 +25,10 @@ const steps = [
     description: `Is responsible for generating captions for images.`
   },
   {
+    label: DashboardEntry.CBIR,
+    description: `Is responsible for generating content based features for images.`
+  },
+  {
     label: DashboardEntry.NANO_BERT,
     description:
       "Is responsible for generating embeddings for text."
