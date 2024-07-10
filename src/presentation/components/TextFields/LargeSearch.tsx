@@ -156,7 +156,7 @@ export default function LargeSearch({
       {
         options.length !== 0 &&
         (
-          <Box>
+          <Box height={150}>
             <FixedSizeList
               height={150}
               itemSize={35}

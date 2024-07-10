@@ -51,9 +51,6 @@ export default function Home() {
                           canClear={showResults} />
         </CSSTransition>
       </SearchControlsContainer>
-
-      {/*<Button onClick={() => setHasResults(false)}>Back</Button>*/}
-
       {showResults && <Results />}
     </HomeContainer>
   );
