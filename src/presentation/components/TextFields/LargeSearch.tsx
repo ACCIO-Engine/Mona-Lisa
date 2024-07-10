@@ -115,6 +115,7 @@ export default function LargeSearch({
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               onSearchText(inputValue);
+              setOptions([]);
             }
           }}
           onChange={handleInputChange}
