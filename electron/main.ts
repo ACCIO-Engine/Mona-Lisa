@@ -100,7 +100,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      webSecurity: true,
+      webSecurity: false,
       spellcheck: true,
       devTools: true,
     }
