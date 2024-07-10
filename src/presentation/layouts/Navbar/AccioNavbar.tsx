@@ -150,7 +150,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                   onClick={() => {
                     setCBIREngine(engine);
                     if (engine !== CBIREngines.NONE) {
-                      setQueryEngine(QueryEngines.SEMANTIC);
+                      setQueryEngine(QueryEngines.SEMANTIC_PASSAGE_EMBEDDINGS);
                       setFileType({
                         Image: true,
                         Text: false,
