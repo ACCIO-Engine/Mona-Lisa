@@ -205,6 +205,11 @@ const runHedwig = (): any => {
   return runShellCommand("python server.py", process.env.HEDWIG);
 };
 
+const runCBIR = (): any => {
+  return runShellCommand("python cbir_server.py", process.env.HEDWIG);
+};
+
+
 const runNanoBert = (): any => {
   return runShellCommand("python server2.py", process.env.NANOBERT);
 };
@@ -231,6 +236,10 @@ const runServer = (): any => {
 
 
 const stopHedwig = (child: any): void => {
+  stopShellCommand(child);
+};
+
+const stopCBIR = (child: any): void => {
   stopShellCommand(child);
 };
 
@@ -294,6 +303,8 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
 runAutoComplete();
 
 connectProcess("hedwig", runHedwig, stopHedwig);
+
+connectProcess("cbir", runCBIR, stopCBIR);
 
 connectProcess("nanobert", runNanoBert, stopNanoBert);
 
