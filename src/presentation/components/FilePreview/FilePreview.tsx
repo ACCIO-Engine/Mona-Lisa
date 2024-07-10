@@ -4,7 +4,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { IconButton, useTheme } from "@mui/material";
+import { IconButton, Tooltip, useTheme } from "@mui/material";
+import { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -21,8 +23,11 @@ import copyTextToClipboard from "../../utils/copy";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { alpha } from "@mui/system";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import InfoRoundedIcon from "@mui/icons-material/Info";
 import FileTesting from "../FileTesting/FileTesting.tsx";
 import useTestFiles from "../../../application/usecases/testFiles/useTestFiles.usecase.ts";
+import useIndexType from "../../../application/usecases/indexTypes/useIndexTypes.usecase.ts";
+import IndexTypes from "../IndexTypes/IndexTypes.tsx";
 
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
@@ -70,6 +75,17 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
   );
 };
 
+const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({theme}) => {
+  return {
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.common.white,
+    boxShadow: theme?.shadows[1],
+    width: 'fit-content',
+  },
+}});
 const FilePreview = ({ file }: { file: File }) => {
   const ipcRenderer = (window as any).ipcRenderer;
   const [openFullPreview, setOpenFullPreview] = useState(false);
@@ -77,6 +93,12 @@ const FilePreview = ({ file }: { file: File }) => {
   const theme = useTheme();
   const { testFile, isError, isLoading, isSuccess, result, type } =
     useTestFiles();
+  const {
+    indexTypes,
+    result: indexTypesResult,
+    isError: indexTypesIsError,
+    isLoading: indexTypesIsLoading
+  } = useIndexType();
   const filePreview =
     file.type === FileType.Image ? (
       <ImageFilePreview file={file} />
@@ -122,11 +144,24 @@ const FilePreview = ({ file }: { file: File }) => {
   };
 
   const handleFileTesting = (file: File) => {
-    testFile(file.path, file.type === FileType.Image ? "image" : file.type === FileType.Audio ? "audio" : "video");
+    testFile(
+      file.path,
+      file.type === FileType.Image
+        ? "image"
+        : file.type === FileType.Audio
+          ? "audio"
+          : "video"
+    );
 
     setOpenTestingFile(true);
   };
 
+  const handleIndexTypes = (file: File) => {
+    indexTypes(file.path);
+  };
+
+  console.log("indexTypesResult", indexTypesResult);
+  
   return (
     <>
       <FullFilePreview
@@ -134,11 +169,18 @@ const FilePreview = ({ file }: { file: File }) => {
         open={openFullPreview}
         setOpen={setOpenFullPreview}
       />
-      {openTestingFile &&
-        <FileTesting file={file} open={openTestingFile} setOpen={setOpenTestingFile}
-                     isError={isError} isLoading={isLoading} isSuccess={isSuccess} result={result}
-                     type={type}
-        />}
+      {openTestingFile && (
+        <FileTesting
+          file={file}
+          open={openTestingFile}
+          setOpen={setOpenTestingFile}
+          isError={isError}
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          result={result}
+          type={type}
+        />
+      )}
       <Card
         sx={{
           p: 2,
@@ -192,20 +234,40 @@ const FilePreview = ({ file }: { file: File }) => {
           <IconButton color="primary" onClick={() => handleCopyPath(file.path)}>
             <ContentCopyIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => handleFilePreview(file.type)}>
+          <IconButton
+            color="primary"
+            onClick={() => handleFilePreview(file.type)}
+          >
             <FileOpenIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => ipcRenderer.send("open-folder", file.path)}>
+          <IconButton
+            color="primary"
+            onClick={() => ipcRenderer.send("open-folder", file.path)}
+          >
             <FolderOpenIcon />
           </IconButton>
-          {
-            (file.type === FileType.Video || file.type === FileType.Audio || file.type === FileType.Image) && (
-              <IconButton color="primary"
-                          onClick={() => handleFileTesting(file)}>
-                <HelpOutlineIcon />
-              </IconButton>
-            )
-          }
+          {(file.type === FileType.Video ||
+            file.type === FileType.Audio ||
+            file.type === FileType.Image) && (
+            <IconButton color="primary" onClick={() => handleFileTesting(file)}>
+              <HelpOutlineIcon />
+            </IconButton>
+          )}
+          <CustomTooltip
+            followCursor
+            title={
+              <IndexTypes
+                isLoading={indexTypesIsLoading}
+                isError={indexTypesIsError}
+                result={indexTypesResult}
+              />
+            }
+            onMouseEnter={() => handleIndexTypes(file)}
+          >
+            <IconButton sx={{ p: 0 }} color="primary">
+              <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
+            </IconButton>
+          </CustomTooltip>
         </CardActions>
       </Card>
     </>
