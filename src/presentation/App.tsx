@@ -58,7 +58,6 @@ const App: React.FC = () => {
         </TrieProvider>
       </ThemeProvider>
     </QueryClientProvider>
-    // <SearchInput />
   );
 };
 

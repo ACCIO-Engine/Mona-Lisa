@@ -222,7 +222,6 @@ const runChromaDB = (): any => {
 
 const runOctopus = (): any => {
   const child = runShellCommand(" java -jar ./indexing.jar", process.env.OCTOPUS);
-  runAutoComplete();
   return child;
 };
 
@@ -291,6 +290,8 @@ const connectProcess = (eventName: string, runProcess: () => any, stopProcess: (
     });
   });
 };
+
+runAutoComplete();
 
 connectProcess("hedwig", runHedwig, stopHedwig);
 
