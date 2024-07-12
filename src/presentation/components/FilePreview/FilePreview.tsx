@@ -265,7 +265,7 @@ const FilePreview = ({ file }: { file: File }) => {
             onMouseEnter={() => handleIndexTypes(file)}
           >
             <IconButton sx={{ p: 0 }} color="primary">
-              <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
+              <InfoRoundedIcon  />
             </IconButton>
           </CustomTooltip>
         </CardActions>

@@ -31,7 +31,10 @@ const EnginesContainer = styled(Box, {
 })<{ showVertical: boolean }>(({ theme, showVertical }) => ({
   display: "flex",
   flexDirection: showVertical ? "column" : "row",
-  transition: "all 0.3s ease-in-out"
+  transition: "all 0.3s ease-in-out",
+  [theme.breakpoints.down("lg")]: {
+    flexDirection: "row"
+  }
 }));
 
 export default function AccioNavbar(props: AccioNavbarProps) {
@@ -124,7 +127,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                 m: 1,
                 transition: "margin 0.3s ease-in-out",
                 fontSize: "1rem",
-                marginLeft: showResults ? "5rem" : 0
+                marginLeft: showResults ? "5rem" : 0,
+                [theme.breakpoints.down("lg")]: {
+                  marginLeft: 0
+                }
               }}
               startIcon={<CreateIcon sx={{ ml: 1 }} />}
             >
@@ -156,7 +162,7 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                         Text: false,
                         Video: false,
                         Audio: false
-                      })
+                      });
                     }
                     handleCloseCBIR();
                   }}
