@@ -1,24 +1,33 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import CreateIcon from "@mui/icons-material/Create";
-import {
-  CustomAppBar
-} from "./AccioNavbar.styled";
+import { CustomAppBar } from "./AccioNavbar.styled";
 import {
   MaterialUISwitch,
   RerankSwitch
 } from "../../components/ToggleButton/ToggleButton.styled";
 import {
-  Button, FormControlLabel, IconButton,
+  Button,
+  FormControlLabel,
+  IconButton,
   Menu,
-  MenuItem, Tooltip, Typography,
+  MenuItem,
+  Tooltip,
+  Typography,
   useTheme
 } from "@mui/material";
-import { FileType, QueryEngines, useFiltersContext, useSearchContext } from "../../../application";
+import {
+  FileType,
+  QueryEngines,
+  useFiltersContext,
+  useSearchContext
+} from "../../../application";
 import React, { useState } from "react";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import { CBIREngines } from "../../../application/types/QueryEngines.enum";
 import { styled } from "@mui/material/styles";
+import { useLocation } from "react-router-dom";
+import routes from "../../routes/routes";
 
 interface AccioNavbarProps {
   open: boolean;
@@ -38,6 +47,8 @@ const EnginesContainer = styled(Box, {
 }));
 
 export default function AccioNavbar(props: AccioNavbarProps) {
+  const location = useLocation();
+  console.log("location", location.pathname);
   const { setFileType } = useFiltersContext();
   const { open, isLightMode, toggleLightMode } = props;
   const {
@@ -74,12 +85,17 @@ export default function AccioNavbar(props: AccioNavbarProps) {
     setRerank((rerank: boolean) => !rerank);
   };
   return (
-    <CustomAppBar position="fixed" open={open} sx={{
-      zIndex: "999"
-    }}>
+    <CustomAppBar
+      position="fixed"
+      open={open}
+      sx={{
+        zIndex: "999"
+      }}
+    >
       <Toolbar>
-        <EnginesContainer showVertical={showResults}>
-
+        <EnginesContainer
+          showVertical={showResults && location.pathname === routes.home}
+        >
           <Button
             id="query-engine-button"
             disabled={cbirEngine !== CBIREngines.NONE}
@@ -111,7 +127,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                   handleClose();
                 }}
                 sx={{
-                  color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+                  color:
+                    theme.palette.mode === "dark"
+                      ? theme.palette.common.white
+                      : theme.palette.primary.dark
                 }}
               >
                 {engine}
@@ -127,7 +146,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                 m: 1,
                 transition: "margin 0.3s ease-in-out",
                 fontSize: "1rem",
-                marginLeft: showResults ? "5rem" : 0,
+                marginLeft:
+                  showResults && location.pathname === routes.home && !open
+                    ? "5rem"
+                    : 0,
                 [theme.breakpoints.down("lg")]: {
                   marginLeft: 0
                 }
@@ -137,8 +159,13 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               CBIR Engine: {cbirEngine}
             </Button>
             <Tooltip
-              title={<Typography>CBIR (reverse image search) disabled text query and return images
-                similar to you image</Typography>}>
+              title={
+                <Typography>
+                  CBIR (reverse image search) disabled text query and return
+                  images similar to you image
+                </Typography>
+              }
+            >
               <IconButton sx={{ p: 0 }}>
                 <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
               </IconButton>
@@ -167,7 +194,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
                     handleCloseCBIR();
                   }}
                   sx={{
-                    color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+                    color:
+                      theme.palette.mode === "dark"
+                        ? theme.palette.common.white
+                        : theme.palette.primary.dark
                   }}
                 >
                   {engine}
@@ -180,18 +210,18 @@ export default function AccioNavbar(props: AccioNavbarProps) {
         <Box sx={{ display: { md: "flex" } }}>
           <FormControlLabel
             value="bottom"
-            control={
-              <RerankSwitch
-                onChange={handleRerank}
-                checked={rerank}
-              />
-            }
+            control={<RerankSwitch onChange={handleRerank} checked={rerank} />}
             label={
               <Box>
                 Rerank
                 <Tooltip
-                  title={<Typography>If enabled, the search results will be re-ranked to enhance
-                    ranking. but it may take longer to get the results.</Typography>}
+                  title={
+                    <Typography>
+                      If enabled, the search results will be re-ranked to
+                      enhance ranking. but it may take longer to get the
+                      results.
+                    </Typography>
+                  }
                 >
                   <IconButton sx={{ p: 0 }}>
                     <InfoRoundedIcon sx={{ fontSize: "1.25rem" }} />
@@ -201,7 +231,10 @@ export default function AccioNavbar(props: AccioNavbarProps) {
             }
             labelPlacement="top"
             sx={{
-              color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.common.white
+                  : theme.palette.primary.dark
             }}
           />
           <FormControlLabel
@@ -210,17 +243,19 @@ export default function AccioNavbar(props: AccioNavbarProps) {
               <MaterialUISwitch
                 onChange={toggleLightMode}
                 checked={!isLightMode}
-              />}
+              />
+            }
             label="Theme"
             labelPlacement="top"
             sx={{
-              color: theme.palette.mode === "dark" ? theme.palette.common.white : theme.palette.primary.dark
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.common.white
+                  : theme.palette.primary.dark
             }}
           />
-
         </Box>
       </Toolbar>
     </CustomAppBar>
-  )
-    ;
+  );
 }

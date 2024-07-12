@@ -75,7 +75,6 @@ const TextFileViewer = ({ file }: { file: File }) => {
         const parts = [];
         let lastIndex = 0;
         const mergedHighlights = mergeHighlights(highlights.highlights);
-        console.log("mergedHighlights = ", mergedHighlights);
         mergedHighlights.forEach((highlight, index) => {
             if (lastIndex < highlight.startInd) {
                 parts.push(
