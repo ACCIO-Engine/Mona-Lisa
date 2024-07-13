@@ -135,7 +135,7 @@ export const TestFiles: React.FC = () => {
   };
   console.log(result);
   return (
-    <Box>
+    <Box sx={{ height: "100%" }}>
       <Title>Check How Accio Understands Your Files</Title>
       <Container>
         <UploadButton component="label" role={undefined} tabIndex={-1}>

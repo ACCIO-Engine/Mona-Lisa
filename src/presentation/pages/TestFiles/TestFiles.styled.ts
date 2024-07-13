@@ -12,7 +12,7 @@ export const Container = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  justifyContent: "center"
+  justifyContent: "center",
 }));
 export const ResultContainer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -21,7 +21,7 @@ export const ResultContainer = styled("div")(({ theme }) => ({
   justifyContent: "center",
   background: `radial-gradient(circle, ${alpha(theme.palette.primary.main,0.3)} 0%, ${alpha(theme.palette.primary.main,0.1)} 100%)`,
   backdropFilter: "blur(20px)",
-  height: "65vh",
+  minHeight: "65vh",
   borderRadius: "1rem",
   margin: "1rem",
   overflow: "auto"
