@@ -75,7 +75,7 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
   );
 };
 
-const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({theme}) => {
   return {

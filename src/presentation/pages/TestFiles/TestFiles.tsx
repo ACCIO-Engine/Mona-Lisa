@@ -13,16 +13,17 @@ import React from "react";
 import useTestFiles from "../../../application/usecases/testFiles/useTestFiles.usecase.ts";
 
 const ShowImageResult = ({
-  caption,
-  ocr
-}: {
+                           caption,
+                           ocr
+                         }: {
   caption: string;
   ocr: string;
 }) => {
   return (
     <Box
       sx={{
-        padding: "1rem"
+        padding: "1rem",
+        height: "100%"
       }}
     >
       <Typography
@@ -55,7 +56,8 @@ const ShowAudioResult = ({ transcript }: { transcript: string }) => {
   return (
     <Box
       sx={{
-        padding: "1rem"
+        padding: "1rem",
+        height: "100%"
       }}
     >
       <Typography
@@ -74,24 +76,23 @@ const ShowAudioResult = ({ transcript }: { transcript: string }) => {
 };
 
 const ShowVideoResult = ({
-  keyframes,
-  transcript
-}: {
+                           keyframes,
+                           transcript
+                         }: {
   keyframes: { caption: string; ocr: string }[];
   transcript: string;
 }) => {
   return (
     <Box
       sx={{
-        padding: "1rem"
+        padding: "1rem",
+        height: "100%"
       }}
     >
       <Typography
         sx={{
-          whiteSpace: "pre-wrap",
-          fontSize: "1.5rem",
+          fontSize: "1rem",
           fontWeight: "bold",
-          marginBottom: "1rem",
           display: "block"
         }}
       >
@@ -100,16 +101,12 @@ const ShowVideoResult = ({
       {keyframes.map((keyframe, index) => (
         <Box
           key={index}
-          sx={{
-            padding: "1rem"
-          }}
+          sx={{}}
         >
           <Typography
             sx={{
-              whiteSpace: "pre-wrap",
-              fontSize: "1.5rem",
+              fontSize: "1rem",
               fontWeight: "bold",
-              marginBottom: "1rem",
               display: "block"
             }}
           >
@@ -117,10 +114,8 @@ const ShowVideoResult = ({
           </Typography>
           <Typography
             sx={{
-              whiteSpace: "pre-wrap",
-              fontSize: "1.5rem",
+              fontSize: "1rem",
               fontWeight: "bold",
-              marginBottom: "1rem",
               display: "block"
             }}
           >

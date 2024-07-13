@@ -1,12 +1,6 @@
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import {
-  AppBar, Box,
-  Dialog,
-  IconButton,
-  Slide,
-  Toolbar
-} from "@mui/material";
+import { AppBar, Box, Dialog, IconButton, Slide, Toolbar, Tooltip } from "@mui/material";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { File, FileType } from "../../../application";
@@ -14,6 +8,14 @@ import Logo from "../../assets/imageOnly.svg";
 import { GridCloseIcon } from "@mui/x-data-grid";
 import { FileContainer } from "./FullFilePreview.styled";
 import TextFileViewer from "./TextFIleViewer.tsx";
+import useIndexType from "../../../application/usecases/indexTypes/useIndexTypes.usecase.ts";
+import copyTextToClipboard from "../../utils/copy.ts";
+import { useSnackbar } from "../../contexts/SnackbarContext.tsx";
+import IndexTypes from "../IndexTypes/IndexTypes.tsx";
+import { styled } from "@mui/material/styles";
+import { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
+import InfoRoundedIcon from "@mui/icons-material/Info";
+import { CustomTooltip } from "../FilePreview/FilePreview.tsx";
 
 const ImageFilePreview = ({ file }: { file: File }) => {
   return (
@@ -81,9 +83,7 @@ const AudioFilePreview = ({ file }: { file: File }) => {
       </audio>
     </Box>
   );
-
 };
-
 
 const DefaultFilePreview = ({ file }: { file: File }) => {
   return (
@@ -94,10 +94,10 @@ const DefaultFilePreview = ({ file }: { file: File }) => {
 };
 
 const FullFilePreview = ({
-                           open,
-                           setOpen,
-                           file
-                         }: {
+  open,
+  setOpen,
+  file
+}: {
   open: boolean;
   setOpen: (open: boolean) => void;
   file: File;
@@ -125,6 +125,31 @@ const FullFilePreview = ({
     setOpen(false);
   };
 
+  const {
+    indexTypes,
+    result: indexTypesResult,
+    isError: indexTypesIsError,
+    isLoading: indexTypesIsLoading
+  } = useIndexType();
+  const ipcRenderer = (window as any).ipcRenderer;
+  const { openSnackbar } = useSnackbar();
+
+  const handleCopyPath = (path: string) => {
+    const pathParts = path.split(/[\\/]/);
+    pathParts.pop(); // Remove the file name
+    const dir = pathParts.join("\\");
+    copyTextToClipboard([dir]).then((success) => {
+      if (success) {
+        openSnackbar("Path copied to clipboard successfully", "success");
+      } else {
+        openSnackbar("Failed to copy path to clipboard", "error");
+      }
+    });
+  };
+
+  const handleIndexTypes = (file: File) => {
+    indexTypes(file.path);
+  };
   return (
     <Dialog
       fullScreen
@@ -148,12 +173,36 @@ const FullFilePreview = ({
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             {file.name}
           </Typography>
-          <IconButton color="primary">
+          {/* <IconButton color="primary">
             <ContentCopyIcon />
           </IconButton>
           <IconButton color="primary">
             <FolderOpenIcon />
+          </IconButton> */}
+          <IconButton color="primary" onClick={() => handleCopyPath(file.path)}>
+            <ContentCopyIcon />
           </IconButton>
+          <IconButton
+            color="primary"
+            onClick={() => ipcRenderer.send("open-folder", file.path)}
+          >
+            <FolderOpenIcon />
+          </IconButton>
+          <CustomTooltip
+            followCursor
+            title={
+              <IndexTypes
+                isLoading={indexTypesIsLoading}
+                isError={indexTypesIsError}
+                result={indexTypesResult}
+              />
+            }
+            onMouseEnter={() => handleIndexTypes(file)}
+          >
+            <IconButton sx={{ p: 0 }} color="primary">
+              <InfoRoundedIcon />
+            </IconButton>
+          </CustomTooltip>
         </Toolbar>
       </AppBar>
       <FileContainer>{filePreview}</FileContainer>
