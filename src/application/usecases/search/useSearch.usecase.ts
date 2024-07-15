@@ -35,7 +35,7 @@ export default function useSearch() {
     error,
     status
   } = useQuery({
-    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size, searchByFileName, startDate, endDate, rerank],
+    queryKey: ["search", searchString, searchType, queryEngine, fileType, pageSize, page, size, searchByFileName, startDate, endDate, rerank,cbirEngine],
     queryFn: () => {
       const fileTypes: string[] = (Object.keys(fileType) as (keyof FileTypes)[])
         .filter((key) => fileType[key])
