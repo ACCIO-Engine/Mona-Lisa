@@ -39,7 +39,7 @@ const EnginesContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== "showVertical"
 })<{ showVertical: boolean }>(({ theme, showVertical }) => ({
   display: "flex",
-  flexDirection: showVertical ? "column" : "row",
+  flexDirection: showVertical ? "column-reverse" : "row",
   transition: "all 0.3s ease-in-out",
   [theme.breakpoints.down("lg")]: {
     flexDirection: "row"
