@@ -5,7 +5,7 @@ export const FieldContainer = styled(Box)(({ theme }) => ({
   justifyContent: "flex-start",
   alignItems: "center",
   flexDirection: "column",
-  marginTop: "20px",
+  marginTop: "10px",
   // width: "100%",
   // [theme.breakpoints.up("md")]: {
   //   width: "70%",
